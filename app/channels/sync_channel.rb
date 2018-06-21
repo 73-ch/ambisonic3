@@ -2,11 +2,7 @@ class SyncChannel < ApplicationCable::Channel
   def subscribed
     # cue for everyone
     stream_from "cues"
-
-    res = admin_check
-    logger.info '_______________'
-    logger.info res.to_s
-    if res
+    if admin_check
       # for admin
       stream_from "devices"
     else
@@ -28,8 +24,10 @@ class SyncChannel < ApplicationCable::Channel
   end
 
   # for debug
-  def send_audio_node_json(json)
-    ActionCable.server.broadcast "test"
+  def send_audio_node_json(data)
+    if admin_check
+      ActionCable.server.broadcast "cues", message: "audio_nodes", json: data["json"]
+    end
   end
 
 

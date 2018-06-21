@@ -9,6 +9,7 @@
 
   <body>
     <%= javascript_pack_tag 'application' %>
+    <p id="current_path" style="display: none;"><%= request.path_info %></p>
     <%= yield %>
   </body>
 </html>
