@@ -1,14 +1,22 @@
-require 'securerandom'
-
 class HomeController < ApplicationController
-  before_action :set_user_params
-
   def home
+    session[:user_param] = params[:seat]
 
+    logger.info session[:user_param]
+  end
+
+  def control
+    check_admin(params[:name])
+
+    logger.info session[:admin]
   end
 
   private
-  def set_user_params
-    session[:user_params] = SecureRandom.hex(8) unless session[:user_params]
+  def check_admin(pass)
+    if pass === "namikawa"
+      session[:admin] = "admin_user"
+    else
+      redirect_to "/home/dummy"
+    end
   end
 end
