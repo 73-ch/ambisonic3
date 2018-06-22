@@ -1,10 +1,10 @@
 import createChannel from "client/cable";
 
-let callback; // 後で関数を保持するための変数を宣言
+let callback, bound_this; // 後で関数を保持するための変数を宣言
 
 const chat = createChannel("SyncChannel", {
     received(message) {
-        if (callback) callback.call(null, message);
+        if (callback) callback.call(bound_this, message);
     }
 });
 
@@ -20,9 +20,9 @@ const sendAudioNodes = (json) => {
 
 // メッセージを1件受け取る: ChatChannelで何かを受信すると
 // このコールバックが呼び出される
-function setCallback(fn) {
+function setCallback(fn, _this) {
     callback = fn;
-
+    bound_this = _this;
 }
 
 

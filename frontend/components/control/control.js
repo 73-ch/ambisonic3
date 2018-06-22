@@ -17,9 +17,6 @@ export default class {
         // command or ctrl flag
         this.key_press = false;
 
-        console.log(this.editor);
-
-
         // keyboard event
         window.addEventListener("keydown", (e) => {
             if (((e.ctrlKey && !e.metaKey) || (!e.ctrlKey && e.metaKey))&& e.keyCode !== 13) {
@@ -42,6 +39,7 @@ export default class {
     }
 
     sendJson(json){
+        console.log(json);
         sendAudioNodes(json);
     }
 }
