@@ -3,4 +3,7 @@
 
 require_relative 'config/application'
 
+# herokuへのデプロイ用のコマンドなど
+Rake::Task.define_task("assets:precompile" => ["yarn:install", "webpacker:compile"])
+
 Rails.application.load_tasks
