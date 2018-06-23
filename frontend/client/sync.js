@@ -1,29 +1,29 @@
-import createChannel from "client/cable";
+import createChannel from "./cable";
 
-let callback, bound_this; // 後で関数を保持するための変数を宣言
+export default class {
+    constructor (fn, _this) {
+        this.callback = fn;
+        this.bound_this = _this;
 
-const chat = createChannel("SyncChannel", {
-    received(message) {
-        if (callback) callback.call(bound_this, message);
+        const received = (message) => {
+            if (this.callback) this.callback.call(this.bound_this, message);
+        };
+
+        this.chat = createChannel("SyncChannel", {received});
+        console.log(this.chat);
+        this.chat.perform("say_hello", {content: "hello from "});
     }
-});
 
-// メッセージを1件送信する: `perform`メソッドは、対応するRubyメソッド（chat_channel.rbで定義）を呼び出す
-// ここがJavaScriptとRubyをつなぐ架け橋です！
-let sayHello = () => {
-    chat.perform("say_hello", {content: "yeah"});
-};
+    getUserParams () {
+        this.chat.perform("get_user_params");
+    }
 
-const sendAudioNodes = (json) => {
-    chat.perform("send_audio_node_json", {json: json});
-};
+    testConnection () {
+        this.chat.perform("say_hello", {content: "hello from "});
+    }
 
-// メッセージを1件受け取る: ChatChannelで何かを受信すると
-// このコールバックが呼び出される
-function setCallback(fn, _this) {
-    callback = fn;
-    bound_this = _this;
+    testClass (test) {
+        console.log('sync.js function called');
+        return test;
+    }
 }
-
-
-export {sayHello, setCallback, sendAudioNodes };

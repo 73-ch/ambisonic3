@@ -1,5 +1,5 @@
-import Home from "components/home/home.js"
-import Controller from "components/control/control"
+import Home from "../components/home/home.js"
+import Controller from "../components/control/control"
 
 document.addEventListener( 'DOMContentLoaded', function() {
     const current_path = document.querySelector('#current_path').textContent;

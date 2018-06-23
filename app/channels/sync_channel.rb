@@ -17,17 +17,28 @@ class SyncChannel < ApplicationCable::Channel
 
   def say_hello(rcv)
     logger.info rcv["content"]
-    ActionCable.server.broadcast "cues", message: "1 hello!!"
-    ActionCable.server.broadcast "time_sync:#{user_params}", message: "2 hello!!"
-    ActionCable.server.broadcast "devices", message: "3 hello!!"
+    ActionCable.server.broadcast "cues", message: "Listen cues"
+    ActionCable.server.broadcast "time_sync:#{user_params}", message: "Listen time_sync:#{user_params}"
+    ActionCable.server.broadcast "devices", message: "Listen devices"
     stream_for @test
   end
 
-  # for debug
+  def sync_time(data)
+    time = Time.current
+    initial_time = (time.to_f).to_s.match(/.*\./).to_s + time.nsec.to_s
+    logger.info "current_time = #{initial_time}"
+
+    ActionCable.server.broadcast "time_sync:#{data["user_params"]}", message: "time_sync", time: initial_time
+   end
+
   def send_audio_node_json(data)
     if admin_check
       ActionCable.server.broadcast "cues", message: "audio_nodes", json: data["json"]
     end
+  end
+
+  def get_user_params
+    ActionCable.server.broadcast "time_sync:#{user_params}", message: "user_params", user_params: user_params
   end
 
 

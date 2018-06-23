@@ -160,7 +160,7 @@ export default class {
         }
     }
 
-    getNodes() {
+    get getNodes() {
         return this.nodes;
     }
 }

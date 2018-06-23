@@ -1,20 +1,21 @@
 
-import {sayHello, setCallback} from "../../client/sync";
+import deviseSync from "../../client/deviceSync";
 import AudioNodeGenerator from "../../lib/AudioNodeGenerator";
 import "./home.css"
 
 export default class {
     constructor() {
+
         const AudioContext = window.AudioContext || window.webkitAudioContext;
 
-        setCallback(this.messageReceived, this);
+        this.sync = new deviseSync(this.messageReceived, this);
 
         this.context = new AudioContext();
         this.nodes = {};
 
         this.generator = new AudioNodeGenerator(this.context);
 
-        setTimeout(sayHello, 1000);
+        setTimeout(() => {this.sync.testConnection()}, 1000);
     }
 
     messageReceived(data) {
@@ -51,5 +52,9 @@ export default class {
             }
         }
         this.nodes = {};
+    }
+
+    requestTime () {
+
     }
 }
