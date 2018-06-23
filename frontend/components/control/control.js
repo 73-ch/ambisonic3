@@ -1,4 +1,4 @@
-import controlSync from "../../client/controlSync";
+import controlMessenger from "../../client/controlMessenger";
 import ace from "brace";
 import "brace/mode/json";
 import "brace/theme/monokai";
@@ -9,11 +9,11 @@ import "./control.css";
 
 export default class {
     constructor() {
-        this.sync = new controlSync(this.messageReceived, this);
+        this.messenger = new controlMessenger(this.messageReceived, this);
 
         // ace editor
         this.editor = ace.edit("json-editor");
-        this.editor.getSession(). setMode('ace/mode/json');
+        this.editor.getSession().setMode('ace/mode/json');
         this.editor.setTheme('ace/theme/monokai');
         this.editor.getSession().tabSize = 2;
 
@@ -34,6 +34,8 @@ export default class {
                 this.key_press = false;
             }
         });
+
+        setTimeout(() => {this.messenger.testConnection(); this.messenger.getUserParams();}, 300);
     }
 
     getJsonText() {
@@ -43,7 +45,7 @@ export default class {
 
     sendJson(json){
         console.log(json);
-        this.sync.sendAudioNodes(json);
+        this.messenger.sendAudioNodes(json);
     }
 
     messageReceived(data) {

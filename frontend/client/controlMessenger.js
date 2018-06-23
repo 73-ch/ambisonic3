@@ -1,9 +1,9 @@
-import Sync from "./sync";
+import Messenger from "./messenger";
 
-export default class extends Sync {
+export default class extends Messenger {
     constructor (fn, _this) {
         super(fn, _this);
-        super.getUserParams();
+        // super.getUserParams();
     }
 
     sendAudioNodes (json) {

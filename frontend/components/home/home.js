@@ -1,5 +1,5 @@
 
-import deviseSync from "../../client/deviceSync";
+import deviseMessenger from "../../client/deviceMessenger";
 import AudioNodeGenerator from "../../lib/AudioNodeGenerator";
 import "./home.css"
 
@@ -8,14 +8,14 @@ export default class {
 
         const AudioContext = window.AudioContext || window.webkitAudioContext;
 
-        this.sync = new deviseSync(this.messageReceived, this);
+        this.messenger = new deviseMessenger(this.messageReceived, this);
 
         this.context = new AudioContext();
         this.nodes = {};
 
         this.generator = new AudioNodeGenerator(this.context);
 
-        setTimeout(() => {this.sync.testConnection()}, 1000);
+        setTimeout(() => {this.messenger.testConnection(); this.messenger.getUserParams();}, 300);
     }
 
     messageReceived(data) {

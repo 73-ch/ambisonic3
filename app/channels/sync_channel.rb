@@ -20,7 +20,6 @@ class SyncChannel < ApplicationCable::Channel
     ActionCable.server.broadcast "cues", message: "Listen cues"
     ActionCable.server.broadcast "time_sync:#{user_params}", message: "Listen time_sync:#{user_params}"
     ActionCable.server.broadcast "devices", message: "Listen devices"
-    stream_for @test
   end
 
   def sync_time(data)
@@ -37,8 +36,13 @@ class SyncChannel < ApplicationCable::Channel
     end
   end
 
-  def get_user_params
-    ActionCable.server.broadcast "time_sync:#{user_params}", message: "user_params", user_params: user_params
+  def get_user_params(data)
+    logger.info "______________"
+    if admin_check
+      ActionCable.server.broadcast "devices", message: "user_params", user_params: user_params
+    else
+      ActionCable.server.broadcast "time_sync:#{user_params}", message: "user_params", user_params: user_params
+    end
   end
 
 
