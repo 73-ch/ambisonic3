@@ -1,0 +1,39 @@
+{
+  "audio_nodes": [
+    {
+      "name": "osc1",
+      "node_type": "oscillator",
+      "out": "gain",
+      "params": {
+        "type": "sine",
+        "frequency": 600
+      }
+    },
+    {
+      "name": "depth",
+      "node_type": "gain",
+      "out": "osc1",
+      "out_sub": "frequency",
+      "params": {
+        "gain": 10
+      }
+    },
+    {
+      "name": "osc2",
+      "node_type": "oscillator",
+      "out": "depth",
+      "params": {
+        "type": "sine",
+        "frequency": 10
+      }
+    },
+    {
+      "name": "gain",
+      "node_type": "gain",
+      "out": "destination",
+      "params": {
+        "gain": 0.8
+      }
+    }
+  ]
+}
