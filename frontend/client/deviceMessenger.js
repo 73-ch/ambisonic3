@@ -5,8 +5,4 @@ export default class extends Messenger {
         super(fn, _this);
         // super.getUserParams();
     }
-
-    requestTime(data) {
-        this.chat.perform("sync_time", data);
-    }
 }

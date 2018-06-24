@@ -27,6 +27,18 @@ export default class {
         this.request_count = 0;
 
         this.messenger = messenger;
+
+        let time_obj = document.createElement("h1");
+        document.body.insertBefore(time_obj, document.body.firstChild);
+
+        setInterval(() => {
+            time_obj.textContent = this.current_time;
+        }, 50);
+
+        setInterval(() => {
+            this.requestTime();
+            this.averageTolerate();
+        }, 1000);
     }
 
     setGetTime() {

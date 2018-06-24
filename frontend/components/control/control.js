@@ -1,4 +1,5 @@
 import controlMessenger from "../../client/controlMessenger";
+import TimeSync from "../../lib/TimeSync";
 import ace from "brace";
 import "brace/mode/json";
 import "brace/theme/monokai";
@@ -36,6 +37,17 @@ export default class {
         });
 
         setTimeout(() => {this.messenger.testConnection(); this.messenger.getUserParams();}, 300);
+
+
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        this.context = new AudioContext();
+
+        this.time_sync = new TimeSync(this.context, false, this.messenger);
+
+        setTimeout(() => {
+            this.messenger.testConnection();
+            this.messenger.getUserParams();
+        }, 300);
     }
 
     getJsonText() {

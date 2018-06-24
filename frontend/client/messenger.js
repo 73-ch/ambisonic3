@@ -20,4 +20,8 @@ export default class {
     testConnection() {
         this.chat.perform("say_hello", {content: "hello from "});
     }
+
+    requestTime(data) {
+        this.chat.perform("sync_time", data);
+    }
 }
