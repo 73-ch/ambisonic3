@@ -6,7 +6,7 @@ export default class extends Messenger {
         // super.getUserParams();
     }
 
-    requestTime() {
-        // this.chat.perform("sync_time", {user_params: })
+    requestTime(data) {
+        this.chat.perform("sync_time", data);
     }
 }

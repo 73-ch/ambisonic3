@@ -1,6 +1,7 @@
 
 import deviseMessenger from "../../client/deviceMessenger";
 import AudioNodeGenerator from "../../lib/AudioNodeGenerator";
+import TimeSync from "../../lib/TimeSync";
 import "./home.css"
 
 export default class {
@@ -15,10 +16,20 @@ export default class {
 
         this.generator = new AudioNodeGenerator(this.context);
 
+        this.time_sync = new TimeSync(this.context, false, this.messenger);
+
+        // setInterval(() => {console.log(this.time_sync.current_time)}, 200)
+
+        setTimeout(() => {
+            this.time_sync.requestTime();
+        }, 1000);
+
         setTimeout(() => {this.messenger.testConnection(); this.messenger.getUserParams();}, 300);
     }
 
     messageReceived(data) {
+        this.time_sync.messageReceived(data);
+
         switch (data.message) {
             case "audio_nodes":
                 this.json = JSON.parse(data.json);

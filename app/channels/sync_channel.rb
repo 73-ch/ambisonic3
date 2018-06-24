@@ -1,4 +1,5 @@
 class SyncChannel < ApplicationCable::Channel
+  @offset = Time.current.beginning_of_day.to_f
   def subscribed
     # cue for everyone
     stream_from "cues"
@@ -9,6 +10,8 @@ class SyncChannel < ApplicationCable::Channel
       # for time_sync with each device
       stream_from "time_sync:#{user_params}"
     end
+
+    @offset = Time.current.beginning_of_day.to_f
   end
 
   def unsubscribed
@@ -24,10 +27,14 @@ class SyncChannel < ApplicationCable::Channel
 
   def sync_time(data)
     time = Time.current
-    initial_time = (time.to_f).to_s.match(/.*\./).to_s + time.nsec.to_s
+    logger.info Time.current.beginning_of_day
+    initial_time = (time.to_f - @offset).to_s.match(/.*\./).to_s + time.nsec.to_s
     logger.info "current_time = #{initial_time}"
+    response = data
+    response[:t2] = initial_time.to_f * 1000
+    response[:message] = "time_sync"
 
-    ActionCable.server.broadcast "time_sync:#{data["user_params"]}", message: "time_sync", time: initial_time
+    ActionCable.server.broadcast "time_sync:#{user_params}", response
    end
 
   def send_audio_node_json(data)
