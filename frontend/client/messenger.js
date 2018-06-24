@@ -1,7 +1,7 @@
 import createChannel from "./cable";
 
 export default class {
-    constructor (fn, _this) {
+    constructor(fn, _this) {
         this.callback = fn;
         this.bound_this = _this;
 
@@ -13,11 +13,11 @@ export default class {
         this.chat = createChannel("SyncChannel", {received});
     }
 
-    getUserParams () {
-        this.chat.perform("get_user_params",{content: "dummy"});
+    getUserParams() {
+        this.chat.perform("get_user_params", {content: "dummy"});
     }
 
-    testConnection () {
+    testConnection() {
         this.chat.perform("say_hello", {content: "hello from "});
     }
 }

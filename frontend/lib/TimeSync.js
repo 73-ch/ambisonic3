@@ -56,23 +56,18 @@ export default class {
     averageTolerate() {
         let sum = 0;
         if (this.tolerances.length >= 3) {
-            for (let i = 0; i < 3; i++) {
-                sum += this.tolerances[this.tolerances.length - i-1];
-            }
+            for (let i = 0; i < 3; i++) sum += this.tolerances[this.tolerances.length - i - 1];
             this.tolerance = sum / 3.;
         } else {
-            for (let tole of this.tolerances) {
-                sum += tole;
-            }
-            this.tolerance = sum === 0 ? 0 :sum / this.tolerances.length;
-            console.log(sum);
+            for (let tole of this.tolerances) sum += tole;
+            this.tolerance = sum === 0 ? 0 : sum / this.tolerances.length;
         }
     }
 
     messageReceived(data) {
         switch (data.message) {
             case 'time_sync':
-                let culc = (this.system_time - data.t1) / 2.+ data.t2 - this.system_time;
+                let culc = (this.system_time - data.t1) / 2. + data.t2 - this.system_time;
                 this.tolerances.push(culc);
                 break;
         }

@@ -1,5 +1,6 @@
 class SyncChannel < ApplicationCable::Channel
   @offset = Time.current.beginning_of_day.to_f
+
   def subscribed
     # cue for everyone
     stream_from "cues"
@@ -35,7 +36,7 @@ class SyncChannel < ApplicationCable::Channel
     response[:message] = "time_sync"
 
     ActionCable.server.broadcast "time_sync:#{user_params}", response
-   end
+  end
 
   def send_audio_node_json(data)
     if admin_check

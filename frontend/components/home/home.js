@@ -1,4 +1,3 @@
-
 import deviseMessenger from "../../client/deviceMessenger";
 import AudioNodeGenerator from "../../lib/AudioNodeGenerator";
 import TimeSync from "../../lib/TimeSync";
@@ -45,12 +44,12 @@ export default class {
                 this.json = JSON.parse(data.json);
                 this.resetAllNodes();
                 this.generator.generate(this.json, this.nodes);
-                setTimeout(()=> {
+                setTimeout(() => {
                     for (let an in this.nodes) {
                         console.log(this.nodes[an]);
                         try {
                             this.nodes[an].start();
-                        } catch (e)  {
+                        } catch (e) {
 
                         }
                     }
@@ -63,19 +62,19 @@ export default class {
         }
     }
 
-    resetAllNodes (){
+    resetAllNodes() {
         for (let an in this.nodes) {
             console.log(this.nodes[an]);
             try {
                 this.nodes[an].stop();
-            } catch (e)  {
+            } catch (e) {
 
             }
         }
         this.nodes = {};
     }
 
-    requestTime () {
+    requestTime() {
 
     }
 }
