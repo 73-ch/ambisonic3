@@ -18,13 +18,23 @@ export default class {
 
         this.time_sync = new TimeSync(this.context, false, this.messenger);
 
-        // setInterval(() => {console.log(this.time_sync.current_time)}, 200)
 
-        setTimeout(() => {
+        let time_obj = document.createElement("h1");
+        document.body.appendChild(time_obj);
+
+        setInterval(() => {
+            time_obj.textContent = this.time_sync.current_time;
+        }, 50);
+
+        setInterval(() => {
             this.time_sync.requestTime();
+            this.time_sync.averageTolerate();
         }, 1000);
 
-        setTimeout(() => {this.messenger.testConnection(); this.messenger.getUserParams();}, 300);
+        setTimeout(() => {
+            this.messenger.testConnection();
+            this.messenger.getUserParams();
+        }, 300);
     }
 
     messageReceived(data) {
@@ -48,7 +58,7 @@ export default class {
                 }, 1000);
                 break;
             default:
-                console.log("data received", data);
+                // console.log("data received", data);
                 break;
         }
     }

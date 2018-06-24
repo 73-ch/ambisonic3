@@ -1,4 +1,3 @@
-import messenger from "../client/messenger";
 import DateWithOffset from "date-with-offset";
 
 /*
@@ -10,8 +9,9 @@ import DateWithOffset from "date-with-offset";
  */
 
 export default class {
-    constructor (context, useHRT, messenger) {
+    constructor(context, useHRT, messenger) {
         this.context = context;
+        this.context.createBufferSource().start(0);
         this.useHRT = useHRT;
 
         const NOW = new DateWithOffset(0);
@@ -24,8 +24,6 @@ export default class {
 
         this.tolerance = 0;
         this.tolerances = [];
-        this.tolerance_sum = 0;
-
         this.request_count = 0;
 
         this.messenger = messenger;
@@ -43,19 +41,39 @@ export default class {
         }
     }
 
-    get current_time() {
+    get system_time() {
         return this.getTime();
     }
 
-    requestTime () {
-        this.messenger.requestTime({id: this.request_count, t1: this.current_time});
+    get current_time() {
+        return this.getTime() + this.tolerance;
+    }
+
+    requestTime() {
+        this.messenger.requestTime({id: this.request_count, t1: this.system_time});
+    }
+
+    averageTolerate() {
+        let sum = 0;
+        if (this.tolerances.length >= 3) {
+            for (let i = 0; i < 3; i++) {
+                sum += this.tolerances[this.tolerances.length - i-1];
+            }
+            this.tolerance = sum / 3.;
+        } else {
+            for (let tole of this.tolerances) {
+                sum += tole;
+            }
+            this.tolerance = sum === 0 ? 0 :sum / this.tolerances.length;
+            console.log(sum);
+        }
     }
 
     messageReceived(data) {
         switch (data.message) {
             case 'time_sync':
-                data.t3 = this.current_time;
-                console.log(data);
+                let culc = (this.system_time - data.t1) / 2.+ data.t2 - this.system_time;
+                this.tolerances.push(culc);
                 break;
         }
     }
