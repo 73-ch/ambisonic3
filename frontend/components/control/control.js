@@ -48,6 +48,8 @@ export default class {
             this.messenger.testConnection();
             this.messenger.getUserParams();
         }, 300);
+
+        this.load_offset = document.querySelector('#load-offset');
     }
 
     getJsonText() {
@@ -58,8 +60,8 @@ export default class {
     sendJson(json){
         console.log(json);
         console.log(this.time_sync.current_time);
-        console.log(this.time_sync.current_time + 3000);
-        this.messenger.sendAudioNodes(json, this.time_sync.current_time + 3000);
+        console.log(this.time_sync.current_time + parseFloat(this.load_offset.value));
+        this.messenger.sendAudioNodes(json, this.time_sync.current_time + parseFloat(this.load_offset.value));
     }
 
     messageReceived(data) {
