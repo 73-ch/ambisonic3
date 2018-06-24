@@ -17,9 +17,6 @@ export default class {
 
         this.time_sync = new TimeSync(this.context, false, this.messenger);
 
-
-
-
         setTimeout(() => {
             this.messenger.testConnection();
             this.messenger.getUserParams();
@@ -38,7 +35,11 @@ export default class {
                     for (let an in this.nodes) {
                         console.log(this.nodes[an]);
                         try {
-                            this.nodes[an].start();
+                            console.log(data.start_time);
+                            console.log(this.time_sync.current_time);
+                            console.log((data.start_time - this.time_sync.current_time)*0.001);
+                            console.log(this.context.currentTime + (data.start_time - this.time_sync.current_time)*0.001);
+                            this.nodes[an].start(this.context.currentTime + (data.start_time - this.time_sync.current_time)*0.001);
                         } catch (e) {
 
                         }

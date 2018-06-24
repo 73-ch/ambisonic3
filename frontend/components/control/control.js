@@ -57,7 +57,9 @@ export default class {
 
     sendJson(json){
         console.log(json);
-        this.messenger.sendAudioNodes(json);
+        console.log(this.time_sync.current_time);
+        console.log(this.time_sync.current_time + 3000);
+        this.messenger.sendAudioNodes(json, this.time_sync.current_time + 3000);
     }
 
     messageReceived(data) {

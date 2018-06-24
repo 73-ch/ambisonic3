@@ -1,0 +1,27 @@
+{
+  "load_files": [
+    {
+      "buffer_name": "buffer1",
+      "path": "../audio/Perfume_globalsite_sound.wav"
+    }
+  ],
+  "audio_nodes": [
+    {
+      "name": "source1",
+      "node_type": "buffer_source",
+      "out": "gain",
+      "params": {
+        "buffer": "buffer1",
+        "loop": true
+      }
+    },
+    {
+      "name": "gain",
+      "node_type": "gain",
+      "out": "destination",
+      "params": {
+        "gain": 0.2
+      }
+    }
+  ]
+}
