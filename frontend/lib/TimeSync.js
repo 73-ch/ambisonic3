@@ -28,10 +28,16 @@ export default class {
 
         this.messenger = messenger;
 
+        let tolerance_obj = document.createElement("h3");
+        document.body.insertBefore(tolerance_obj, document.body.firstChild);
+
         let time_obj = document.createElement("h1");
         document.body.insertBefore(time_obj, document.body.firstChild);
 
+        this.time_table = document.querySelector('#init-time-table');
+
         setInterval(() => {
+            tolerance_obj.textContent = "tolerance : " + this.tolerance;
             time_obj.textContent = this.current_time;
         }, 50);
 
@@ -67,11 +73,19 @@ export default class {
 
     averageTolerate() {
         let sum = 0;
-        if (this.tolerances.length >= 3) {
-            for (let i = 0; i < 3; i++) sum += this.tolerances[this.tolerances.length - i - 1];
-            this.tolerance = sum / 3.;
+        if (this.tolerances.length >= 10) {
+            for (let i = 0; i < 10; i++) sum += this.tolerances[this.tolerances.length - i - 1];
+            this.tolerance = sum / 10.;
+            while (this.tolerances.length > 10){
+                this.tolerances.shift();
+                this.time_table.deleteRow(1);
+            }
+
         } else {
-            for (let tole of this.tolerances) sum += tole;
+            for (let tole of this.tolerances) {
+                sum += tole;
+            }
+
             this.tolerance = sum === 0 ? 0 : sum / this.tolerances.length;
         }
     }
@@ -79,8 +93,15 @@ export default class {
     messageReceived(data) {
         switch (data.message) {
             case 'time_sync':
-                let culc = (this.system_time - data.t1) / 2. + data.t2 - this.system_time;
+                let now = this.system_time;
+                let culc = (now - data.t1) / 2. + data.t2 - now;
                 this.tolerances.push(culc);
+                let row = this.time_table.insertRow(this.time_table.rows.length);
+                row.insertCell(-1).innerHTML = data.t1;
+                row.insertCell(-1).innerHTML = now;
+                row.insertCell(-1).innerHTML = now - data.t1;
+                row.insertCell(-1).innerHTML = data.t2;
+                row.insertCell(-1).innerHTML = culc;
                 break;
         }
     }
