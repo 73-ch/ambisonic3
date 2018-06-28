@@ -11,6 +11,10 @@ class HomeController < ApplicationController
     logger.info session[:admin]
   end
 
+  def mic_check
+    
+  end
+
   private
   def check_admin(pass)
     if pass === "namikawa"

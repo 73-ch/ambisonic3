@@ -1,5 +1,6 @@
 import Home from "../components/home/home.js"
 import Controller from "../components/control/control"
+import MicCheck from "../components/mic_check/mic_check"
 
 document.addEventListener( 'DOMContentLoaded', function() {
     const current_path = document.querySelector('#current_path').textContent;
@@ -8,5 +9,8 @@ document.addEventListener( 'DOMContentLoaded', function() {
         const home = new Home();
     } else if (current_path.match("/control")) {
         const controller = new Controller();
+    } else if (current_path.match("/mic_check")) {
+        console.log(MicCheck);
+        const mic_check = new MicCheck();
     }
 });

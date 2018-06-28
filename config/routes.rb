@@ -4,4 +4,5 @@ Rails.application.routes.draw do
 
   get "home/:seat" => "home#home"
   get "control/:name" => "home#control"
+  get "mic_check" => "home#mic_check"
 end

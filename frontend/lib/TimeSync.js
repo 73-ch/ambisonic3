@@ -39,7 +39,9 @@ export default class {
         setInterval(() => {
             tolerance_obj.textContent = "tolerance : " + this.tolerance;
             time_obj.textContent = this.current_time;
-        }, 50);
+        }, 10);
+
+
 
         setInterval(() => {
             this.requestTime();
@@ -68,6 +70,7 @@ export default class {
     }
 
     requestTime() {
+        console.log('send');
         this.messenger.requestTime({id: this.request_count, t1: this.system_time});
     }
 
@@ -93,8 +96,9 @@ export default class {
     messageReceived(data) {
         switch (data.message) {
             case 'time_sync':
+                console.log('receive');
                 let now = this.system_time;
-                let culc = (now - data.t1) / 2. + data.t2 - now;
+                let culc = (now - data.t1) *.5 + data.t2 - now;
                 this.tolerances.push(culc);
                 let row = this.time_table.insertRow(this.time_table.rows.length);
                 row.insertCell(-1).innerHTML = data.t1;

@@ -27,6 +27,7 @@ class SyncChannel < ApplicationCable::Channel
   end
 
   def sync_time(data)
+    # sleep 0.5 + 0.001 *  rand(100)
     time = Time.current
     logger.info Time.current.beginning_of_day
     initial_time = (time.to_f - @offset).to_s.match(/.*\./).to_s + time.nsec.to_s
