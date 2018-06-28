@@ -10,7 +10,6 @@ document.addEventListener( 'DOMContentLoaded', function() {
     } else if (current_path.match("/control")) {
         const controller = new Controller();
     } else if (current_path.match("/mic_check")) {
-        console.log(MicCheck);
         const mic_check = new MicCheck();
     }
 });
