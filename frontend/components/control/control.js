@@ -67,7 +67,7 @@ export default class {
     messageReceived(data) {
         this.time_sync.messageReceived(data);
 
-        switch (data.message) {
+        switch (data.action) {
             default:
                 // console.log("data received", data);
                 break;

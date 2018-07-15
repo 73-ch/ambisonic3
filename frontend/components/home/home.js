@@ -26,7 +26,7 @@ export default class {
     messageReceived(data) {
         this.time_sync.messageReceived(data);
 
-        switch (data.message) {
+        switch (data.action) {
             case "audio_nodes":
                 this.json = JSON.parse(data.json);
                 this.resetAllNodes();
