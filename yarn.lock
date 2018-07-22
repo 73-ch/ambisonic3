@@ -884,7 +884,7 @@ boom@2.x.x:
   version "2.10.1"
   resolved "https://registry.yarnpkg.com/boom/-/boom-2.10.1.tgz#39c8918ceff5799f83f9492a848f625add0c766f"
   dependencies:
-    hoek "2.x.x"
+    hoek "2.X.X"
 
 brace-expansion@^1.1.7:
   version "1.1.11"
@@ -1486,7 +1486,7 @@ cryptiles@2.x.x:
   version "2.0.5"
   resolved "https://registry.yarnpkg.com/cryptiles/-/cryptiles-2.0.5.tgz#3bdfecdc608147c1c67202fa291e7dca59eaa3b8"
   dependencies:
-    boom "2.x.x"
+    boom "2.X.X"
 
 crypto-browserify@^3.11.0:
   version "3.12.0"
@@ -2530,10 +2530,10 @@ hawk@~3.1.3:
   version "3.1.3"
   resolved "https://registry.yarnpkg.com/hawk/-/hawk-3.1.3.tgz#078444bd7c1640b0fe540d2c9b73d59678e8e1c4"
   dependencies:
-    boom "2.x.x"
-    cryptiles "2.x.x"
-    hoek "2.x.x"
-    sntp "1.x.x"
+    boom "2.X.X"
+    cryptiles "2.X.X"
+    hoek "2.X.X"
+    sntp "1.X.X"
 
 hmac-drbg@^1.0.0:
   version "1.0.1"
@@ -4004,7 +4004,7 @@ portfinder@^1.0.9:
   dependencies:
     async "^1.5.2"
     debug "^2.2.0"
-    mkdirp "0.5.x"
+    mkdirp "0.5.X"
 
 posix-character-classes@^0.1.0:
   version "0.1.1"
@@ -5195,7 +5195,7 @@ sntp@1.x.x:
   version "1.0.9"
   resolved "https://registry.yarnpkg.com/sntp/-/sntp-1.0.9.tgz#6541184cc90aeea6c6e7b35e2659082443c66198"
   dependencies:
-    hoek "2.x.x"
+    hoek "2.X.X"
 
 sockjs-client@1.1.4:
   version "1.1.4"

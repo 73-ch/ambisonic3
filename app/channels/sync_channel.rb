@@ -21,22 +21,40 @@ class SyncChannel < ApplicationCable::Channel
 
   def say_hello(rcv)
     logger.info rcv["content"]
-    ActionCable.server.broadcast "cues", action: "Listen cues"
+    ActionCable.server.broadcast "cues", actiony: "Listen cues"
     ActionCable.server.broadcast "time_sync:#{user_params}", action: "Listen time_sync:#{user_params}"
     ActionCable.server.broadcast "devices", action: "Listen devices"
   end
 
   def sync_time(data)
+    logger.info data
     # sleep 0.5 + 0.001 *  rand(100)
     time = Time.current
     logger.info Time.current.beginning_of_day
     initial_time = (time.to_f - @offset).to_s.match(/.*\./).to_s + time.nsec.to_s
     logger.info "current_time = #{initial_time}"
-    response = data
-    logger.info response
-    response["t1"] = data["t2"]
-    response["t2"] = initial_time.to_f * 1000
+
+    response = {}
+    response["action"] = "sync_time"
+    response["leap"] = 0
+    response["mode"] = 4
+    response["poll"] = data["poll"]
+    response["precision"] = -18
+    response["root_delay"] = 0
+    response["root_disp"] = 0
+    response["refid"] = 0
+    response["reftime"] = initial_time.to_f * 1000
+    response["org"] = data["xmt"]
+    response["rec"] = initial_time.to_f * 1000
     response["xmt"] = initial_time.to_f * 1000
+
+    # response = data
+    # logger.info response
+    # response["t1"] = data["t2"]
+    # response["t2"] = initial_time.to_f * 1000
+    # response["xmt"] = initial_time.to_f * 1000
+
+
     ActionCable.server.broadcast "time_sync:#{user_params}", response
   end
 
