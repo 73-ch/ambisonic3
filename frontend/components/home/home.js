@@ -40,6 +40,7 @@ export default class {
                             console.log((data.start_time - this.time_sync.current_time)*0.001);
                             console.log(this.context.currentTime + (data.start_time - this.time_sync.current_time)*0.001);
                             this.nodes[an].start(this.context.currentTime + (data.start_time - this.time_sync.current_time)*0.001);
+                            console.log("start_time", this.context.currentTime + (data.start_time - this.time_sync.current_time)*0.001);
                         } catch (e) {
 
                         }
