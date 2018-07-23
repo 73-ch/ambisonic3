@@ -7,7 +7,7 @@ import {F, P, C, M, S, V, X} from "./ntp/AssociationDataStructure"
     js Date.getTime() : 1/ 1000sec = msec,　1msecまでの精度
     js AudioContext.currentTime : 1sec, 1.0 * Math.pow(10, -15)
     js HighResolutionTimer : 1/ 1000sec = msec, 1.0 * Math.pow(10. -16);
-
+h
  */
 
 const LOG2D = (a) => {
@@ -18,7 +18,6 @@ const LOG2D = (a) => {
 export default class {
     constructor(context, useHRT, messenger) {
         this.context = context;
-        this.context.createBufferSource().start(0);
         this.useHRT = useHRT;
 
         const NOW = new DateWithOffset(0);
@@ -418,7 +417,7 @@ export default class {
                     break;
 
                 case CONST.FREQ:
-                    if (this.c.t - this.s.t < WATCH) return CONST.IGNORE;
+                    if (this.c.t - this.s.t < CONST.WATCH) return CONST.IGNORE;
                     freq = (offset - this.c.base - this.c.offset) / mu;
                     break;
 

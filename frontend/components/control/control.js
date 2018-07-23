@@ -41,6 +41,7 @@ export default class {
 
         const AudioContext = window.AudioContext || window.webkitAudioContext;
         this.context = new AudioContext();
+        this.context.createBufferSource().start(0);
 
         this.time_sync = new TimeSync(this.context, false, this.messenger);
 

@@ -5,22 +5,29 @@ import "./home.css"
 
 export default class {
     constructor() {
+        this.button = document.querySelector("#start");
 
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        this.button.addEventListener('click', (e)=> {
+            this.button.style.display = 'none';
 
-        this.messenger = new deviseMessenger(this.messageReceived, this);
+            console.log("start");
 
-        this.context = new AudioContext();
-        this.nodes = {};
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
 
-        this.generator = new AudioNodeGenerator(this.context);
+            this.messenger = new deviseMessenger(this.messageReceived, this);
 
-        this.time_sync = new TimeSync(this.context, false, this.messenger);
+            this.context = new AudioContext();
+            this.context.createBufferSource().start(0);
+            this.nodes = {};
+            this.generator = new AudioNodeGenerator(this.context);
 
-        setTimeout(() => {
-            this.messenger.testConnection();
-            this.messenger.getUserParams();
-        }, 300);
+            this.time_sync = new TimeSync(this.context, false, this.messenger);
+
+            setTimeout(() => {
+                this.messenger.testConnection();
+                this.messenger.getUserParams();
+            }, 300);
+        });
     }
 
     messageReceived(data) {
