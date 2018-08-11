@@ -163,4 +163,8 @@ export default class {
     get getNodes() {
         return this.nodes;
     }
+
+    set listener_position(a) {
+        this.context.listener.setPosition(a[0], a[1], a[2]);
+    }
 }

@@ -42,7 +42,6 @@ export default class {
         }, 10);
 
 
-
         setInterval(() => {
             this.requestTime();
             this.averageTolerate();
@@ -70,16 +69,37 @@ export default class {
     }
 
     requestTime() {
-        console.log('send');
+        // console.log('send');
         this.messenger.requestTime({id: this.request_count, t1: this.system_time});
     }
 
     averageTolerate() {
         let sum = 0;
         if (this.tolerances.length >= 10) {
-            for (let i = 0; i < 10; i++) sum += this.tolerances[this.tolerances.length - i - 1];
-            this.tolerance = sum / 10.;
-            while (this.tolerances.length > 10){
+            let max = -10000000000, min = 10000000000;
+            for (let i = 0; i < 10; i++) {
+                sum += this.tolerances[this.tolerances.length - i - 1];
+                if (max < this.tolerances[this.tolerances.length - i - 1]) max = this.tolerances[this.tolerances.length - i - 1];
+                if (min > this.tolerances[this.tolerances.length - i - 1]) min = this.tolerances[this.tolerances.length - i - 1];
+            }
+            let t_temp = sum / 10.;
+            let n = 0;
+            sum = 0;
+
+            for (let i = 0; i < 10; i++) {
+
+                let disp = this.tolerances[this.tolerances.length - i - 1] - t_temp;
+                if (disp ** 2.0 >= (max - min)**2.0 *0.2) continue;
+                sum += this.tolerances[this.tolerances.length - i - 1];
+                n++;
+            }
+
+            this.tolerance = n === 0 ? t_temp : sum / n;
+            // this.tolerance += sum;
+
+            // console.log(sum, n);
+
+            while (this.tolerances.length > 10) {
                 this.tolerances.shift();
                 this.time_table.deleteRow(1);
             }
@@ -94,11 +114,11 @@ export default class {
     }
 
     messageReceived(data) {
-        switch (data.message) {
+        switch (data.action) {
             case 'time_sync':
-                console.log('receive');
+                // console.log('receive');
                 let now = this.system_time;
-                let culc = (now - data.t1) *.5 + data.t2 - now;
+                let culc = (now - data.t1) * .5 + data.t2 - now;
                 this.tolerances.push(culc);
                 let row = this.time_table.insertRow(this.time_table.rows.length);
                 row.insertCell(-1).innerHTML = data.t1;

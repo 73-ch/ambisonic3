@@ -18,12 +18,25 @@ export default class {
         this.editor.setTheme('ace/theme/monokai');
         this.editor.getSession().tabSize = 2;
 
+        // param editor
+        this.param_editor = ace.edit("param-editor");
+        this.param_editor.getSession().setMode('ace/mode/json');
+        this.param_editor.setTheme('ace/theme/monokai');
+        this.param_editor.getSession().tabSize = 2;
+
+        // param submit
+        this.param_submit = document.querySelector("#param-send");
+
+        this.param_submit.addEventListener("click", () => {
+            this.sendParams();
+        });
+
         // command or ctrl flag
         this.key_press = false;
 
         // keyboard event
         window.addEventListener("keydown", (e) => {
-            if (((e.ctrlKey && !e.metaKey) || (!e.ctrlKey && e.metaKey))&& e.keyCode !== 13) {
+            if (((e.ctrlKey && !e.metaKey) || (!e.ctrlKey && e.metaKey)) && e.keyCode !== 13) {
                 this.key_press = true;
             } else if (e.keyCode === 13 && this.key_press) {
                 // if command or ctrl & enter pushed, send json
@@ -36,11 +49,15 @@ export default class {
             }
         });
 
-        setTimeout(() => {this.messenger.testConnection(); this.messenger.getUserParams();}, 300);
+        setTimeout(() => {
+            this.messenger.testConnection();
+            this.messenger.getUserParams();
+        }, 300);
 
 
         const AudioContext = window.AudioContext || window.webkitAudioContext;
         this.context = new AudioContext();
+        this.context.createBufferSource().start(0);
 
         this.time_sync = new TimeSync(this.context, false, this.messenger);
 
@@ -57,17 +74,37 @@ export default class {
         this.sendJson(json_text)
     }
 
-    sendJson(json){
+    sendJson(json) {
         console.log(json);
         console.log(this.time_sync.current_time);
         console.log(this.time_sync.current_time + parseFloat(this.load_offset.value));
         this.messenger.sendAudioNodes(json, this.time_sync.current_time + parseFloat(this.load_offset.value));
     }
 
+    sendParams() {
+        const editor_text = this.param_editor.getValue();
+
+        const params = editor_text.split(";");
+        for (let p of params) {
+            console.log(p);
+            const p_components = p.split(',');
+            const data = {
+                "name": p_components[0],
+                "param_name":p_components[1],
+                "type": p_components[2],
+                "value": parseFloat(p_components[3]),
+                "time": parseFloat(p_components[4]) + this.time_sync.current_time,
+                "duration": parseFloat(p_components[5])
+            };
+            console.log(data);
+            this.messenger.sendParams(data);
+        }
+    }
+
     messageReceived(data) {
         this.time_sync.messageReceived(data);
 
-        switch (data.message) {
+        switch (data.action) {
             default:
                 // console.log("data received", data);
                 break;

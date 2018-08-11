@@ -1,8 +1,17 @@
 <%= yield %>
 
+node generator
 <div id="json-editor">
 </div>
 
+param editor(name,param_name,type,value,time,duration)
+test: gain,gain,set,1.0,1000.,1000.
+<div id="param-editor">
+</div>
+<button id="param-send">send param</button>
+
+
+offset:
 <input type="number" id="load-offset">
 
 <%= render "components/partials/time_chart" %>

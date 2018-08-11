@@ -2,4 +2,12 @@
   <%= yield %>
 </div>
 
+<div class="listener-pos">
+  <input type="number" class="listener-x" value="0">
+  <input type="number" class="listener-y" value="0">
+  <input type="number" class="listener-z" value="0">
+</div>
+
+<button id="start">start</button>
+
 <%= render "components/partials/time_chart" %>

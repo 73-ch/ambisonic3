@@ -33,15 +33,21 @@ class SyncChannel < ApplicationCable::Channel
     initial_time = (time.to_f - @offset).to_s.match(/.*\./).to_s + time.nsec.to_s
     logger.info "current_time = #{initial_time}"
     response = data
-    response[:t2] = initial_time.to_f * 1000
-    response[:message] = "time_sync"
+    response[:t2] = initial_time.to_f * 1000.0
+    response[:action] = "time_sync"
 
     ActionCable.server.broadcast "time_sync:#{user_params}", response
   end
 
   def send_audio_node_json(data)
     if admin_check
-      ActionCable.server.broadcast "cues", message: "audio_nodes", json: data["json"], start_time: data["start_time"]
+      ActionCable.server.broadcast "cues", action: "audio_nodes", json: data["json"], start_time: data["start_time"]
+    end
+  end
+
+  def send_audio_params(data)
+    if admin_check
+      ActionCable.server.broadcast "cues", action: "audio_params", name: data["name"], param_name: data["param_name"], type: data["type"], value: data["value"], time: data["time"], duration: data["duration"]
     end
   end
 
