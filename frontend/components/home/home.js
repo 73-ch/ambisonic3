@@ -26,7 +26,14 @@ export default class {
             setTimeout(() => {
                 this.messenger.testConnection();
                 this.messenger.getUserParams();
+                this.context.listener.setPosition(60, 0, 0);
+                console.log(this.context.listener);
             }, 300);
+
+            setTimeout(() => {
+                console.log(this.context.listener);
+            }, 600);
+
 
             this.listener_x = document.querySelector(".listener-x");
             this.listener_y = document.querySelector(".listener-y");

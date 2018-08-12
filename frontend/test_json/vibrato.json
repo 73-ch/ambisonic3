@@ -40,7 +40,7 @@
       "node_type": "panner",
       "out": "destination",
       "params": {
-        "position": [0,0,0]
+        "position": [0,0,1]
       }
     }
   ]

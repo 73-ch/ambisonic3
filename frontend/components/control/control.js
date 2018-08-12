@@ -87,9 +87,11 @@ export default class {
     sendParams() {
         const editor_text = this.param_editor.getValue();
 
-        const params = editor_text.split(";");
+        const params = editor_text.replace(/[\n\r\s]/g, "").split(";");
+
         for (let p of params) {
             console.log(p);
+            if (p.length == 0) continue;
             const p_components = p.split(',');
             const data = {
                 "name": p_components[0],
@@ -100,7 +102,7 @@ export default class {
                 "duration": parseFloat(p_components[5])
             };
             console.log(data);
-            this.messenger.sendParams(data);
+            // this.messenger.sendParams(data);
         }
     }
 
