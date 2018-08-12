@@ -87,7 +87,6 @@ export default class {
 
                 switch (data.type) {
                     case "set":
-                        console.log("read");
                         this.nodes[data.name][data["param_name"]].setValueAtTime(data.value, time);
                         break;
                     case "linear":

@@ -54,17 +54,20 @@ export default class {
             this.messenger.getUserParams();
         }, 300);
 
+        const start_button = document.querySelector("#start");
 
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        this.context = new AudioContext();
-        this.context.createBufferSource().start(0);
+        start_button.addEventListener('click', () => {
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            this.context = new AudioContext();
+            this.context.createBufferSource().start(0);
 
-        this.time_sync = new TimeSync(this.context, false, this.messenger);
+            this.time_sync = new TimeSync(this.context, false, this.messenger);
 
-        setTimeout(() => {
-            this.messenger.testConnection();
-            this.messenger.getUserParams();
-        }, 300);
+            setTimeout(() => {
+                this.messenger.testConnection();
+                this.messenger.getUserParams();
+            }, 300);
+        });
 
         this.load_offset = document.querySelector('#load-offset');
     }
