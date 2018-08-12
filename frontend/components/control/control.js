@@ -49,11 +49,6 @@ export default class {
             }
         });
 
-        setTimeout(() => {
-            this.messenger.testConnection();
-            this.messenger.getUserParams();
-        }, 300);
-
         const start_button = document.querySelector("#start");
 
         start_button.addEventListener('click', () => {
@@ -102,7 +97,7 @@ export default class {
                 "duration": parseFloat(p_components[5])
             };
             console.log(data);
-            // this.messenger.sendParams(data);
+            this.messenger.sendParams(data);
         }
     }
 

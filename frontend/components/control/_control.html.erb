@@ -6,18 +6,23 @@
 <button id="start">start</button>
 <br>
 
-node generator
-<div id="json-editor">
+<div id="editor-wrapper">
+  <div class="editor">
+    node generator
+    <div id="json-editor">
+    </div>
+
+    offset:
+    <input type="number" id="load-offset" value="2000">
+    <br>
+  </div>
+
+  <div class="editor">
+    param editor(name,param_name,type,value,time,duration)
+    test: gain,gain,set,1.0,1000.,1000.
+    <div id="param-editor">
+    </div>
+    <button id="param-send">send param</button>
+    <br>
+  </div>
 </div>
-
-
-offset:
-<input type="number" id="load-offset" value="2000">
-<br>
-
-param editor(name,param_name,type,value,time,duration)
-test: gain,gain,set,1.0,1000.,1000.
-<div id="param-editor">
-</div>
-<button id="param-send">send param</button>
-<br>

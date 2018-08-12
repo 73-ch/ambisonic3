@@ -39,7 +39,7 @@ export default class {
         setInterval(() => {
             tolerance_obj.textContent = "tolerance : " + this.tolerance;
             time_obj.textContent = this.current_time;
-        }, 10);
+        }, 1);
 
 
         setInterval(() => {
@@ -116,7 +116,7 @@ export default class {
     messageReceived(data) {
         switch (data.action) {
             case 'time_sync':
-                // console.log('receive');
+                console.log('receive');
                 let now = this.system_time;
                 let culc = (now - data.t1) * .5 + data.t2 - now;
                 this.tolerances.push(culc);
