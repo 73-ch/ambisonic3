@@ -21,12 +21,11 @@ export default class {
             this.nodes = {};
             this.generator = new AudioNodeGenerator(this.context);
 
-            this.time_sync = new TimeSync(this.context, false, this.messenger);
+            this.time_sync = new TimeSync(this.context, true, this.messenger);
 
             setTimeout(() => {
                 this.messenger.testConnection();
                 this.messenger.getUserParams();
-                this.context.listener.setPosition(60, 0, 0);
                 console.log(this.context.listener);
             }, 300);
 
@@ -86,10 +85,6 @@ export default class {
 
             case "audio_params":
                 console.log(data.param_name);
-                const target = this.nodes[data.name][data["param_name"]];
-
-                console.log(this.nodes[data.name]);
-
                 const time = this.context.currentTime + (data.time - this.time_sync.current_time) * 0.001;
 
                 switch (data.type) {

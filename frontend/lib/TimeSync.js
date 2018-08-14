@@ -8,6 +8,9 @@ import DateWithOffset from "date-with-offset";
 
  */
 
+const N_SAMPLE = 15;
+
+
 export default class {
     constructor(context, useHRT, messenger) {
         this.context = context;
@@ -28,15 +31,21 @@ export default class {
 
         this.messenger = messenger;
 
-        let tolerance_obj = document.createElement("h3");
+        this.stability = 0.5;
+
+        const stability_obj = document.createElement("h4");
+        document.body.insertBefore(stability_obj, document.body.firstChild);
+
+        const tolerance_obj = document.createElement("h3");
         document.body.insertBefore(tolerance_obj, document.body.firstChild);
 
-        let time_obj = document.createElement("h1");
+        const time_obj = document.createElement("h1");
         document.body.insertBefore(time_obj, document.body.firstChild);
 
         this.time_table = document.querySelector('#init-time-table');
 
         setInterval(() => {
+            stability_obj.textContent = "stability : " + this.stability;
             tolerance_obj.textContent = "tolerance : " + this.tolerance;
             time_obj.textContent = this.current_time;
         }, 1);
@@ -75,31 +84,37 @@ export default class {
 
     averageTolerate() {
         let sum = 0;
-        if (this.tolerances.length >= 10) {
+        if (this.tolerances.length >= N_SAMPLE) {
             let max = -10000000000, min = 10000000000;
-            for (let i = 0; i < 10; i++) {
+            for (let i = 0; i < N_SAMPLE; i++) {
                 sum += this.tolerances[this.tolerances.length - i - 1];
                 if (max < this.tolerances[this.tolerances.length - i - 1]) max = this.tolerances[this.tolerances.length - i - 1];
                 if (min > this.tolerances[this.tolerances.length - i - 1]) min = this.tolerances[this.tolerances.length - i - 1];
             }
-            let t_temp = sum / 10.;
+            let t_temp = sum / N_SAMPLE;
             let n = 0;
             sum = 0;
 
-            for (let i = 0; i < 10; i++) {
+            for (let i = 0; i < N_SAMPLE; i++) {
 
                 let disp = this.tolerances[this.tolerances.length - i - 1] - t_temp;
                 if (disp ** 2.0 >= (max - min)**2.0 *0.2) continue;
                 sum += this.tolerances[this.tolerances.length - i - 1];
                 n++;
             }
+            let b_temp = this.tolerance;
+            let n_temp = n === 0 ? t_temp : sum / n;
 
-            this.tolerance = n === 0 ? t_temp : sum / n;
+            this.stability = Math.min(Math.abs(b_temp - n_temp) * 0.01, .8);
+
+            console.log("stability", this.stability);
+
+            this.tolerance = b_temp * (1.-this.stability) + n_temp * this.stability;
             // this.tolerance += sum;
 
             // console.log(sum, n);
 
-            while (this.tolerances.length > 10) {
+            while (this.tolerances.length > N_SAMPLE) {
                 this.tolerances.shift();
                 this.time_table.deleteRow(1);
             }
