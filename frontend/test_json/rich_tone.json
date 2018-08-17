@@ -1,0 +1,29 @@
+{
+  "audio_nodes": [
+    {
+      "name": "rich",
+      "node_type": "oscillator",
+      "out": "gain",
+      "params": {
+        "type": "sine",
+        "frequency": 110
+      }
+    },
+    {
+      "name": "gain",
+      "node_type": "gain",
+      "out": "panner1",
+      "params": {
+        "gain": 0.8
+      }
+    },
+    {
+      "name": "panner1",
+      "node_type": "panner",
+      "out": "destination",
+      "params": {
+        "position": [0,0,1]
+      }
+    }
+  ]
+}

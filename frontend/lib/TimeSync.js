@@ -8,7 +8,7 @@ import DateWithOffset from "date-with-offset";
 
  */
 
-const N_SAMPLE = 15;
+const N_SAMPLE = 10;
 
 
 export default class {
