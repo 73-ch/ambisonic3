@@ -84,36 +84,38 @@ export default class {
                 break;
 
             case "audio_params":
-                console.log(data.param_name);
-                const time = this.context.currentTime + (data.time - this.time_sync.current_time) * 0.001;
+                console.log(data);
+                // const time = this.context.currentTime + (data.time - this.time_sync.current_time) * 0.001;
 
-                switch (data.type) {
-                    case "set":
-                        this.nodes[data.name][data["param_name"]].setValueAtTime(data.value, time);
-                        break;
-                    case "linear":
-                        this.nodes[data.name][data["param_name"]].linearRampToValueAtTime(data.value, time);
-                        break;
-                    case "exp":
-                        this.nodes[data.name][data["param_name"]].exponentialRampToValueAtTime(data.value, time);
-                        break;
-                    case "target":
-                        this.nodes[data.name][data["param_name"]].setTargetAtTime(data.value, time, data.duration);
-                        break;
-                    case "curve":
-                        this.nodes[data.name][data["param_name"]].setValueCurveAtTime(data.value, time, data.duration);
-                        break;
-                    case "start":
-                        this.nodes[data.name].start(time);
-                        break;
-                    case "stop":
-                        this.nodes[data.name].stop(time);
-                        break;
-                    case "reset_all":
-                        this.resetAllNodes();
-                        break;
+                eval(data.text);
 
-                }
+                // switch (data.type) {
+                //     case "set":
+                //         this.nodes[data.name][data["param_name"]].setValueAtTime(data.value, time);
+                //         break;
+                //     case "linear":
+                //         this.nodes[data.name][data["param_name"]].linearRampToValueAtTime(data.value, time);
+                //         break;
+                //     case "exp":
+                //         this.nodes[data.name][data["param_name"]].exponentialRampToValueAtTime(data.value, time);
+                //         break;
+                //     case "target":
+                //         this.nodes[data.name][data["param_name"]].setTargetAtTime(data.value, time, data.duration);
+                //         break;
+                //     case "curve":
+                //         this.nodes[data.name][data["param_name"]].setValueCurveAtTime(data.value, time, data.duration);
+                //         break;
+                //     case "start":
+                //         this.nodes[data.name].start(time);
+                //         break;
+                //     case "stop":
+                //         this.nodes[data.name].stop(time);
+                //         break;
+                //     case "reset_all":
+                //         this.resetAllNodes();
+                //         break;
+                //
+                // }
                 break;
             default:
                 // console.log("data received", data);
@@ -121,7 +123,16 @@ export default class {
         }
     }
 
+    getAudioTime(_time) {
+        return this.context.currentTime + (_time - this.time_sync.current_time) * 0.001;
+    }
+
+    audioEventLoop(){
+
+    }
+
     resetAllNodes() {
+        console.log("reset");
         for (let an in this.nodes) {
             console.log(this.nodes[an]);
             try {

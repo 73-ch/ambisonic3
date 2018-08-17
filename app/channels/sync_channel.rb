@@ -47,7 +47,7 @@ class SyncChannel < ApplicationCable::Channel
 
   def send_audio_params(data)
     if admin_check
-      ActionCable.server.broadcast "cues", action: "audio_params", name: data["name"], param_name: data["param_name"], type: data["type"], value: data["value"], time: data["time"], duration: data["duration"]
+      ActionCable.server.broadcast "cues", action: "audio_params", text: data["text"]
     end
   end
 

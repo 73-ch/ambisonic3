@@ -2,6 +2,7 @@ import controlMessenger from "../../client/controlMessenger";
 import TimeSync from "../../lib/TimeSync";
 import ace from "brace";
 import "brace/mode/json";
+import "brace/mode/javascript";
 import "brace/theme/monokai";
 
 // style
@@ -20,7 +21,7 @@ export default class {
 
         // param editor
         this.param_editor = ace.edit("param-editor");
-        this.param_editor.getSession().setMode('ace/mode/json');
+        this.param_editor.getSession().setMode('ace/mode/javascript');
         this.param_editor.setTheme('ace/theme/monokai');
         this.param_editor.getSession().tabSize = 2;
 
@@ -28,7 +29,7 @@ export default class {
         this.param_submit = document.querySelector("#param-send");
 
         this.param_submit.addEventListener("click", () => {
-            this.sendParams();
+            this.getJsonText();
         });
 
         // command or ctrl flag
@@ -40,7 +41,8 @@ export default class {
                 this.key_press = true;
             } else if (e.keyCode === 13 && this.key_press) {
                 // if command or ctrl & enter pushed, send json
-                this.getJsonText();
+                this.sendParams();
+
             }
         });
         window.addEventListener("keyup", (e) => {
@@ -82,23 +84,29 @@ export default class {
     sendParams() {
         const editor_text = this.param_editor.getValue();
 
-        const params = editor_text.replace(/[\n\r\s]/g, "").split(";");
+        const send_text = editor_text.replace(/\$time/g, this.time_sync.current_time);
 
-        for (let p of params) {
-            console.log(p);
-            if (p.length == 0) continue;
-            const p_components = p.split(',');
-            const data = {
-                "name": p_components[0],
-                "param_name":p_components[1],
-                "type": p_components[2],
-                "value": parseFloat(p_components[3]),
-                "time": parseFloat(p_components[4]) + this.time_sync.current_time,
-                "duration": parseFloat(p_components[5])
-            };
-            console.log(data);
-            this.messenger.sendParams(data);
-        }
+        console.log(send_text);
+
+        this.messenger.sendParams({"text": send_text});
+
+        // const params = editor_text.replace(/[\n\r\s]/g, "").split(";");
+
+        // for (let p of params) {
+        //     console.log(p);
+        //     if (p.length == 0) continue;
+        //     const p_components = p.split(',');
+        //     const data = {
+        //         "name": p_components[0],
+        //         "param_name":p_components[1],
+        //         "type": p_components[2],
+        //         "value": parseFloat(p_components[3]),
+        //         "time": parseFloat(p_components[4]) + this.time_sync.current_time,
+        //         "duration": parseFloat(p_components[5])
+        //     };
+        //     console.log(data);
+        //     // this.messenger.sendParams(data);
+        // }
     }
 
     messageReceived(data) {
