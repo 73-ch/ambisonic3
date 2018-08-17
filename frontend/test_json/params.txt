@@ -1,3 +1,5 @@
+name,param_name,type,value,time,duration
+
 panner1,positionX,target,20.,1000.,3000.;
 
 gain,gain,target,3.0,1000.,1.5.;

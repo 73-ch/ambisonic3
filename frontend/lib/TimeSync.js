@@ -96,23 +96,18 @@ export default class {
             sum = 0;
 
             for (let i = 0; i < N_SAMPLE; i++) {
-
                 let disp = this.tolerances[this.tolerances.length - i - 1] - t_temp;
                 if (disp ** 2.0 >= (max - min)**2.0 *0.2) continue;
                 sum += this.tolerances[this.tolerances.length - i - 1];
                 n++;
             }
+
             let b_temp = this.tolerance;
             let n_temp = n === 0 ? t_temp : sum / n;
 
             this.stability = Math.min(Math.abs(b_temp - n_temp) * 0.01, .8);
 
-            console.log("stability", this.stability);
-
             this.tolerance = b_temp * (1.-this.stability) + n_temp * this.stability;
-            // this.tolerance += sum;
-
-            // console.log(sum, n);
 
             while (this.tolerances.length > N_SAMPLE) {
                 this.tolerances.shift();

@@ -63,7 +63,7 @@ export default class {
         switch (data.action) {
             case "audio_nodes":
                 this.json = JSON.parse(data.json);
-                this.resetAllNodes();
+                // this.resetAllNodes();
                 this.generator.generate(this.json, this.nodes);
                 setTimeout(() => {
                     for (let an in this.nodes) {
@@ -73,7 +73,7 @@ export default class {
                             console.log(this.time_sync.current_time);
                             console.log((data.start_time - this.time_sync.current_time) * 0.001);
                             console.log(this.context.currentTime + (data.start_time - this.time_sync.current_time) * 0.001);
-                            this.nodes[an].start(this.context.currentTime + (data.start_time - this.time_sync.current_time) * 0.001);
+                            // this.nodes[an].start(this.context.currentTime + (data.start_time - this.time_sync.current_time) * 0.001);
                             console.log("start_time", this.context.currentTime + (data.start_time - this.time_sync.current_time) * 0.001);
                         } catch (e) {
 
@@ -103,6 +103,16 @@ export default class {
                     case "curve":
                         this.nodes[data.name][data["param_name"]].setValueCurveAtTime(data.value, time, data.duration);
                         break;
+                    case "start":
+                        this.nodes[data.name].start(time);
+                        break;
+                    case "stop":
+                        this.nodes[data.name].stop(time);
+                        break;
+                    case "reset_all":
+                        this.resetAllNodes();
+                        break;
+
                 }
                 break;
             default:
