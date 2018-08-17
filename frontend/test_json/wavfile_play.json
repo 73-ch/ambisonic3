@@ -2,7 +2,7 @@
   "load_files": [
     {
       "buffer_name": "buffer1",
-      "path": "../audio/Perfume_globalsite_sound.wav"
+      "path": "../audio/global.wav"
     }
   ],
   "audio_nodes": [
