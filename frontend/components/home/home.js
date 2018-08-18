@@ -47,6 +47,8 @@ export default class {
             this.listener_z.addEventListener("change", () => {
                 this.moveListener();
             });
+
+            this.intervals = {};
         });
 
 
@@ -142,6 +144,19 @@ export default class {
             }
         }
         this.nodes = {};
+    }
+
+    resetAllIntervals() {
+        console.log("reset");
+        for (let i in this.intervals) {
+            console.log(this.intervals[i]);
+            try {
+                clearInterval(this.intervals[i]);
+            } catch (e) {
+
+            }
+        }
+        this.intervals = {};
     }
 
     requestTime() {

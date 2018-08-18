@@ -1,3 +1,4 @@
+
 {
   "load_files": [
     {
@@ -21,6 +22,14 @@
       "out": "destination",
       "params": {
         "gain": 1.0
+      }
+    },
+    {
+      "name": "panner1",
+      "node_type": "panner",
+      "out": "destination",
+      "params": {
+        "position": [0,0,1]
       }
     }
   ]

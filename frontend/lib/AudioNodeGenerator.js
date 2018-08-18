@@ -1,3 +1,5 @@
+import MicInput from "./MicInputTest";
+
 export default class {
     constructor(context) {
         this.context = context;
@@ -106,6 +108,8 @@ export default class {
             case "panner":
                 node = this.context.createPanner();
                 break;
+            case "input":
+                node = new MicInput(this.context);
         }
 
         if (audio_node.node_type !== "buffer_source") {
