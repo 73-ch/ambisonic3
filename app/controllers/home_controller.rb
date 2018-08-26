@@ -15,6 +15,10 @@ class HomeController < ApplicationController
     
   end
 
+  def worklet_test
+    
+  end
+
   private
   def check_admin(pass)
     if pass === "namikawa"

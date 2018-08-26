@@ -61,3 +61,23 @@ this.intervals.rich_seq = setInterval(() => {
 
 // nodesの削除
 this.resetAllNodes();
+
+
+// this.nodes["source1"].start(this.getAudioTime($time + 4000));
+
+// this.nodes["panner1"].setOrientation(-1, 0, 0);
+// this.nodes["panner1"].distanceModel = "inverse";
+
+// this.nodes["panner1"].maxDistance = 10.;
+// this.nodes["panner1"].coneInnerAngle = 90;
+
+// this.contesxt.listener.setPosition((this.messenger.user_params-3)*3);
+
+// this.intervals.panner_interval = setInterval(() => {
+//     this.nodes["panner1"].setPosition(Math.sin(this.time_sync.current_time * 0.00025) * 30, 0, 1,);
+// }, 1.);
+
+this.resetAllIntervals();
+// this.resetAllNodes();
+
+this.context.createw

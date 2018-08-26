@@ -1,6 +1,7 @@
 import Home from "../components/home/home.js"
 import Controller from "../components/control/control"
 import MicCheck from "../components/mic_check/mic_check"
+import WorkletTest from "../components/worklet_test/worklet_test"
 
 document.addEventListener( 'DOMContentLoaded', function() {
     const current_path = document.querySelector('#current_path').textContent;
@@ -11,5 +12,7 @@ document.addEventListener( 'DOMContentLoaded', function() {
         const controller = new Controller();
     } else if (current_path.match("/mic_check")) {
         const mic_check = new MicCheck();
+    } else if (current_path.match("/worklet_test")) {
+        const worklet_test = new WorkletTest();
     }
 });

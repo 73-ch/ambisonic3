@@ -19,7 +19,7 @@
     {
       "name": "gain",
       "node_type": "gain",
-      "out": "destination",
+      "out": "panner1",
       "params": {
         "gain": 1.0
       }
