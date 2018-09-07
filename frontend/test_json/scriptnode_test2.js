@@ -1,5 +1,6 @@
 
-const scriptNode = this.context.createScriptProcessor(4096, 1, 1);
+
+this.nodes.scriptNode = this.context.createScriptProcessor(4096, 1, 1);
 
 const u_pos = parseFloat(this.messenger.user_params);
 
@@ -14,7 +15,7 @@ console.log("u_p : ", this.messenger.user_params);
 
 let count = 0;
 // Give the node a function to process audio events
-scriptNode.onaudioprocess = (audioProcessingEvent) =>  {
+this.nodes.scriptNode.onaudioprocess = (audioProcessingEvent) =>  {
     // The input buffer is the song we loaded earlier
     const inputBuffer = audioProcessingEvent.inputBuffer;
 
@@ -38,12 +39,15 @@ scriptNode.onaudioprocess = (audioProcessingEvent) =>  {
     }
 };
 
-const oscillator = this.context.createOscillator();
+this.nodes.gain.connect(this.nodes.scriptNode);
 
-oscillator.connect(scriptNode);
-scriptNode.connect(this.context.destination);
+this.oscillator = this.context.createOscillator();
 
-oscillator.start(0);
+this.oscillator.connect(this.nodes.scriptNode);
+this.nodes.scriptNode.connect(this.context.destination);
 
-this.nodes.delay = this.context.createDelay()
+this.oscillator.start(this.getAudioTime($time + 3000.));
+
+this.nodes.source1.start(this.getAudioTime($time + 3000.));
+
 
