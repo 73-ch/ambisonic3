@@ -58,7 +58,7 @@ export default class {
 
             Promise.all(loadings).then(() => {
                 for (let an of this.json.audio_nodes) {
-                    if (an.node_type === "buffer_source") this.createBufferSources(an);
+                    if (an.node_type === "buffer_source") this.createBufferSource(an);
                 }
                 this.connectAudioNodes();
             });
@@ -84,7 +84,7 @@ export default class {
         });
     }
 
-    createBufferSources(audio_node) {
+    createBufferSource(audio_node) {
         let buffer_source = this.context.createBufferSource();
         this.setParams(buffer_source, audio_node.params);
         if (this.buffers[audio_node.params.buffer]) {
