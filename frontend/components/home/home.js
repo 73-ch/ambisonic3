@@ -1,6 +1,7 @@
 import deviseMessenger from "../../client/deviceMessenger";
 import AudioNodeGenerator from "../../lib/AudioNodeGenerator";
 import TimeSync from "../../lib/TimeSync";
+import {playAudioFile, getAudioTime} from "../../lib/LiveCodingUtilities";
 import "./home.css"
 
 export default class {
@@ -88,7 +89,6 @@ export default class {
             case "audio_params":
                 console.log(data);
                 // const time = this.context.currentTime + (data.time - this.time_sync.current_time) * 0.001;
-
                 eval(data.text);
 
                 // switch (data.type) {
@@ -129,7 +129,7 @@ export default class {
         return this.context.currentTime + (_time - this.time_sync.current_time) * 0.001;
     }
 
-    audioEventLoop(){
+    audioEventLoop() {
 
     }
 
@@ -157,6 +157,17 @@ export default class {
             }
         }
         this.intervals = {};
+    }
+
+    playLoadedAudioFile(node_params, time) {
+        if (!node_params.params.buffer in this.generator.buffers) console.error("buffer does not found");
+
+        this.generator.createBufferSource(node_params);
+
+        this.generator.connectAudioNode(node_params);
+
+        this.nodes[node_params.name].start(time);
+
     }
 
     requestTime() {
