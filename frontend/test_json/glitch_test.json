@@ -1,0 +1,119 @@
+
+{
+  "load_files": [
+    {
+      "buffer_name": "buffer0",
+      "path": "../audio/000.wav"
+    },
+    {
+      "buffer_name": "buffer1",
+      "path": "../audio/001.wav"
+    },
+    {
+      "buffer_name": "buffer2",
+      "path": "../audio/002.wav"
+    },
+    {
+      "buffer_name": "buffer3",
+      "path": "../audio/003.wav"
+    },
+    {
+      "buffer_name": "buffer4",
+      "path": "../audio/004.wav"
+    },
+    {
+      "buffer_name": "buffer5",
+      "path": "../audio/005.wav"
+    },
+    {
+      "buffer_name": "buffer6",
+      "path": "../audio/006.wav"
+    },
+    {
+      "buffer_name": "buffer7",
+      "path": "../audio/007.wav"
+    }
+  ],
+  "audio_nodes": [
+    {
+      "name": "source0",
+      "node_type": "buffer_source",
+      "out": "gain",
+      "params": {
+        "buffer": "buffer0",
+        "loop": false
+      }
+    },
+    {
+      "name": "source1",
+      "node_type": "buffer_source",
+      "out": "gain",
+      "params": {
+        "buffer": "buffer1",
+        "loop": false
+      }
+    },
+    {
+      "name": "source2",
+      "node_type": "buffer_source",
+      "out": "gain",
+      "params": {
+        "buffer": "buffer2",
+        "loop": false
+      }
+    },
+    {
+      "name": "source3",
+      "node_type": "buffer_source",
+      "out": "gain",
+      "params": {
+        "buffer": "buffer3",
+        "loop": false
+      }
+    },
+    {
+      "name": "source4",
+      "node_type": "buffer_source",
+      "out": "gain",
+      "params": {
+        "buffer": "buffer4",
+        "loop": false
+      }
+    },
+    {
+      "name": "source5",
+      "node_type": "buffer_source",
+      "out": "gain",
+      "params": {
+        "buffer": "buffer5",
+        "loop": false
+      }
+    },
+    {
+      "name": "source6",
+      "node_type": "buffer_source",
+      "out": "gain",
+      "params": {
+        "buffer": "buffer6",
+        "loop": false
+      }
+    },
+    {
+      "name": "source7",
+      "node_type": "buffer_source",
+      "out": "gain",
+      "params": {
+        "buffer": "buffer7",
+        "loop": false
+      }
+    },
+    {
+      "name": "gain",
+      "node_type": "gain",
+      "out": "destination",
+      "params": {
+        "gain": 0.6
+      }
+    }
+  ]
+}
