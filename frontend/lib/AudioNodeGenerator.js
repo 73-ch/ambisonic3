@@ -5,12 +5,12 @@ export default class {
         this.context = context;
     }
 
-    generate (json, nodes) {
+    generate(json, nodes) {
         this.json = json;
 
         this.buffers = {};
 
-        this.nodes = nodes;
+        this.nodes = nodes; // node_poolとかの方がいいかも
 
 
         // jsonが正しく作られているかをチェック
@@ -52,15 +52,16 @@ export default class {
                 }
             }
 
-            for (let an of this.json.audio_nodes) {
-                this.createNode(an);
+            for (let node_param of this.json.audio_nodes) {
+                this.createNode(node_param);
             }
 
             Promise.all(loadings).then(() => {
                 for (let an of this.json.audio_nodes) {
                     if (an.node_type === "buffer_source") this.createBufferSource(an);
+
+                    this.connectAudioNode(an);
                 }
-                this.connectAudioNodes();
             });
         });
     }
@@ -86,12 +87,15 @@ export default class {
 
     createBufferSource(audio_node) {
         let buffer_source = this.context.createBufferSource();
+
         this.setParams(buffer_source, audio_node.params);
+
         if (this.buffers[audio_node.params.buffer]) {
             buffer_source.buffer = this.buffers[audio_node.params.buffer];
         } else {
-            console.error('buffer "' + audio_node.params.buffer + '" not found.');
+            console.error(`buffer "${audio_node.params.buffer}" not found.`);
         }
+
         this.nodes[audio_node.name] = buffer_source;
     }
 
@@ -145,23 +149,23 @@ export default class {
         }
     }
 
-    connectAudioNodes() {
-        for (let an of this.json.audio_nodes) {
-            if (an.hasOwnProperty("out")) {
-                if (an.out === "destination") {
-                    this.nodes[an.name].connect(this.context.destination);
-                } else {
-                    try {
-                        this.nodes[an.name].connect(this.nodes[an.out]);
-                    } catch (e) {
-                        console.log(this.nodes[an.out][an.out_sub]);
-                        this.nodes[an.name].connect(this.nodes[an.out][an.out_sub]);
-                    }
-                }
+    connectAudioNode(node_params) {
+        if (node_params.hasOwnProperty("out")) {
+            let out_node;
+
+            if (node_params.out === "destination") {
+                out_node = this.context.destination;
+            } else if ("out_sub" in node_params) {
+                out_node = this.nodes[node_params.out][node_params.out_sub];
             } else {
-                console.error("audio nodes does not have out");
+                out_node = this.nodes[node_params.out];
             }
+
+            this.nodes[node_params.name].connect(out_node);
+        } else {
+            console.error("audio nodes does not have out");
         }
+
     }
 
     get getNodes() {
