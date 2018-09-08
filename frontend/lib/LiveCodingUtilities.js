@@ -9,15 +9,18 @@ export default class U {
 }
 
 export function playGlitch(source_num, out) {
+    if (Math.random() > 0.25) return;
 
     const tmp_name = createUniqueHash();
+
+    const s_num = Math.floor(Math.random() * 8);
 
     const audio_node_params = {
         "name": tmp_name,
         "node_type": "buffer_source",
         "out": out,
         "params": {
-            "buffer": "",
+            "buffer": "source" + s_num,
             "loop": false
         }
 
