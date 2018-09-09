@@ -114,6 +114,11 @@ export default class {
                 break;
             case "input":
                 node = new MicInput(this.context);
+                break;
+
+            case "filter":
+                node = this.context.createBiquadFilter();
+                break
         }
 
         if (audio_node.node_type !== "buffer_source") {
@@ -139,6 +144,7 @@ export default class {
 
                 case "frequency":
                 case "gain":
+                case "Q":
                     target[p].value = params[p];
                     break;
 
