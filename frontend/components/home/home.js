@@ -52,12 +52,11 @@ export default class {
             this.intervals = {};
         });
 
-
     }
 
     moveListener() {
         console.log("listener_position", this.context.listener.positionX, this.context.listener.positionY, this.context.listener.positionZ);
-        this.generator.listener_position = [this.listener_x.value, this.listener_y.value, this.listener_z.value]
+        //this.generator.listener_position = [this.listener_x.value, this.listener_y.value, this.listener_z.value]
     }
 
     messageReceived(data) {
@@ -159,7 +158,9 @@ export default class {
         this.intervals = {};
     }
 
-    playLoadedAudioFile(node_params, time) {
+
+
+    playLoadedSource(node_params, time) {
         if (!node_params.params.buffer in this.generator.buffers) console.error("buffer does not found");
 
         this.generator.createBufferSource(node_params);
@@ -187,13 +188,28 @@ export default class {
             }
         };
 
-        this.playLoadedAudioFile(audio_node_params, time);
+        this.playLoadedSource(audio_node_params, time);
     }
 
     requestTime() {
 
     }
 
+    createNoise(out) {
+        var buffer_size = 4096;
+        var white_noise = this.context.createScriptProcessor(buffer_size, 1, 1);
+
+        white_noise.onaudioprocess = function (e) {
+            var output = e.outputBuffer.getChannelData(0);
+            for (var i = 0; i < buffer_size; i++) {
+                output[i] = Math.random() * 2 - 1;
+            }
+
+        };
+
+        this.nodes["noise"] = white_noise;
+        white_noise.connect(this.nodes[out]);
+    }
 
 }
 const createUniqueHash = () => {
