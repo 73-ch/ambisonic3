@@ -1,8 +1,11 @@
 import deviseMessenger from "../../client/deviceMessenger";
 import AudioNodeGenerator from "../../lib/AudioNodeGenerator";
 import TimeSync from "../../lib/TimeSync";
+import NoisePlayer from "../../lib/NoisePlayer";
+import SimplexNoise from 'simplex-noise'
 import {playAudioFile, getAudioTime} from "../../lib/LiveCodingUtilities";
 import "./home.css"
+
 
 export default class {
     constructor() {
@@ -24,15 +27,17 @@ export default class {
 
             this.time_sync = new TimeSync(this.context, true, this.messenger);
 
+            this.noise_player = new NoisePlayer(this.context);
+
             setTimeout(() => {
                 this.messenger.testConnection();
                 this.messenger.getUserParams();
                 console.log(this.context.listener);
+
+
             }, 300);
 
-            setTimeout(() => {
-                console.log(this.context.listener);
-            }, 600);
+            this.position = [0,0,0];
 
 
             this.listener_x = document.querySelector(".listener-x");
@@ -55,7 +60,9 @@ export default class {
     }
 
     moveListener() {
-        console.log("listener_position", this.context.listener.positionX, this.context.listener.positionY, this.context.listener.positionZ);
+        console.log("listener_position", this.listener_x.value, this.listener_y.value, this.listener_z.value);
+        this.position = [parseFloat(this.listener_x.value), parseFloat(this.listener_y.value), parseFloat(this.listener_z.value)];
+
         //this.generator.listener_position = [this.listener_x.value, this.listener_y.value, this.listener_z.value]
     }
 
@@ -122,6 +129,15 @@ export default class {
                 // console.log("data received", data);
                 break;
         }
+    }
+
+    moveNoise() {
+        const simplex = new SimplexNoise("test");
+
+        setInterval(() => {
+            this.noise_player.cutoff_freq = Math.abs(simplex.noise2D(this.time_sync.current_time* 0.0001 + this.position[0], this.position[1]) * 1000.);
+        }, 10.);
+
     }
 
     getAudioTime(_time) {
@@ -195,22 +211,9 @@ export default class {
 
     }
 
-    createNoise(out) {
-        var buffer_size = 4096;
-        var white_noise = this.context.createScriptProcessor(buffer_size, 1, 1);
-
-        white_noise.onaudioprocess = function (e) {
-            var output = e.outputBuffer.getChannelData(0);
-            for (var i = 0; i < buffer_size; i++) {
-                output[i] = Math.random() * 2 - 1;
-            }
-
-        };
-
-        this.nodes["noise"] = white_noise;
-        white_noise.connect(this.nodes[out]);
+    disconnect (node1, node2) {
+        this.nodes[node1].disconnect(this.nodes[node2]);
     }
-
 }
 const createUniqueHash = () => {
     return (Math.floor((Math.random() + 5.) ** 20.)).toString(16);
