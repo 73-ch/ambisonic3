@@ -58,7 +58,7 @@ export default class {
             this.context = new AudioContext();
             this.context.createBufferSource().start(0);
 
-            this.time_sync = new TimeSync(this.context, true, this.messenger);
+            this.time_sync = new TimeSync(this.context, true, this.messenger, true);
 
             setTimeout(() => {
                 this.messenger.testConnection();

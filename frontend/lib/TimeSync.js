@@ -10,12 +10,13 @@ import DateWithOffset from "date-with-offset";
 
 const N_SAMPLE = 10;
 
-
 export default class {
-    constructor(context, useHRT, messenger) {
+    constructor(context, useHRT, messenger, debug) {
         this.context = context;
         this.context.createBufferSource().start(0);
         this.useHRT = useHRT;
+
+        this.debug = debug;
 
         const NOW = new DateWithOffset(0);
         const TODAY = new DateWithOffset(NOW.getFullYear(), NOW.getMonth(), NOW.getDate(), 0);
@@ -33,22 +34,29 @@ export default class {
 
         this.stability = 0.5;
 
-        const stability_obj = document.createElement("h4");
-        document.body.insertBefore(stability_obj, document.body.firstChild);
+        if (this.debug) {
+            const stability_obj = document.createElement("h4");
+            document.body.insertBefore(stability_obj, document.body.firstChild);
 
-        const tolerance_obj = document.createElement("h3");
-        document.body.insertBefore(tolerance_obj, document.body.firstChild);
+            const tolerance_obj = document.createElement("h3");
+            document.body.insertBefore(tolerance_obj, document.body.firstChild);
 
-        const time_obj = document.createElement("h1");
-        document.body.insertBefore(time_obj, document.body.firstChild);
+            const time_obj = document.createElement("h1");
+            document.body.insertBefore(time_obj, document.body.firstChild);
 
-        this.time_table = document.querySelector('#init-time-table');
+            this.time_table = document.querySelector('#init-time-table');
+
+            setInterval(() => {
+                stability_obj.textContent = "stability : " + this.stability;
+                tolerance_obj.textContent = "tolerance : " + this.tolerance;
+                time_obj.textContent = this.current_time;
+            }, 1);
+
+        }
 
         setInterval(() => {
-            stability_obj.textContent = "stability : " + this.stability;
-            tolerance_obj.textContent = "tolerance : " + this.tolerance;
-            time_obj.textContent = this.current_time;
-        }, 1);
+            console.log(this.stability, this.tolerance);
+        }, 100);
 
 
         setInterval(() => {
@@ -111,7 +119,8 @@ export default class {
 
             while (this.tolerances.length > N_SAMPLE) {
                 this.tolerances.shift();
-                this.time_table.deleteRow(1);
+
+                if (this.debug) this.time_table.deleteRow(1);
             }
 
         } else {
@@ -130,12 +139,16 @@ export default class {
                 let now = this.system_time;
                 let culc = (now - data.t1) * .5 + data.t2 - now;
                 this.tolerances.push(culc);
-                let row = this.time_table.insertRow(this.time_table.rows.length);
-                row.insertCell(-1).innerHTML = data.t1;
-                row.insertCell(-1).innerHTML = now;
-                row.insertCell(-1).innerHTML = now - data.t1;
-                row.insertCell(-1).innerHTML = data.t2;
-                row.insertCell(-1).innerHTML = culc;
+
+                if (this.debug) {
+                    let row = this.time_table.insertRow(this.time_table.rows.length);
+                    row.insertCell(-1).innerHTML = data.t1;
+                    row.insertCell(-1).innerHTML = now;
+                    row.insertCell(-1).innerHTML = now - data.t1;
+                    row.insertCell(-1).innerHTML = data.t2;
+                    row.insertCell(-1).innerHTML = culc;
+                }
+
                 break;
         }
     }

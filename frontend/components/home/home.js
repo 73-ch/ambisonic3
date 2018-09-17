@@ -25,7 +25,7 @@ export default class {
             this.nodes = {};
             this.generator = new AudioNodeGenerator(this.context);
 
-            this.time_sync = new TimeSync(this.context, true, this.messenger);
+            this.time_sync = new TimeSync(this.context, true, this.messenger, false);
 
             this.noise_player = new NoisePlayer(this.context);
 
