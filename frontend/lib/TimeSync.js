@@ -16,53 +16,52 @@ export default class {
         this.context.createBufferSource().start(0);
         this.useHRT = useHRT;
 
-        this.debug = debug;
-
-        const NOW = new DateWithOffset(0);
-        const TODAY = new DateWithOffset(NOW.getFullYear(), NOW.getMonth(), NOW.getDate(), 0);
-        const OFFSET = NOW.getTime() - TODAY.getTime();
-
-        this.init_time = OFFSET;
-        console.log("init_time : ", this.init_time);
-        this.setGetTime();
-
         this.tolerance = 0;
         this.tolerances = [];
         this.request_count = 0;
+        this.stability = 0.5;
 
         this.messenger = messenger;
 
-        this.stability = 0.5;
+        this.init_time = this.calcInitTime();
+        console.log("init_time : ", this.init_time);
+        this.setGetTime();
 
+        this.debug = debug;
         if (this.debug) {
-            const stability_obj = document.createElement("h4");
-            document.body.insertBefore(stability_obj, document.body.firstChild);
-
-            const tolerance_obj = document.createElement("h3");
-            document.body.insertBefore(tolerance_obj, document.body.firstChild);
-
-            const time_obj = document.createElement("h1");
-            document.body.insertBefore(time_obj, document.body.firstChild);
-
-            this.time_table = document.querySelector('#init-time-table');
-
-            setInterval(() => {
-                stability_obj.textContent = "stability : " + this.stability;
-                tolerance_obj.textContent = "tolerance : " + this.tolerance;
-                time_obj.textContent = this.current_time;
-            }, 1);
-
+            this.debugInit();
         }
 
-        setInterval(() => {
-            console.log(this.stability, this.tolerance);
-        }, 100);
-
-
+        // 1秒おきにアップデート処理を走らせる
         setInterval(() => {
             this.requestTime();
             this.averageTolerate();
         }, 1000);
+    }
+    
+    debugInit() {
+        const stability_obj = document.createElement("h4");
+        document.body.insertBefore(stability_obj, document.body.firstChild);
+
+        const tolerance_obj = document.createElement("h3");
+        document.body.insertBefore(tolerance_obj, document.body.firstChild);
+
+        const time_obj = document.createElement("h1");
+        document.body.insertBefore(time_obj, document.body.firstChild);
+
+        this.time_table = document.querySelector('#init-time-table');
+
+        setInterval(() => {
+            stability_obj.textContent = "stability : " + this.stability;
+            tolerance_obj.textContent = "tolerance : " + this.tolerance;
+            time_obj.textContent = this.current_time;
+        }, 1);
+    }
+
+    calcInitTime() {
+        const NOW = new DateWithOffset(0);
+        const TODAY = new DateWithOffset(NOW.getFullYear(), NOW.getMonth(), NOW.getDate(), 0);
+        return NOW.getTime() - TODAY.getTime();
     }
 
     setGetTime() {
