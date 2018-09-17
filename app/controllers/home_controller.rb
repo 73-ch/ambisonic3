@@ -1,6 +1,8 @@
+require 'securerandom'
+
 class HomeController < ApplicationController
   def home
-    session[:user_param] = params[:seat]
+    session[:user_param] = SecureRandom.urlsafe_base64(16)
 
     logger.info session[:user_param]
   end
@@ -24,7 +26,7 @@ class HomeController < ApplicationController
     if pass === "namikawa"
       session[:admin] = "admin_user"
     else
-      redirect_to "/home/dummy"
+      redirect_to home_path
     end
   end
 end
