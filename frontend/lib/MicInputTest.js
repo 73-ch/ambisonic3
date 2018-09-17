@@ -18,7 +18,7 @@ export default class {
 
                 this.analyser.getByteTimeDomainData(data);
 
-                console.log(data);
+                // console.log(data);
             }, 100);
         });
     }

@@ -13,16 +13,18 @@ export default class {
 
         this.lowpass_filter = this.context.createScriptProcessor(this.buffer_size, 1, 1);
 
+        const PI_2_div_sample_rate = Math.PI*2.0/sample_rate;
+
 
         this.lowpass_filter.onaudioprocess = (e) => {
-            let omega = 2.0 * Math.PI * this.cutoff_freq / sample_rate;
+            let omega = PI_2_div_sample_rate * this.cutoff_freq;
             let alpha = Math.sin(omega) / (2.0 * this.q);
 
             let a0 = 1.0 + alpha;
 
             let a1 = -2.0 * Math.cos(omega) / a0;
             let a2 = (1.0 - alpha) / a0;
-            let b0 = (1.0 - Math.cos(omega)) / 2.0 / a0;
+            let b0 = (1.0 - Math.cos(omega)) * .5 / a0;
             let b1 = (1.0 - Math.cos(omega)) / a0;
 
             let in1 = 0, in2 = 0;

@@ -46,6 +46,11 @@ export default class {
             this.visualizer = new SimpleVisualizer();
 
 
+            this.visualizer.canvas_obj.RequestFullScreen();
+            this.visualizer.canvas_obj.webkitRequestFullScreen();
+            this.visualizer.canvas_obj.mozRequestFullScreen();
+
+
             // manual position
             this.listener_x = document.querySelector(".listener-x");
             this.listener_y = document.querySelector(".listener-y");
@@ -79,9 +84,9 @@ export default class {
         const y = document.querySelector("#position_y").value;
         const z = document.querySelector("#position_z").value;
 
-        this.position = [x,y,z];
+        this.position = [parseFloat(x),parseFloat(y),parseFloat(z)];
 
-        if (this.debug) console.log(`position : ${this.position}`);
+        console.log(`position : ${this.position}`);
     }
 
     messageReceived(data) {
