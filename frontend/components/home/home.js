@@ -6,11 +6,11 @@ import SimplexNoise from 'simplex-noise'
 import {playAudioFile, getAudioTime} from "../../lib/LiveCodingUtilities";
 import "./home.css"
 
-const DEBUG = false;
-
 export default class {
     constructor() {
         this.button = document.querySelector("#start");
+
+        this.debug = document.querySelector("#debug").value;
 
         this.button.addEventListener('click', (e) => {
             this.button.style.display = 'none';
@@ -26,7 +26,7 @@ export default class {
             this.nodes = {};
             this.generator = new AudioNodeGenerator(this.context);
 
-            this.time_sync = new TimeSync(this.context, true, this.messenger, DEBUG);
+            this.time_sync = new TimeSync(this.context, true, this.messenger, this.debug);
 
             this.noise_player = new NoisePlayer(this.context);
 
@@ -78,7 +78,7 @@ export default class {
 
         this.position = [x,y,z];
 
-        if (DEBUG) console.log(`position : ${this.position}`);
+        if (this.debug) console.log(`position : ${this.position}`);
     }
 
     messageReceived(data) {

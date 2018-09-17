@@ -6,6 +6,7 @@
 <%= hidden_field_tag 'position_x', params[:x] %>
 <%= hidden_field_tag 'position_y', params[:y] %>
 <%= hidden_field_tag 'position_z', params[:z] %>
+<%= hidden_field_tag 'debug', params[:debug] %>
 
 <!--手動でポジションを変更できるテキストボックス-->
 <div class="listener-pos" style="display: none;">
@@ -16,4 +17,6 @@
 
 <button id="start">start</button>
 
-<%= render "components/partials/time_chart" %>
+<% if params[:debug] %>
+  <%= render "components/partials/time_chart" %>
+<% end %>
