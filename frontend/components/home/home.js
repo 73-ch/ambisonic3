@@ -3,6 +3,7 @@ import AudioNodeGenerator from "../../lib/AudioNodeGenerator";
 import TimeSync from "../../lib/TimeSync";
 import NoisePlayer from "../../lib/NoisePlayer";
 import SimplexNoise from 'simplex-noise'
+import SimpleVisualizer from "../../lib/SimpleVisualizer";
 import {playAudioFile, getAudioTime} from "../../lib/LiveCodingUtilities";
 import "./home.css"
 
@@ -41,6 +42,8 @@ export default class {
             this.position = [0,0,0];
 
             this.getInitPosition();
+
+            this.visualizer = new SimpleVisualizer();
 
 
             // manual position
