@@ -1,6 +1,8 @@
 require 'securerandom'
 
 class HomeController < ApplicationController
+  before_action :set_position_params, only: :home
+
   def home
     session[:user_param] = SecureRandom.urlsafe_base64(16)
 
@@ -28,5 +30,11 @@ class HomeController < ApplicationController
     else
       redirect_to home_path
     end
+  end
+
+  def set_position_params
+    params[:x] ||= 0
+    params[:y] ||= 0
+    params[:z] ||= 0
   end
 end

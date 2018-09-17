@@ -2,7 +2,13 @@
   <%= yield %>
 </div>
 
-<div class="listener-pos">
+<!--ポジションのパラメータをjsで読む用-->
+<%= hidden_field_tag 'position_x', params[:x] %>
+<%= hidden_field_tag 'position_y', params[:y] %>
+<%= hidden_field_tag 'position_z', params[:z] %>
+
+<!--手動でポジションを変更できるテキストボックス-->
+<div class="listener-pos" style="display: none;">
   <input type="number" class="listener-x" value="0">
   <input type="number" class="listener-y" value="0">
   <input type="number" class="listener-z" value="0">
@@ -10,4 +16,4 @@
 
 <button id="start">start</button>
 
-<%#= render "components/partials/time_chart" %>
+<%= render "components/partials/time_chart" %>

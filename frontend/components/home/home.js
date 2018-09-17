@@ -40,7 +40,10 @@ export default class {
 
             this.position = [0,0,0];
 
+            this.getInitPosition();
 
+
+            // manual position
             this.listener_x = document.querySelector(".listener-x");
             this.listener_y = document.querySelector(".listener-y");
             this.listener_z = document.querySelector(".listener-z");
@@ -55,6 +58,7 @@ export default class {
                 this.moveListener();
             });
 
+            // live coding用のintervalの格納
             this.intervals = {};
         });
 
@@ -65,6 +69,16 @@ export default class {
         this.position = [parseFloat(this.listener_x.value), parseFloat(this.listener_y.value), parseFloat(this.listener_z.value)];
 
         //this.generator.listener_position = [this.listener_x.value, this.listener_y.value, this.listener_z.value]
+    }
+
+    getInitPosition() {
+        const x = document.querySelector("#position_x").value;
+        const y = document.querySelector("#position_y").value;
+        const z = document.querySelector("#position_z").value;
+
+        this.position = [x,y,z];
+
+        if (DEBUG) console.log(`position : ${this.position}`);
     }
 
     messageReceived(data) {
