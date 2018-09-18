@@ -1,0 +1,28 @@
+
+{
+  "load_files": [
+    {
+      "buffer_name": "buffer3",
+      "path": "../audio/003.wav"
+    }
+  ],
+  "audio_nodes": [
+    {
+      "name": "source3",
+      "node_type": "buffer_source",
+      "out": "gain",
+      "params": {
+        "buffer": "buffer3",
+        "loop": false
+      }
+    },
+    {
+      "name": "gain",
+      "node_type": "gain",
+      "out": "destination",
+      "params": {
+        "gain": 1.0
+      }
+    }
+  ]
+}
