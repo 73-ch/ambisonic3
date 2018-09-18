@@ -8,7 +8,7 @@ import TimeSync from "../../lib/TimeSync";
 import NoisePlayer from "../../lib/NoisePlayer";
 import SimpleVisualizer from "../../lib/SimpleVisualizer";
 import {playAudioFile, getAudioTime} from "../../lib/LiveCodingUtilities";
-import "./home.css"
+import "./home.scss"
 
 export default class {
     constructor() {

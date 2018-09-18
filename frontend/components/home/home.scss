@@ -1,0 +1,41 @@
+#button-wrapper {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 100vw;
+  height: 100vh;
+}
+
+//#start {
+//  width: 100px;
+//  height: 50px;
+//}
+#start {
+  position: relative;
+  display: block;
+  width: 160px;
+  padding: 0.8em;
+  text-align: center;
+  text-decoration: none;
+  color: #fff;
+  background: #303233;
+  border:solid 1px #fff;
+  overflow: hidden;
+}
+#start:before {
+  content:"";
+  position: absolute;
+  top: -25px;
+  left: -20px;
+  height:90px;
+  width:20px;
+  background : #fff;
+  opacity: 0.3;
+  transform: rotate(40deg);
+  transition: 0.3s;
+}
+#start:hover:before {
+  left:98%;
+}
