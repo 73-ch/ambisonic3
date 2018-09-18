@@ -32,6 +32,12 @@ export default class {
         document.addEventListener('mozfullscreenchange', (e) => {
             this.resizeCanvas();
         });
+
+        this.canvas_obj.addEventListener('touchmove', canceltouch, false);
+
+        function canceltouch(e) {
+            e.preventDefault();
+        }
     }
 
     resizeCanvas() {
