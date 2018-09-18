@@ -2,7 +2,10 @@ import Home from "../components/home/home.js"
 import Controller from "../components/control/control"
 import MicCheck from "../components/mic_check/mic_check"
 import WorkletTest from "../components/worklet_test/worklet_test"
+import htmlMetaGenerator from "../lib/htmlMetaGenerator"
 import "./index.css"
+
+const metaGenerator = new htmlMetaGenerator();
 
 document.addEventListener( 'DOMContentLoaded', function() {
     const current_path = document.querySelector('#current_path').textContent;

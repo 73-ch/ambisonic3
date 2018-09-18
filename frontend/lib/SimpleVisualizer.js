@@ -21,22 +21,30 @@ export default class {
         this.draw();
 
 
-        document.addEventListener('fullscreenchange', (e) =>  {
+        document.addEventListener('fullscreenchange', (e) => {
             this.resizeCanvas();
         });
 
-        document.addEventListener('webkitfullscreenchange', (e) =>  {
-            this.resizeCanvas();
-        });
-        document.addEventListener('mozfullscreenchange', (e) =>  {
+        document.addEventListener('webkitfullscreenchange', (e) => {
             this.resizeCanvas();
         });
 
+        document.addEventListener('mozfullscreenchange', (e) => {
+            this.resizeCanvas();
+        });
     }
 
     resizeCanvas() {
-        this.canvas_obj.width = window.innerWidth;
-        this.canvas_obj.height = window.innerHeight;
+        setInterval(() => {
+            if (document.fullscreenElement || document.mozFullscreenElement || document.webkitFullscreenElement) {
+                console.log("fullscreen");
+                this.canvas_obj.width = window.parent.screen.width;
+                this.canvas_obj.height = window.parent.screen.height;
+            } else {
+                this.canvas_obj.width = window.innerWidth;
+                this.canvas_obj.height = window.innerHeight;
+            }
+        }, 100);
 
         // 本当ならfullscreenのエレメント取ってきて、フルスクリーン状態とそうでない場合で、canvasサイズを更新するべき(未実装)
 
@@ -63,14 +71,17 @@ export default class {
             this.canvas_obj.mozRequestFullScreen();
         }
 
+
         this.resizeCanvas();
     }
 
     draw() {
         this.context.beginPath();
         this.context.fillStyle = `rgba(${this.color})`;
-        this.context.fillRect(0,0,this.canvas_obj.width, this.canvas_obj.height);
+        this.context.fillRect(0, 0, this.canvas_obj.width, this.canvas_obj.height);
 
-        requestAnimationFrame(()=>{this.draw()});
+        requestAnimationFrame(() => {
+            this.draw()
+        });
     }
 }
