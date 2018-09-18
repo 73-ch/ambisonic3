@@ -1,4 +1,5 @@
 import MicInput from "./MicInputTest";
+import platform from 'platform'
 
 export default class {
     constructor(context) {
@@ -20,15 +21,25 @@ export default class {
             let loadings = [];
             if (this.json.hasOwnProperty("load_files")) {
                 for (let file of this.json.load_files) {
+                    console.log("loading finish & create source buffer node");
                     loadings.push(new Promise((resolve) => {
                         if (file.hasOwnProperty("path")) {
                             this.loadFile(file.path).then((response) => {
-                                this.context.decodeAudioData(response).then((buffer) => {
-                                    this.buffers[file.buffer_name] = buffer;
-                                    resolve();
-                                }, () => {
-                                    console.error("decode error");
-                                });
+                                if (platform.name === 'Safari' || platform.os.family === 'iOS') {
+                                    this.context.decodeAudioData(response, (buffer) => {
+                                        this.buffers[file.buffer_name] = buffer;
+                                        console.log("safari source file load succeeded");
+                                        resolve();
+                                    });
+                                } else {
+                                    this.context.decodeAudioData(response).then((buffer) => {
+
+                                        this.buffers[file.buffer_name] = buffer;
+                                        resolve();
+                                    }, () => {
+                                        console.error("decode error");
+                                    });
+                                }
                             });
                         }
                     }));
@@ -59,7 +70,6 @@ export default class {
             Promise.all(loadings).then(() => {
                 for (let an of this.json.audio_nodes) {
                     if (an.node_type === "buffer_source") this.createBufferSource(an);
-
                     this.connectAudioNode(an);
                 }
             });
