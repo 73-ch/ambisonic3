@@ -35,21 +35,10 @@ export default class {
                 this.messenger.testConnection();
                 this.messenger.getUserParams();
                 console.log(this.context.listener);
-
-
             }, 300);
 
-            this.position = [0,0,0];
-
+            this.position = [0, 0, 0];
             this.getInitPosition();
-
-            this.visualizer = new SimpleVisualizer();
-
-
-            this.visualizer.canvas_obj.RequestFullScreen();
-            this.visualizer.canvas_obj.webkitRequestFullScreen();
-            this.visualizer.canvas_obj.mozRequestFullScreen();
-
 
             // manual position
             this.listener_x = document.querySelector(".listener-x");
@@ -68,6 +57,10 @@ export default class {
 
             // live coding用のintervalの格納
             this.intervals = {};
+
+
+            this.visualizer = new SimpleVisualizer();
+            this.visualizer.toggleFullscreen();
         });
 
     }
@@ -84,7 +77,7 @@ export default class {
         const y = document.querySelector("#position_y").value;
         const z = document.querySelector("#position_z").value;
 
-        this.position = [parseFloat(x),parseFloat(y),parseFloat(z)];
+        this.position = [parseFloat(x), parseFloat(y), parseFloat(z)];
 
         console.log(`position : ${this.position}`);
     }
@@ -158,7 +151,7 @@ export default class {
         const simplex = new SimplexNoise("test");
 
         setInterval(() => {
-            this.noise_player.cutoff_freq = Math.abs(simplex.noise2D(this.time_sync.current_time* 0.0001 + this.position[0], this.position[1]) * 1000.);
+            this.noise_player.cutoff_freq = Math.abs(simplex.noise2D(this.time_sync.current_time * 0.0001 + this.position[0], this.position[1]) * 1000.);
         }, 10.);
 
     }
@@ -198,7 +191,6 @@ export default class {
     }
 
 
-
     playLoadedSource(node_params, time) {
         if (!node_params.params.buffer in this.generator.buffers) console.error("buffer does not found");
 
@@ -234,7 +226,7 @@ export default class {
 
     }
 
-    disconnect (node1, node2) {
+    disconnect(node1, node2) {
         this.nodes[node1].disconnect(this.nodes[node2]);
     }
 }
