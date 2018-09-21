@@ -5,7 +5,7 @@ export default class {
         this.q = 1.0;
         this.cutoff_freq = 500.;
 
-        this.buffer_size = 4096;
+        this.buffer_size = 8192;
     }
 
     generateLowpassFilter() {
@@ -44,6 +44,52 @@ export default class {
             }
 
         };
+
+        // simple lowpass
+
+        // this.lowpass_filter = this.context.createScriptProcessor(this.buffer_size, 1, 1);
+        // this.lastOut = 0.0;
+        // this.lowpass_filter.onaudioprocess = (e) => {
+        //     let input = e.inputBuffer.getChannelData(0);
+        //     let output = e.outputBuffer.getChannelData(0);
+        //     for (let i = 0; i < this.buffer_size; i++) {
+        //         output[i] = (input[i] + this.lastOut) / this.q;
+        //         this.lastOut = output[i];
+        //     }
+        // }
+
+
+        // iir filter ver
+
+        // const denominators = [];
+        // const numerators = [];
+        //
+        // // fd は，　ディジタルフィルタのカットオフ周波数. fc は，アナログフィルタのカットオフ周波数
+        // // つまり, ここでは, ディジタルフィルタのカットオフ周波数をアナログフィルタのカットオフ周波数に変換しています.
+        // const fc = Math.tan((Math.PI * this.cutoff_freq) / sample_rate) / (2 * Math.PI);
+        //
+        // // Q は, クオリティファクタ
+        // const d = 1 + ((2 * Math.PI * fc) / this.q) + (4 * Math.pow(Math.PI, 2) * Math.pow(fc, 2));
+        //
+        // // Low-Pass Filter の分母の係数を算出しています
+        // denominators[0] = 1;
+        // denominators[1] = ((8 * Math.pow(Math.PI, 2) * Math.pow(fc, 2)) - 2) / d;
+        // denominators[2] = (1 - ((2 * Math.PI * fc) / this.q) + (4 * Math.pow(Math.PI, 2) * Math.pow(fc, 2))) / d;
+        //
+        // // Low-Pass Filter の分子の係数を算出しています
+        // numerators[0] = (4 * Math.pow(Math.PI, 2) * Math.pow(fc, 2)) / d;
+        // numerators[1] = (8 * Math.pow(Math.PI, 2) * Math.pow(fc, 2)) / d;
+        // numerators[2] = (4 * Math.pow(Math.PI, 2) * Math.pow(fc, 2)) / d;
+        //
+        // this.lowpass_filter = this.context.createIIRFilter(numerators, denominators);
+    }
+
+    updateDenominator() {
+        denominators[0] = 1;
+        denominators[1] = ((8 * Math.pow(Math.PI, 2) * Math.pow(fc, 2)) - 2) / d;
+        denominators[2] = (1 - ((2 * Math.PI * fc) / this.q) + (4 * Math.pow(Math.PI, 2) * Math.pow(fc, 2))) / d;
+
+        this.lowpass_filter.denominators = denominators;
     }
 
     generateNoiseOscillator() {
