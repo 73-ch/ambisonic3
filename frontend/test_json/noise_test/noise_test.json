@@ -1,0 +1,12 @@
+{
+  "audio_nodes": [
+    {
+      "name": "gain",
+      "node_type": "gain",
+      "out": "destination",
+      "params": {
+        "gain": 0.3
+      }
+    }
+  ]
+}
