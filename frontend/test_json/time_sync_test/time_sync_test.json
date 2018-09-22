@@ -1,0 +1,13 @@
+{
+  "audio_nodes": [
+    {
+      "name": "osc1",
+      "node_type": "oscillator",
+      "out": "destination",
+      "params": {
+        "type": "sine",
+        "frequency": 440
+      }
+    }
+  ]
+}
