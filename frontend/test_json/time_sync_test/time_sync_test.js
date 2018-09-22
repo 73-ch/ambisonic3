@@ -7,9 +7,9 @@ this.nodes["osc1"].connect(analyser);
 
 const network_latency = this.time_sync.current_time - $time;
 
-console.log(network_latency)
+console.log(network_latency);
 
-this.nodes["osc1"].start(this.getAudioTime($time + 3000));
+this.nodes["osc1"].start(this.time_sync.getAudioTime($time + 3000));
 performance.mark("osc_scheduled");
 
 

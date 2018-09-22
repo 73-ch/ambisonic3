@@ -84,6 +84,10 @@ export default class {
         return this.getTime() + this.tolerance;
     }
 
+    getAudioTime(_time) {
+        return this.context.currentTime + (_time - this.current_time) * 0.001;
+    }
+
     requestTime() {
         // console.log('send');
         this.messenger.requestTime({id: this.request_count, t1: this.system_time});

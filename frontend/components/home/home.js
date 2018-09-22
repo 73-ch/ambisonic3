@@ -64,9 +64,9 @@ export default class {
             // live coding用のintervalの格納
             this.intervals = {};
 
-
+            // visualizer
             this.visualizer = new SimpleVisualizer();
-            this.visualizer.toggleFullscreen();
+            if (!this.debug) this.visualizer.toggleFullscreen();
         });
 
     }
@@ -94,63 +94,42 @@ export default class {
         switch (data.action) {
             case "audio_nodes":
                 this.json = JSON.parse(data.json);
-                // this.resetAllNodes();
-                this.generator.generate(this.json, this.nodes);
-                setTimeout(() => {
-                    for (let an in this.nodes) {
-                        console.log(this.nodes[an]);
-                        try {
-                            console.log(data.start_time);
-                            console.log(this.time_sync.current_time);
-                            console.log((data.start_time - this.time_sync.current_time) * 0.001);
-                            console.log(this.context.currentTime + (data.start_time - this.time_sync.current_time) * 0.001);
-                            // this.nodes[an].start(this.context.currentTime + (data.start_time - this.time_sync.current_time) * 0.001);
-                            console.log("start_time", this.context.currentTime + (data.start_time - this.time_sync.current_time) * 0.001);
-                        } catch (e) {
 
-                        }
-                    }
-                    console.log(this.nodes);
-                }, 1000);
+                this.generator.generate(this.json, this.nodes);
+
+                if (this.debug) this.outputAudioNodesCreateInfo(data);
+
                 break;
 
             case "audio_params":
                 console.log(data);
-                // const time = this.context.currentTime + (data.time - this.time_sync.current_time) * 0.001;
+
                 eval(data.text);
 
-                // switch (data.type) {
-                //     case "set":
-                //         this.nodes[data.name][data["param_name"]].setValueAtTime(data.value, time);
-                //         break;
-                //     case "linear":
-                //         this.nodes[data.name][data["param_name"]].linearRampToValueAtTime(data.value, time);
-                //         break;
-                //     case "exp":
-                //         this.nodes[data.name][data["param_name"]].exponentialRampToValueAtTime(data.value, time);
-                //         break;
-                //     case "target":
-                //         this.nodes[data.name][data["param_name"]].setTargetAtTime(data.value, time, data.duration);
-                //         break;
-                //     case "curve":
-                //         this.nodes[data.name][data["param_name"]].setValueCurveAtTime(data.value, time, data.duration);
-                //         break;
-                //     case "start":
-                //         this.nodes[data.name].start(time);
-                //         break;
-                //     case "stop":
-                //         this.nodes[data.name].stop(time);
-                //         break;
-                //     case "reset_all":
-                //         this.resetAllNodes();
-                //         break;
-                //
-                // }
                 break;
             default:
                 // console.log("data received", data);
                 break;
         }
+    }
+
+    outputAudioNodesCreateInfo(data) {
+        setTimeout(() => {
+            for (let an in this.nodes) {
+                console.log(this.nodes[an]);
+                try {
+                    console.log(data.start_time);
+                    console.log(this.time_sync.current_time);
+                    console.log((data.start_time - this.time_sync.current_time) * 0.001);
+                    console.log(this.context.currentTime + (data.start_time - this.time_sync.current_time) * 0.001);
+                    // this.nodes[an].start(this.context.currentTime + (data.start_time - this.time_sync.current_time) * 0.001);
+                    console.log("start_time", this.context.currentTime + (data.start_time - this.time_sync.current_time) * 0.001);
+                } catch (e) {
+
+                }
+            }
+            console.log(this.nodes);
+        }, 1000);
     }
 
     moveNoise() {
@@ -162,14 +141,11 @@ export default class {
 
     }
 
-    getAudioTime(_time) {
-        return this.context.currentTime + (_time - this.time_sync.current_time) * 0.001;
-    }
-
     audioEventLoop() {
 
     }
 
+    // node manager
     resetAllNodes() {
         console.log("reset");
         for (let an in this.nodes) {
@@ -183,6 +159,7 @@ export default class {
         this.nodes = {};
     }
 
+    // event mangerなど
     resetAllIntervals() {
         console.log("reset");
         for (let i in this.intervals) {
@@ -196,7 +173,7 @@ export default class {
         this.intervals = {};
     }
 
-
+    // WebAudioラッパーかな
     playLoadedSource(node_params, time) {
         if (!node_params.params.buffer in this.generator.buffers) console.error("buffer does not found");
 
@@ -208,6 +185,7 @@ export default class {
 
     }
 
+    // グリッチを再生するやつ、ユーティリティーに移動
     playGlitch(out, time) {
         if (Math.random() > 0.25) return;
 
@@ -232,6 +210,8 @@ export default class {
 
     }
 
+
+    // node managerに移動
     disconnect(node1, node2) {
         this.nodes[node1].disconnect(this.nodes[node2]);
     }
