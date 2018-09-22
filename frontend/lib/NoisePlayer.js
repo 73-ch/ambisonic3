@@ -45,6 +45,13 @@ export default class {
 
         };
 
+        // biquad filter ver
+
+        // this.lowpass_filter = this.context.createBiquadFilter();
+        // this.lowpass_filter.type = "lowpass";
+        // this.lowpass_filter.Q = this.q;
+        // this.lowpass_filter.frequency = this.cutoff_freq;
+
         // simple lowpass
 
         // this.lowpass_filter = this.context.createScriptProcessor(this.buffer_size, 1, 1);
