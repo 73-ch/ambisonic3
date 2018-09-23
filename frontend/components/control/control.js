@@ -13,24 +13,7 @@ export default class {
     constructor() {
         this.messenger = new controlMessenger(this.messageReceived, this);
 
-        // ace editor
-        this.editor = ace.edit("json-editor");
-        this.editor.getSession().setMode('ace/mode/json');
-        this.editor.setTheme('ace/theme/monokai');
-        this.editor.getSession().tabSize = 2;
-
-        // param editor
-        this.param_editor = ace.edit("param-editor");
-        this.param_editor.getSession().setMode('ace/mode/javascript');
-        this.param_editor.setTheme('ace/theme/monokai');
-        this.param_editor.getSession().tabSize = 2;
-
-        // param submit
-        this.param_submit = document.querySelector("#param-send");
-
-        this.param_submit.addEventListener("click", () => {
-            this.getJsonText();
-        });
+        this.createUI();
 
         // command or ctrl flag
         this.key_press = false;
@@ -41,7 +24,7 @@ export default class {
                 this.key_press = true;
             } else if (e.keyCode === 13 && this.key_press) {
                 // if command or ctrl & enter pushed, send json
-                this.sendParams();
+                this.sendScript();
 
             }
         });
@@ -69,6 +52,33 @@ export default class {
         this.load_offset = document.querySelector('#load-offset');
     }
 
+    createUI() {
+        this.editor = ace.edit("json-editor");
+        this.editor.getSession().setMode('ace/mode/json');
+        this.editor.setTheme('ace/theme/monokai');
+        this.editor.getSession().tabSize = 2;
+
+        this.param_editor = ace.edit("script-editor");
+        this.param_editor.getSession().setMode('ace/mode/javascript');
+        this.param_editor.setTheme('ace/theme/monokai');
+        this.param_editor.getSession().tabSize = 2;
+
+        const send_json_button = document.querySelector("#send-json");
+        send_json_button.addEventListener("click", () => {
+            this.getJsonText();
+        });
+
+        const send_script_button = document.querySelector("#send-script");
+        send_script_button.addEventListener("click", () => {
+            this.sendScript();
+        });
+
+        const reload_devices_button = document.querySelector("#reload-devices");
+        reload_devices_button.addEventListener("click", () => {
+            this.reloadAllDevices();
+        });
+    }
+
     getJsonText() {
         const json_text = this.editor.getValue();
         this.sendJson(json_text)
@@ -81,32 +91,18 @@ export default class {
         this.messenger.sendAudioNodes(json, this.time_sync.current_time + parseFloat(this.load_offset.value));
     }
 
-    sendParams() {
+    reloadAllDevices() {
+        this.messenger.sendScript({"text": "location.reload()"});
+    }
+
+    sendScript() {
         const editor_text = this.param_editor.getValue();
 
         const send_text = editor_text.replace(/\$time/g, this.time_sync.current_time);
 
         console.log(send_text);
 
-        this.messenger.sendParams({"text": send_text});
-
-        // const params = editor_text.replace(/[\n\r\s]/g, "").split(";");
-
-        // for (let p of params) {
-        //     console.log(p);
-        //     if (p.length == 0) continue;
-        //     const p_components = p.split(',');
-        //     const data = {
-        //         "name": p_components[0],
-        //         "param_name":p_components[1],
-        //         "type": p_components[2],
-        //         "value": parseFloat(p_components[3]),
-        //         "time": parseFloat(p_components[4]) + this.time_sync.current_time,
-        //         "duration": parseFloat(p_components[5])
-        //     };
-        //     console.log(data);
-        //     // this.messenger.sendParams(data);
-        // }
+        this.messenger.sendScript({"text": send_text});
     }
 
     messageReceived(data) {

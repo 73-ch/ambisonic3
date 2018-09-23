@@ -10,7 +10,7 @@ export default class extends Messenger {
         this.chat.perform("send_audio_node_json", {json: json, start_time: start_time});
     }
 
-    sendParams (data) {
+    sendScript (data) {
         this.chat.perform("send_audio_params", data);
     }
 }
