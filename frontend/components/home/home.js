@@ -1,95 +1,84 @@
 // libraries
 import SimplexNoise from 'simplex-noise'
 import platform from 'platform'
+import QueryString from 'query-string'
 
-import deviseMessenger from "../../client/deviceMessenger";
+import DeviseMessenger from "../../client/deviceMessenger";
 import AudioNodeGenerator from "../../lib/AudioNodeGenerator";
 import TimeSync from "../../lib/TimeSync";
 import NoisePlayer from "../../lib/NoisePlayer";
 import SimpleVisualizer from "../../lib/SimpleVisualizer";
+import PositionManager from "../../lib/PositionManager"
 import {playAudioFile, getAudioTime} from "../../lib/LiveCodingUtilities";
 import "./home.scss"
+
+const createUniqueHash = () => {
+    return (Math.floor((Math.random() + 5.) ** 20.)).toString(16);
+};
 
 export default class {
     constructor() {
         this.button = document.querySelector("#start");
 
-        this.debug = document.querySelector("#debug").value;
+        this.query = QueryString.parse(location.search);
 
+        this.debug = !!this.query.debug;
+
+        // show device info
+        if (this.debug) {
+            console.log(`debug_mode`);
+        }
+        console.log(this.query);
         console.log(platform);
 
+        // active audio context
         this.button.addEventListener('click', (e) => {
-            this.button.style.display = 'none';
-            document.querySelector('#button-wrapper').style.display = 'none';
-
-            console.log("start");
-
-            const AudioContext = window.AudioContext || window.webkitAudioContext;
-
-            this.messenger = new deviseMessenger(this.messageReceived, this);
-
-            this.context = new AudioContext();
-            this.context.createBufferSource().start(0);
-            this.nodes = {};
-            this.generator = new AudioNodeGenerator(this.context);
-
-            this.time_sync = new TimeSync(this.context, true, this.messenger, this.debug);
-
-            this.noise_player = new NoisePlayer(this.context);
-
-            setTimeout(() => {
-                this.messenger.testConnection();
-                this.messenger.getUserParams();
-                console.log(this.context.listener);
-            }, 300);
-
-            this.position = [0, 0, 0];
-            this.getInitPosition();
-
-            // manual position
-            this.listener_x = document.querySelector(".listener-x");
-            this.listener_y = document.querySelector(".listener-y");
-            this.listener_z = document.querySelector(".listener-z");
-
-            this.listener_x.addEventListener("change", () => {
-                this.moveListener();
-            });
-            this.listener_y.addEventListener("change", () => {
-                this.moveListener();
-            });
-            this.listener_z.addEventListener("change", () => {
-                this.moveListener();
-            });
-
-            // live coding用のintervalの格納
-            this.intervals = {};
-
-            // visualizer
-            this.visualizer = new SimpleVisualizer();
-            if (!this.debug) this.visualizer.toggleFullscreen();
+            this.init();
         });
 
+        // other setup
+        this.messenger = new DeviseMessenger(this.messageReceived, this);
+
+        setTimeout(() => {
+            this.messenger.testConnection();
+            this.messenger.getUserParams();
+        }, 300);
+
+        // position
+        this.position_manager = new PositionManager();
+        this.position_manager.getPositionFromQuery();
     }
 
-    moveListener() {
-        console.log("listener_position", this.listener_x.value, this.listener_y.value, this.listener_z.value);
-        this.position = [parseFloat(this.listener_x.value), parseFloat(this.listener_y.value), parseFloat(this.listener_z.value)];
+    init() {
+        // hide start button
+        this.button.style.display = 'none';
+        document.querySelector('#button-wrapper').style.display = 'none';
 
-        //this.generator.listener_position = [this.listener_x.value, this.listener_y.value, this.listener_z.value]
-    }
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
 
-    getInitPosition() {
-        const x = document.querySelector("#position_x").value;
-        const y = document.querySelector("#position_y").value;
-        const z = document.querySelector("#position_z").value;
+        this.context = new AudioContext();
+        this.context.createBufferSource().start(0);
+        this.nodes = {};
+        this.generator = new AudioNodeGenerator(this.context);
 
-        this.position = [parseFloat(x), parseFloat(y), parseFloat(z)];
+        this.time_sync = new TimeSync(this.context, true, this.messenger, this.debug);
 
-        console.log(`position : ${this.position}`);
+        this.noise_player = new NoisePlayer(this.context);
+
+        // live coding用のintervalの格納
+        this.intervals = {};
+
+        // visualizer
+        this.visualizer = new SimpleVisualizer();
+        if (!this.debug) this.visualizer.toggleFullscreen();
+
+        console.log("start");
     }
 
     messageReceived(data) {
-        this.time_sync.messageReceived(data);
+        if (this.time_sync) {
+            this.time_sync.messageReceived(data);
+        }
         // console.log(data);
         switch (data.action) {
             case "audio_nodes":
@@ -216,6 +205,3 @@ export default class {
         this.nodes[node1].disconnect(this.nodes[node2]);
     }
 }
-const createUniqueHash = () => {
-    return (Math.floor((Math.random() + 5.) ** 20.)).toString(16);
-};
