@@ -12,6 +12,13 @@ console.log(network_latency);
 this.nodes["osc1"].start(this.time_sync.getAudioTime($time + 3000));
 performance.mark("osc_scheduled");
 
+this.intervals.setOsc = setInterval(() => {
+    if (this.time_sync.current_time < $time + 3000 - 100){
+        this.nodes["osc1"].start(this.time_sync.getAudioTime($time + 3000));
+        clearInterval(this.intervals.setOsc);
+    }
+}, 50);
+
 
 this.intervals.analyser = setInterval(() => {
     let data = new Uint8Array(1024);

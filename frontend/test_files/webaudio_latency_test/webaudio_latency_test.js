@@ -20,11 +20,11 @@ this.intervals.analyser = setInterval(() => {
 
 
     if (sum > 1) {
-        performance.mark("sound_receive");
+        performance.mark(`sound_receive${$time}`);
 
-        performance.measure("webaudio_latency", "sound_play", "sound_receive");
+        performance.measure(`webaudio_latency${$time}`, `sound_play${$time}`, `sound_receive${$time}`);
 
-        const webaudio_latency = performance.getEntriesByName("webaudio_latency", "measure")[0].duration;
+        const webaudio_latency = performance.getEntriesByName(`webaudio_latency${$time}`, "measure")[0].duration;
 
         console.log(`bang_span : ${webaudio_latency}`);
         clearInterval(this.intervals.analyser);
@@ -33,4 +33,6 @@ this.intervals.analyser = setInterval(() => {
 }, 1);
 
 osc.start();
-performance.mark("sound_play");
+performance.mark(`sound_play${$time}`);
+
+// location.reload();
