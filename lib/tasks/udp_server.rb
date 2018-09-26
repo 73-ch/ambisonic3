@@ -27,8 +27,6 @@ class UDPServer < EM::Connection
       t3_data["subsequence"] = true
       t3_data["t3"] = self.get_timestamp(end_time)
 
-
-
       send_datagram(t3_data.to_json, host, port)
 
     rescue JSON::ParserError => e

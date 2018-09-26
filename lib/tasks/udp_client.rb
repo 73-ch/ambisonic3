@@ -3,8 +3,6 @@ require "json"
 require 'eventmachine'
 require 'active_support/time'
 
-
-
 class Sender < EM::Connection
   @@wait = {}
 
@@ -23,7 +21,7 @@ class Sender < EM::Connection
 
         send_datagram(data.to_json, 'localhost', 10000)
         count+=1
-        sleep 1
+        sleep 0.001
       end
 
     end
@@ -35,12 +33,19 @@ class Sender < EM::Connection
 
     if data["subsequence"]
       @@wait[data["id"]]["t3"] = data["t3"]
-      puts @@wait[data["id"]]
-      all = @@wait[data["id"]]["t4"].to_f - @@wait[data["id"]]["t1"].to_f
-      server_process = @@wait[data["id"]]["t3"].to_f - @@wait[data["id"]]["t2"].to_f
-      tolerance = (all-server_process)/2
-      puts "#{all} #{server_process} #{tolerance}"
-      puts "#{@@wait[data["id"]]["t4"].to_f} #{@@wait[data["id"]]["t3"].to_f + tolerance} #{@@wait[data["id"]]["t4"].to_f - @@wait[data["id"]]["t3"].to_f - tolerance}"
+
+      result = {}
+
+      result["all"] = @@wait[data["id"]]["t4"].to_f * 1000.0 - @@wait[data["id"]]["t1"].to_f * 1000.0
+      result["server_process"] = @@wait[data["id"]]["t3"].to_f * 1000.0 - @@wait[data["id"]]["t2"].to_f * 1000.0
+
+      result["network_latency"] = (result["all"]-result["server_process"])/2
+      result["local_t"] = @@wait[data["id"]]["t4"].to_f * 1000.0
+      result["server_t"] = @@wait[data["id"]]["t3"].to_f * 1000.0 + result["network_latency"]
+      result["tolerance"] = result["server_t"] - result["local_t"]
+
+      puts result
+
     else
       data["t4"] = self.get_timestamp(receive_time)
       @@wait[data["id"]] = data
