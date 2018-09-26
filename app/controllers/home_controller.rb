@@ -12,6 +12,7 @@ class HomeController < ApplicationController
   def control
     check_admin(params[:name])
 
+    logger.info request.remote_ip
     logger.info session[:admin]
   end
 
