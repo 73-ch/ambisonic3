@@ -15,41 +15,28 @@ export default class {
 
         this.createUI();
 
-        // command or ctrl flag
-        this.key_press = false;
-
-        // keyboard event
-        window.addEventListener("keydown", (e) => {
-            if (((e.ctrlKey && !e.metaKey) || (!e.ctrlKey && e.metaKey)) && e.keyCode !== 13) {
-                this.key_press = true;
-            } else if (e.keyCode === 13 && this.key_press) {
-                // if command or ctrl & enter pushed, send json
-                this.sendScript();
-
-            }
-        });
-        window.addEventListener("keyup", (e) => {
-            if (((e.ctrlKey && !e.metaKey) || (!e.ctrlKey && (e.keyCode === 91 || e.keyCode === 93)))) {
-                this.key_press = false;
-            }
-        });
+        this.keySetup();
 
         const start_button = document.querySelector("#start");
 
         start_button.addEventListener('click', () => {
-            const AudioContext = window.AudioContext || window.webkitAudioContext;
-            this.context = new AudioContext();
-            this.context.createBufferSource().start(0);
-
-            this.time_sync = new TimeSync(this.context, true, this.messenger, true);
-
-            setTimeout(() => {
-                this.messenger.testConnection();
-                this.messenger.getUserParams();
-            }, 300);
+            this.init();
         });
 
         this.load_offset = document.querySelector('#load-offset');
+    }
+
+    init() {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        this.context = new AudioContext();
+        this.context.createBufferSource().start(0);
+
+        this.time_sync = new TimeSync(this.context, true, this.messenger, true);
+
+        setTimeout(() => {
+            this.messenger.testConnection();
+            this.messenger.getUserParams();
+        }, 300);
     }
 
     createUI() {
@@ -103,6 +90,27 @@ export default class {
         console.log(send_text);
 
         this.messenger.sendScript({"text": send_text});
+    }
+
+    keySetup() {
+        // command or ctrl flag
+        this.key_press = false;
+
+        // keyboard event
+        window.addEventListener("keydown", (e) => {
+            if (((e.ctrlKey && !e.metaKey) || (!e.ctrlKey && e.metaKey)) && e.keyCode !== 13) {
+                this.key_press = true;
+            } else if (e.keyCode === 13 && this.key_press) {
+                // if command or ctrl & enter pushed, send json
+                this.sendScript();
+
+            }
+        });
+        window.addEventListener("keyup", (e) => {
+            if (((e.ctrlKey && !e.metaKey) || (!e.ctrlKey && (e.keyCode === 91 || e.keyCode === 93)))) {
+                this.key_press = false;
+            }
+        });
     }
 
     messageReceived(data) {
