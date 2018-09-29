@@ -24,7 +24,7 @@ export default class {
         this.messenger = messenger;
 
         this.init_time = this.calcInitTime();
-        console.log("init_time : ", this.init_time);
+        console.log("init_time : ", this.init_time, performance.now(), context.currentTime);
         this.setGetTime();
 
         this.debug = debug;
@@ -38,7 +38,7 @@ export default class {
             this.averageTolerate();
         }, 1000);
     }
-    
+
     debugInit() {
         const stability_obj = document.createElement("h4");
         document.body.insertBefore(stability_obj, document.body.firstChild);
@@ -55,7 +55,7 @@ export default class {
             stability_obj.textContent = "stability : " + this.stability;
             tolerance_obj.textContent = "tolerance : " + this.tolerance;
             time_obj.textContent = this.current_time;
-        }, 1);
+        }, 10);
     }
 
     calcInitTime() {
@@ -66,6 +66,7 @@ export default class {
 
     setGetTime() {
         if (this.useHRT) {
+            this.init_time -= performance.now();
             this.getTime = () => {
                 return this.init_time + performance.now();
             }
@@ -138,7 +139,6 @@ export default class {
     messageReceived(data) {
         switch (data.action) {
             case 'time_sync':
-                console.log('receive');
                 let now = this.system_time;
                 let culc = (now - data.t1) * .5 + data.t2 - now;
                 this.tolerances.push(culc);
