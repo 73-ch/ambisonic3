@@ -1,12 +1,12 @@
-for (var i = 0; i <8; i++) {
-    this.nodes[`source${i}`].start(this.getAudioTime($time + 2000 + 500*i))
-}
+// for (var i = 0; i <8; i++) {
+//     this.nodes[`source${i}`].start(this.time_sync.getAudioTime($time + 2000 + 500*i))
+// }
 
 // var i = 1;
 
 // this.intervals.glitch = setInterval(() => {
 //     i++;
-//     this.playGlitch("gain",this.getAudioTime($time + 300 * i));
+//     this.playGlitch("gain",this.time_sync.getAudioTime($time + 300 * i));
 // }, 300)
 
 // clearInterval(this.intervals.glitch);
@@ -26,9 +26,11 @@ this.intervals.analyser = setInterval(() => {
 
     sum = data.reduce((a,x) => a+=x,0);
 
-    sum = sum/200;
+    sum = sum/250;
 
     this.visualizer.color = [sum, sum, sum, 255];
 
-    //console.log(sum);
+    console.log(sum);
 }, 10);
+
+// clearInterval(this.intervals.analyser);
