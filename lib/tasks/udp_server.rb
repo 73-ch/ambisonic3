@@ -8,7 +8,7 @@ class UDPServer < EM::Connection
   @@host = 'localhost'
 
   def get_timestamp(time)
-    (time.to_f - time.beginning_of_day.to_f).to_s.match(/.*\./).to_s + time.nsec.to_s
+    (time.to_f - time.beginning_of_day.to_f).to_s.match(/.*\./).to_s + '%09d' % time.nsec
   end
 
   def receive_data row_data

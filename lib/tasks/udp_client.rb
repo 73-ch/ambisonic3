@@ -7,13 +7,13 @@ class Sender < EM::Connection
   @@wait = {}
 
   def get_timestamp(time)
-    (time.to_f - time.beginning_of_day.to_f).to_s.match(/.*\./).to_s + time.nsec.to_s
+    (time.to_f - time.beginning_of_day.to_f).to_s.match(/.*\./).to_s + '%09d' % time.nsec
   end
 
   def post_init
     EM::defer do
       count = 0
-      loop do
+      50.times do
         time = Time.current
         data = {}
         data["id"] = count
@@ -21,9 +21,10 @@ class Sender < EM::Connection
 
         send_datagram(data.to_json, 'localhost', 10000)
         count+=1
-        sleep 0.001
+        sleep 0.1
       end
 
+      exit
     end
   end
 
