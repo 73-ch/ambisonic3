@@ -37,6 +37,7 @@ class SyncChannel < ApplicationCable::Channel
     response[:action] = "time_sync"
 
     ActionCable.server.broadcast "time_sync:#{user_params}", response
+    logger.info time.to_f - Time.current.to_f # auditionで5台同時に録音した時に、平均2~3msec、最大8msecの遅延
   end
 
   def send_audio_node_json(data)
