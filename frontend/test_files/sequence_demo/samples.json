@@ -1,0 +1,18 @@
+{
+  "load_files": [
+    {
+      "buffer_name": "000_bar",
+      "path": "../audio/000_bar.wav"
+    }
+  ],
+  "audio_nodes": [
+    {
+      "name": "gain",
+      "node_type": "gain",
+      "out": "destination",
+      "params": {
+        "gain": 1.0
+      }
+    }
+  ]
+}
