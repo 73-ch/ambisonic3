@@ -10,7 +10,7 @@ const convertPositionFromQueryString = (q_string) => {
 
 export default class {
     constructor() {
-        this.device_position = [0, 0, 0];
+        this.position = [0, 0, 0];
 
         this.query = QueryString.parse(location.search);
 
@@ -19,19 +19,19 @@ export default class {
     }
 
     setPosition(_position) {
-        this.device_position = _position
+        this.position = _position
     }
 
     getPositionFromQuery() {
-        this.device_position[0] = convertPositionFromQueryString(this.query.x);
-        this.device_position[1] = convertPositionFromQueryString(this.query.y);
-        this.device_position[2] = convertPositionFromQueryString(this.query.z);
+        this.position[0] = convertPositionFromQueryString(this.query.x);
+        this.position[1] = convertPositionFromQueryString(this.query.y);
+        this.position[2] = convertPositionFromQueryString(this.query.z);
 
-        console.log(this.device_position);
+        console.log(this.position);
     }
 
     getDistance(_position) {
-        return getDistance(this.device_position, _position);
+        return getDistance(this.position, _position);
     }
 
     activeManualPosition() {
@@ -62,7 +62,7 @@ export default class {
 
     moveListener() {
         console.log("listener_position", this.listener_x.value, this.listener_y.value, this.listener_z.value);
-        this.device_position = [parseFloat(this.listener_x.value), parseFloat(this.listener_y.value), parseFloat(this.listener_z.value)];
+        this.position = [parseFloat(this.listener_x.value), parseFloat(this.listener_y.value), parseFloat(this.listener_z.value)];
     }
 }
 
