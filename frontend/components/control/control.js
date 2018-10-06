@@ -24,6 +24,10 @@ export default class {
         });
 
         this.load_offset = document.querySelector('#load-offset');
+
+        window.addEventListener('beforeunload', (e) => {
+           e.returnValue = 'reload check';
+        });
     }
 
     init() {
