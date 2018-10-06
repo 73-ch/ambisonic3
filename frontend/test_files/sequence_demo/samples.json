@@ -3,6 +3,18 @@
     {
       "buffer_name": "000_bar",
       "path": "../audio/000_bar.wav"
+    },
+    {
+      "buffer_name": "002_foo",
+      "path": "../audio/002_foo.wav"
+    },
+    {
+      "buffer_name": "003",
+      "path": "../audio/003.wav"
+    },
+    {
+      "buffer_name": "gabba",
+      "path": "../audio/gabba.wav"
     }
   ],
   "audio_nodes": [
