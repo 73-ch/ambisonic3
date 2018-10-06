@@ -13,8 +13,12 @@
       "path": "../audio/003.wav"
     },
     {
-      "buffer_name": "gabba",
-      "path": "../audio/gabba.wav"
+      "buffer_name": "hh1",
+      "path": "../audio/hh1.wav"
+    },
+    {
+      "buffer_name": "hh2",
+      "path": "../audio/hh2.wav"
     }
   ],
   "audio_nodes": [

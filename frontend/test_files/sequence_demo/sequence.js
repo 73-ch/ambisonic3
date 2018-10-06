@@ -1,23 +1,44 @@
-const position = this.position_manager.position;
-
-const num = position[0]*4 + position[1];
-
-console.log(num);
-
 const seconds_per_beat = 500;
-
 const schedule_ahead = 200;
 
 let next_note_time = $time;
 let note_num_16th = 0;
 let sequence_count = 0;
-// [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]]
-let sequence = [
-    [["000_bar", "002_foo"],[],["002_foo"],["003"],[],["000_bar"],["002_foo"],[],["000_bar"],[],["000_bar"],["000_bar"],[],["000_bar"],["000_bar"],[]],
-    [[],["000_bar"],[],["003"],["003"],["003"],["000_bar"],[],[],[],["000_bar"],[],[],[],["000_bar"],[]]
-];
 
+let position = this.position_manager.position;
+position = position.map((a) => a - 1);
+
+let sequence = [];
+
+// [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]]
+
+// sequence.push([["000_bar", "002_foo"],[],["002_foo"],["003"],[],["000_bar"],["002_foo"],[],["000_bar"],[],["000_bar"],["000_bar"],[],["000_bar"],["000_bar"],[]],);
+// sequence.push([[],["000_bar"],[],["003"],["003"],["003"],["000_bar"],[],[],[],["000_bar"],[],[],[],["000_bar"],[]]);
+
+
+
+// let seq = [["000_bar"],[],[],[],["000_bar"],[],[],[],["000_bar"],[],[],[],["000_bar"],[],[],[]];
+let seq = [["000_bar"],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]];
+
+let id_2 = (position[0] % 2) * 2 + position[1]% 2;
+
+
+let id_3 = (position[0] % 4);
+let id_4 = (position[1] % 4);
+
+console.log(id_3, id_4);
+
+
+seq = seq.map((a, i, array) => array[(i - id_3*4 + 16) % 16]);
+sequence.push(seq);
+
+// const id_1 = position[0]*4 + position[1];
+
+
+
+clearInterval(this.intervals.analyser);
 clearInterval(this.intervals.sequence);
+
 
 
 this.intervals.sequence = setInterval(() => {
@@ -57,3 +78,23 @@ const playSample = (buffer_name, time) => {
     this.playLoadedSource(bar_params, this.time_sync.getAudioTime(time));
 };
 
+const analyser = this.context.createAnalyser();
+analyser.fftSize = 1024;
+
+this.nodes["gain"].connect(analyser);
+
+this.intervals.analyser = setInterval(() => {
+    let data = new Uint8Array(1024);
+
+    analyser.getByteFrequencyData(data);
+
+    let sum = 0;
+
+    sum = data.reduce((a,x) => a+=x,0);
+
+    sum = sum/20000;
+
+    this.visualizer.color = [sum, sum, sum, 1.0];
+
+    console.log(sum);
+}, 10);
