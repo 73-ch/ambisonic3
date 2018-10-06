@@ -125,7 +125,7 @@ export default class {
         const simplex = new SimplexNoise("test");
 
         setInterval(() => {
-            this.noise_player.cutoff_freq = Math.abs(simplex.noise2D(this.time_sync.current_time * 0.0001 + this.position[0]*0.05, this.position[1]*0.05) * 1000.);
+            this.noise_player.cutoff_freq = Math.abs(simplex.noise2D(this.time_sync.current_time * 0.0001 + this.position_manager.position[0]*0.05, this.position_manager.position[1]*0.05) * 1000.);
         }, 10.);
 
     }
