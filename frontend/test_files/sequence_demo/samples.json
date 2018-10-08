@@ -19,6 +19,26 @@
     {
       "buffer_name": "hh2",
       "path": "../audio/hh2.wav"
+    },
+    {
+      "buffer_name": "hand0",
+      "path": "../audio/hand0.wav"
+    },
+    {
+      "buffer_name": "hand1",
+      "path": "../audio/hand1.wav"
+    },
+    {
+      "buffer_name": "hand2",
+      "path": "../audio/hand2.wav"
+    },
+    {
+      "buffer_name": "hand3",
+      "path": "../audio/hand3.wav"
+    },
+    {
+      "buffer_name": "hand4",
+      "path": "../audio/hand4.wav"
     }
   ],
   "audio_nodes": [

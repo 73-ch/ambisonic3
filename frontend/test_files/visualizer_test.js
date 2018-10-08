@@ -12,7 +12,7 @@
 // clearInterval(this.intervals.glitch);
 
 
-const analyser = this.context.createAnalyser();
+const analyser = this.context.createAnalynoser();
 analyser.fftSize = 1024;
 
 this.nodes["gain"].connect(analyser);
@@ -26,9 +26,9 @@ this.intervals.analyser = setInterval(() => {
 
     sum = data.reduce((a,x) => a+=x,0);
 
-    sum = sum/250;
+    sum = sum/20;
 
-    this.visualizer.color = [sum, sum, sum, 255];
+    this.visualizer.color = [sum/255, sum/255, sum/255, 255];
 
     console.log(sum);
 }, 10);

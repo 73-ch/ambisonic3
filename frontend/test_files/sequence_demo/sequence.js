@@ -1,7 +1,7 @@
 const seconds_per_beat = 500;
 const schedule_ahead = 200;
 
-let next_note_time = $time;
+let next_note_time = $time + 1000;
 let note_num_16th = 0;
 let sequence_count = 0;
 
@@ -18,19 +18,40 @@ let sequence = [];
 
 
 // let seq = [["000_bar"],[],[],[],["000_bar"],[],[],[],["000_bar"],[],[],[],["000_bar"],[],[],[]];
-let seq = [["000_bar"],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]];
 
-let id_2 = (position[0] % 2) * 2 + position[1]% 2;
 
+// let seq = [["hand0"],[],[],[],["hand0"],["hand0"],["hand0"],["hand0"],[],[],[],[],[],[],[],[]];
+let seq = [["hand0"],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]];
+
+// let seq2 = [["hand0"],["hand4"],["hand0"],[],["hand4"],[],[],["hand0"],[],[],["hand0"],[],[],["hand0"],[],[]];
+let seq2 = [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]];
+
+let id_2 = (position[0] % 2) + (position[1]% 2)*2;
+// id_2 = (Math.floor(position[0] / 2)) + (Math.floor(position[1] / 2))*2;
 
 let id_3 = (position[0] % 4);
 let id_4 = (position[1] % 4);
 
+seq[4+id_2].push("hand0");
+
+if (position[1] % 2 === 0) {
+    seq2[0].push("hand0");
+    seq2[2].push("hand0");
+} else {
+    seq2[1].push("hand4");
+    seq2[5].push("hand4");
+}
+
+if (id_3 < 3) {
+    seq2[7+id_3*3].push("hand0");
+}
+
 console.log(id_3, id_4);
 
 
-seq = seq.map((a, i, array) => array[(i - id_3*4 + 16) % 16]);
+// seq = seq.map((a, i, array) => array[(i - id_3*4 + 16) % 16]);
 sequence.push(seq);
+sequence.push(seq2);
 
 // const id_1 = position[0]*4 + position[1];
 
@@ -51,7 +72,7 @@ this.intervals.sequence = setInterval(() => {
             sequence_count = (sequence_count + 1) % sequence.length;
         }
     }
-}, 100);
+}, 50);
 
 const schedule = (count, note_num, time) => {
     const target = sequence[count][note_num];
