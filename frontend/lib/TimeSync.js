@@ -35,7 +35,7 @@ export default class {
         // 1秒おきにアップデート処理を走らせる
         setInterval(() => {
             this.requestTime();
-            this.averageTolerate();
+            // console.log(`date offset : ${this.current_time - this.calcInitTime()}`);
         }, 1000);
     }
 
@@ -79,10 +79,12 @@ export default class {
 
     get system_time() {
         return this.getTime();
+        // return this.calcInitTime();
     }
 
     get current_time() {
-        return this.getTime() + this.tolerance;
+        return this.getTime()+ this.tolerance;
+        // return this.calcInitTime();
     }
 
     getAudioTime(_time) {
@@ -142,6 +144,8 @@ export default class {
                 let now = this.system_time;
                 let culc = (now - data.t1) * .5 + data.t2 - now;
                 this.tolerances.push(culc);
+
+                this.averageTolerate();
 
                 if (this.debug) {
                     let row = this.time_table.insertRow(this.time_table.rows.length);
