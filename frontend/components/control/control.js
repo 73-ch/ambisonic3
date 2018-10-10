@@ -20,6 +20,7 @@ export default class {
         const start_button = document.querySelector("#start");
 
         start_button.addEventListener('click', () => {
+            start_button.style.display = 'none';
             this.init();
         });
 
