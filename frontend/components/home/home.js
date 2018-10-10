@@ -8,7 +8,8 @@ import AudioNodeGenerator from "../../lib/AudioNodeGenerator";
 import TimeSync from "../../lib/TimeSync";
 import NoisePlayer from "../../lib/NoisePlayer";
 import SimpleVisualizer from "../../lib/SimpleVisualizer";
-import PositionManager from "../../lib/PositionManager"
+import PositionManager from "../../lib/PositionManager";
+import AudioToolKit from "../../lib/AudioToolKit";
 import {playAudioFile, getAudioTime} from "../../lib/LiveCodingUtilities";
 import "./home.scss"
 
@@ -61,7 +62,9 @@ export default class {
         this.nodes = {};
         this.generator = new AudioNodeGenerator(this.context);
 
-        this.time_sync = new TimeSync(this.context, true, this.messenger, this.debug);
+        this.time_sync = new TimeSync(this.context, false, this.messenger, this.debug);
+
+        this.tk = new AudioToolKit(this.context, this.generator, this.time_sync);
 
         this.noise_player = new NoisePlayer(this.context);
 
@@ -160,39 +163,6 @@ export default class {
             }
         }
         this.intervals = {};
-    }
-
-    // WebAudioラッパーかな
-    playLoadedSource(node_params, time) {
-        if (!node_params.params.buffer in this.generator.buffers) console.error("buffer does not found");
-
-        this.generator.createBufferSource(node_params);
-
-        this.generator.connectAudioNode(node_params);
-
-        this.nodes[node_params.name].start(time);
-
-    }
-
-    // グリッチを再生するやつ、ユーティリティーに移動
-    playGlitch(out, time) {
-        if (Math.random() > 0.25) return;
-
-        const tmp_name = createUniqueHash();
-
-        const s_num = Math.floor(Math.random() * 8);
-
-        const audio_node_params = {
-            "name": tmp_name,
-            "node_type": "buffer_source",
-            "out": out,
-            "params": {
-                "buffer": "buffer" + s_num,
-                "loop": false
-            }
-        };
-
-        this.playLoadedSource(audio_node_params, time);
     }
 
     requestTime() {
