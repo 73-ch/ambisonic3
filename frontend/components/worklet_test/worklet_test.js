@@ -1,7 +1,7 @@
 import deviseMessenger from "../../client/deviceMessenger";
 import AudioNodeGenerator from "../../lib/AudioNodeGenerator";
 import TimeSync from "../../lib/TimeSync";
-import AudioContextWrapper from "../../lib/WebAudioWrapper";
+import AudioContextWrapper from "../../lib/StuckAudioBuffers";
 
 export default class {
     constructor() {

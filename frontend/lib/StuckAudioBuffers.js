@@ -59,14 +59,6 @@ export default class {
         }
     }
 
-    createBufferSourceFromBufferName(name) {
-        let source = this.context.createBufferSource();
-
-        source.buffer = this.loaded_buffers[name];
-
-        return source;
-    }
-
     deleteLoadedBuffer(name) {
         try {
             delete this.loaded_buffers[name]
@@ -83,5 +75,5 @@ const fetchArrayBuffer = async path => {
 };
 
 const getFileName = (file_path) => {
-    return file_path.match(/([^/]+?)?$/)[0];
+    return file_path.match(/([^/]+?)?$/)[0].replace(/\..*/, "");
 };
