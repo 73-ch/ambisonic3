@@ -46,8 +46,8 @@ this.oscillator = this.context.createOscillator();
 this.oscillator.connect(this.nodes.scriptNode);
 this.nodes.scriptNode.connect(this.context.destination);
 
-this.oscillator.start(this.getAudioTime($time + 3000.));
+this.oscillator.start(this.time_sync.getAudioTime($time + 3000.));
 
-this.nodes.source1.start(this.getAudioTime($time + 3000.));
+this.nodes.source1.start(this.time_sync.getAudioTime($time + 3000.));
 
 

@@ -1,10 +1,6 @@
-
 {
   "load_files": [
-    {
-      "buffer_name": "buffer1",
-      "path": "../audio/003.wav"
-    }
+    "../audio/003.wav"
   ],
   "audio_nodes": [
     {
@@ -12,7 +8,7 @@
       "node_type": "buffer_source",
       "out": "destination",
       "params": {
-        "buffer": "buffer1",
+        "buffer": "003",
         "loop": false
       }
     }

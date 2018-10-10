@@ -1,4 +1,4 @@
-// this.nodes["source3"].start(this.getAudioTime($time + 2000));
+// this.nodes["source3"].start(this.time_sync.getAudioTime($time + 2000));
 
 
 
@@ -7,20 +7,20 @@ const node_params = {
     "node_type": "buffer_source",
     "out": "gain",
     "params": {
-        "buffer": "buffer3",
+        "buffer": "003",
         "loop": false
     }
 };
 
-// this.playLoadedSource(node_params, 0);
-this.playLoadedSource(node_params, this.getAudioTime($time + 2000));
-// this.playLoadedSource(node_params, this.getAudioTime($time + 1000 + this.position[0] * 100.));
+// this..tk.playLoadedSource(node_params, 0);
+this.tk.playLoadedSource(node_params, this.time_sync.getAudioTime($time + 2000));
+// this.tk.playLoadedSource(node_params, this.time_sync.getAudioTime($time + 1000 + this.position[0] * 100.));
 
 // var i = 1;
 
 // this.intervals.glitch = setInterval(() => {
 //     i++;
-//     this.playGlitch("gain",this.getAudioTime($time + 300 * i));
+//     this.tk.playGlitch("gain",this.time_sync.getAudioTime($time + 300 * i));
 // }, 300)
 
 // clearInterval(this.intervals.glitch);

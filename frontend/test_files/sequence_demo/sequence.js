@@ -96,7 +96,7 @@ const playSample = (buffer_name, time) => {
     };
 
     // console.log( this.time_sync.getAudioTime(time));
-    this.playLoadedSource(bar_params, this.time_sync.getAudioTime(time));
+    this.tk.playLoadedSource(bar_params, this.time_sync.getAudioTime(time));
 };
 
 const analyser = this.context.createAnalyser();

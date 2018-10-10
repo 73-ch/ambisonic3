@@ -1,17 +1,14 @@
-
 {
   "load_files": [
-    {
-      "buffer_name": "buffer",
-      "path": "../audio/start.mp3"
-    }
+    "../audio/start.mp3"
   ],
   "audio_nodes": [
     {
       "name": "source",
       "node_type": "buffer_source",
+      "out": "gain",
       "params": {
-        "buffer": "buffer",
+        "buffer": "start",
         "loop": false
       }
     },

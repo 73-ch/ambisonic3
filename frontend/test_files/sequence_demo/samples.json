@@ -1,45 +1,15 @@
 {
   "load_files": [
-    {
-      "buffer_name": "000_bar",
-      "path": "../audio/000_bar.wav"
-    },
-    {
-      "buffer_name": "002_foo",
-      "path": "../audio/002_foo.wav"
-    },
-    {
-      "buffer_name": "003",
-      "path": "../audio/003.wav"
-    },
-    {
-      "buffer_name": "hh1",
-      "path": "../audio/hh1.wav"
-    },
-    {
-      "buffer_name": "hh2",
-      "path": "../audio/hh2.wav"
-    },
-    {
-      "buffer_name": "hand0",
-      "path": "../audio/hand0.wav"
-    },
-    {
-      "buffer_name": "hand1",
-      "path": "../audio/hand1.wav"
-    },
-    {
-      "buffer_name": "hand2",
-      "path": "../audio/hand2.wav"
-    },
-    {
-      "buffer_name": "hand3",
-      "path": "../audio/hand3.wav"
-    },
-    {
-      "buffer_name": "hand4",
-      "path": "../audio/hand4.wav"
-    }
+    "../audio/000_bar.wav",
+    "../audio/002_foo.wav",
+    "../audio/003.wav",
+    "../audio/hh1.wav",
+    "../audio/hh2.wav",
+    "../audio/hand0.wav",
+    "../audio/hand1.wav",
+    "../audio/hand2.wav",
+    "../audio/hand3.wav",
+    "../audio/hand4.wav"
   ],
   "audio_nodes": [
     {

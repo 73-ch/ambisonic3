@@ -1,38 +1,14 @@
 
 {
   "load_files": [
-    {
-      "buffer_name": "buffer0",
-      "path": "../audio/000.wav"
-    },
-    {
-      "buffer_name": "buffer1",
-      "path": "../audio/001.wav"
-    },
-    {
-      "buffer_name": "buffer2",
-      "path": "../audio/002.wav"
-    },
-    {
-      "buffer_name": "buffer3",
-      "path": "../audio/003.wav"
-    },
-    {
-      "buffer_name": "buffer4",
-      "path": "../audio/004.wav"
-    },
-    {
-      "buffer_name": "buffer5",
-      "path": "../audio/005.wav"
-    },
-    {
-      "buffer_name": "buffer6",
-      "path": "../audio/006.wav"
-    },
-    {
-      "buffer_name": "buffer7",
-      "path": "../audio/007.wav"
-    }
+    "../audio/000.wav",
+    "../audio/001.wav",
+    "../audio/002.wav",
+    "../audio/003.wav",
+    "../audio/004.wav",
+    "../audio/005.wav",
+    "../audio/006.wav",
+    "../audio/007.wav"
   ],
   "audio_nodes": [
     {
@@ -40,7 +16,7 @@
       "node_type": "buffer_source",
       "out": "gain",
       "params": {
-        "buffer": "buffer0",
+        "buffer": "000",
         "loop": false
       }
     },
@@ -49,7 +25,7 @@
       "node_type": "buffer_source",
       "out": "gain",
       "params": {
-        "buffer": "buffer1",
+        "buffer": "001",
         "loop": false
       }
     },
@@ -58,7 +34,7 @@
       "node_type": "buffer_source",
       "out": "gain",
       "params": {
-        "buffer": "buffer2",
+        "buffer": "002",
         "loop": false
       }
     },
@@ -67,7 +43,7 @@
       "node_type": "buffer_source",
       "out": "gain",
       "params": {
-        "buffer": "buffer3",
+        "buffer": "003",
         "loop": false
       }
     },
@@ -76,7 +52,7 @@
       "node_type": "buffer_source",
       "out": "gain",
       "params": {
-        "buffer": "buffer4",
+        "buffer": "004",
         "loop": false
       }
     },
@@ -85,7 +61,7 @@
       "node_type": "buffer_source",
       "out": "gain",
       "params": {
-        "buffer": "buffer5",
+        "buffer": "005",
         "loop": false
       }
     },
@@ -94,7 +70,7 @@
       "node_type": "buffer_source",
       "out": "gain",
       "params": {
-        "buffer": "buffer6",
+        "buffer": "006",
         "loop": false
       }
     },
@@ -103,7 +79,7 @@
       "node_type": "buffer_source",
       "out": "gain",
       "params": {
-        "buffer": "buffer7",
+        "buffer": "007",
         "loop": false
       }
     },

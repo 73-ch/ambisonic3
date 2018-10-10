@@ -1,9 +1,6 @@
 {
   "load_files": [
-    {
-      "buffer_name": "buffer1",
-      "path": "../audio/foot.mp3"
-    }
+    "../audio/foot.mp3"
   ],
   "audio_nodes": [
     {
@@ -11,7 +8,7 @@
       "node_type": "buffer_source",
       "out": "gain",
       "params": {
-        "buffer": "buffer1",
+        "buffer": "foot",
         "loop": true
       }
     },

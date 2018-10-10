@@ -6,7 +6,7 @@
 
 // this.intervals.glitch = setInterval(() => {
 //     i++;
-//     this.playGlitch("gain",this.time_sync.getAudioTime($time + 300 * i));
+//     this.tk.playGlitch("gain",this.time_sync.getAudioTime($time + 300 * i));
 // }, 300)
 
 // clearInterval(this.intervals.glitch);
