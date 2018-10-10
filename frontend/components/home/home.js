@@ -10,7 +10,6 @@ import NoisePlayer from "../../lib/NoisePlayer";
 import SimpleVisualizer from "../../lib/SimpleVisualizer";
 import PositionManager from "../../lib/PositionManager";
 import AudioToolKit from "../../lib/AudioToolKit";
-import {playAudioFile, getAudioTime} from "../../lib/LiveCodingUtilities";
 import "./home.scss"
 
 const createUniqueHash = () => {
