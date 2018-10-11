@@ -15,10 +15,12 @@
 #start {
   position: relative;
   display: block;
-  width: 160px;
+  width: 70vw;
+  height: 25vw;
   padding: 0.8em;
   text-align: center;
   text-decoration: none;
+  font-size: 3em;
   color: #fff;
   background: #303233;
   border:solid 1px #fff;
@@ -27,9 +29,9 @@
 #start:before {
   content:"";
   position: absolute;
-  top: -25px;
+  top: -10vw;
   left: -20px;
-  height:90px;
+  height:50vw;
   width:20px;
   background : #fff;
   opacity: 0.3;
