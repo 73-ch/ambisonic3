@@ -12,6 +12,9 @@ const N_SAMPLE = 10;
 
 export default class {
     constructor(context, useHRT, messenger, debug) {
+        // WebSocketをオーバーライドして、タイムスタンプの精度を向上させる
+        this.overrideWebSocketNative();
+
         this.context = context;
         this.context.createBufferSource().start(0);
         this.useHRT = useHRT;
@@ -58,6 +61,49 @@ export default class {
         }, 10);
     }
 
+    overrideWebSocketNative() {
+        const that = this;
+
+        const old_send = window.WebSocket.prototype.send;
+
+        const _send = function (data) {
+            let json = JSON.parse(data);
+            let message_data = JSON.parse(json.data);
+
+            if (message_data["action"] === "sync_time") message_data.t1 = that.system_time;
+
+            json.data = JSON.stringify(message_data);
+
+            old_send.call(this, JSON.stringify(json));
+        };
+
+        window.WebSocket.prototype.send = _send;
+
+        // console.log(window.WebSocket);
+        //
+        // Object.definePropertiy(window.WebSocket.prototype, "onmessage", {
+        //     set(func){
+        //         console.log("set");
+        //         this._onmessage = func;
+        //     },
+        //     get() {
+        //         console.log("get");
+        //         return this._onmessage;
+        //     }
+        // });
+
+
+        // const test2 = window.WebSocket.prototype.onmessage;
+        //
+        // const _onmessage = function(event) {
+        //     let message_data = JSON.parse(event.data);
+        //     console.log("websockt_receive_time : ", that.system_time);
+        //     // message_data.
+        //     test2.call(this, event);
+        // }
+
+    }
+
     calcInitTime() {
         const NOW = new DateWithOffset(0);
         const TODAY = new DateWithOffset(NOW.getFullYear(), NOW.getMonth(), NOW.getDate(), 0);
@@ -73,6 +119,7 @@ export default class {
         } else {
             this.getTime = () => {
                 return this.init_time + this.context.currentTime * 1000;
+                // return this.calcInitTime();
             }
         }
     }
@@ -83,17 +130,20 @@ export default class {
     }
 
     get current_time() {
-        return this.getTime()+ this.tolerance;
+        return this.getTime() + this.tolerance;
         // return this.calcInitTime();
     }
 
     getAudioTime(_time) {
+        console.log(this.context.currentTime);
         return this.context.currentTime + (_time - this.current_time) * 0.001;
+        // return (_time - this.init_time - this.tolerance) * 0.001;
     }
 
     requestTime() {
-        // console.log('send');
+        console.log('send_timesync : ', this.system_time);
         this.messenger.requestTime({id: this.request_count, t1: this.system_time});
+        console.log('send_timesyncfinish : ', this.system_time);
     }
 
     averageTolerate() {
@@ -111,7 +161,7 @@ export default class {
 
             for (let i = 0; i < N_SAMPLE; i++) {
                 let disp = this.tolerances[this.tolerances.length - i - 1] - t_temp;
-                if (disp ** 2.0 >= (max - min)**2.0 *0.2) continue;
+                if (disp ** 2.0 >= (max - min) ** 2.0 * 0.2) continue;
                 sum += this.tolerances[this.tolerances.length - i - 1];
                 n++;
             }
@@ -121,7 +171,7 @@ export default class {
 
             this.stability = Math.min(Math.abs(b_temp - n_temp) * 0.01, .8);
 
-            this.tolerance = b_temp * (1.-this.stability) + n_temp * this.stability;
+            this.tolerance = b_temp * (1. - this.stability) + n_temp * this.stability;
 
             while (this.tolerances.length > N_SAMPLE) {
                 this.tolerances.shift();
@@ -141,9 +191,17 @@ export default class {
     messageReceived(data) {
         switch (data.action) {
             case 'time_sync':
+
+                // console.log(data);
                 let now = this.system_time;
+                console.log(now);
                 let culc = (now - data.t1) * .5 + data.t2 - now;
                 this.tolerances.push(culc);
+                // if (this.tolerances.length > N_SAMPLE) return;
+
+                // this.tolerance = this.tolerance * 0.8 + culc * 0.2;
+
+                // this.tolerance = culc;
 
                 this.averageTolerate();
 
@@ -155,6 +213,12 @@ export default class {
                     row.insertCell(-1).innerHTML = data.t2;
                     row.insertCell(-1).innerHTML = culc;
                 }
+
+                // while (this.tolerances.length > N_SAMPLE) {
+                //     this.tolerances.shift();
+                //
+                //     if (this.debug) this.time_table.deleteRow(1);
+                // }
 
                 break;
         }
