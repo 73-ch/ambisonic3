@@ -15,16 +15,22 @@ if (this.intervals.simple) {
     clearInterval(this.intervals.simple)
 }
 
+let next_time = $time + 2000;
+let ahead = 200;
+let span = 1000;
 
-let i = 1;
+
 
 this.intervals.simple = setInterval(() => {
-    this.tk.playLoadedSource(params, this.time_sync.getAudioTime($time +  1000 * i));
+    if (next_time < this.time_sync.current_time + ahead) {
+        this.tk.playLoadedSource(params, this.time_sync.getAudioTime(next_time));
 
-    setTimeout(() => {
-        this.visualizer.color = [1.0, 1.0, 1.0, 1.0];
-        this.visualizer.sub = [-0.05, -0.05, -0.05];
-    }, $time + 1000 * i - this.time_sync.current_time);
-    i++;
-}, 1000);
+        setTimeout(() => {
+            this.visualizer.color = [1.0, 1.0, 1.0, 1.0];
+            this.visualizer.sub = [-0.05, -0.05, -0.05];
+        }, next_time - this.time_sync.current_time);
+        // i++;
+        next_time += span;
+    }
+}, 100);
 
