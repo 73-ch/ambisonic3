@@ -4,6 +4,8 @@ export default class {
     constructor() {
         if (platform.os.family === 'iOS' && platform.name === 'Safari') {
             this.iosSafari();
+        } else if (platform.os.family === 'Android') {
+            this.android();
         }
     }
 
@@ -26,5 +28,12 @@ export default class {
         status_bar.name = 'apple-mobile-web-app-status-bar-style';
         status_bar.content = 'black-translucent';
         document.head.appendChild(status_bar);
+    }
+
+    android(){
+        const viewport = document.createElement('meta');
+        viewport.name = 'viewport';
+        viewport.content = 'width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no'
+        document.head.appendChild(viewport);
     }
 }
