@@ -1,0 +1,24 @@
+{
+  "load_files": [
+    "../audio/000_bar.wav",
+    "../audio/002_foo.wav",
+    "../audio/003.wav",
+    "../audio/hh1.wav",
+    "../audio/hh2.wav",
+    "../audio/hand0.wav",
+    "../audio/hand1.wav",
+    "../audio/hand2.wav",
+    "../audio/hand3.wav",
+    "../audio/hand4.wav"
+  ],
+  "audio_nodes": [
+    {
+      "name": "gain",
+      "node_type": "gain",
+      "out": "destination",
+      "params": {
+        "gain": 1.0
+      }
+    }
+  ]
+}
