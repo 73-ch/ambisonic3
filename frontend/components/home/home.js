@@ -10,6 +10,7 @@ import NoisePlayer from "../../lib/NoisePlayer";
 import SimpleVisualizer from "../../lib/SimpleVisualizer";
 import PositionManager from "../../lib/PositionManager";
 import AudioToolKit from "../../lib/AudioToolKit";
+import Sequencer from "../../lib/Sequencer";
 import "./home.scss"
 
 const createUniqueHash = () => {
@@ -61,7 +62,7 @@ export default class {
         this.nodes = {};
         this.generator = new AudioNodeGenerator(this.context);
 
-        this.time_sync = new TimeSync(this.context, false, this.messenger, this.debug);
+        this.time_sync = new TimeSync(this.context, true, this.messenger, this.debug);
 
         this.tk = new AudioToolKit(this.context, this.generator, this.time_sync);
 
@@ -73,6 +74,9 @@ export default class {
         // visualizer
         this.visualizer = new SimpleVisualizer();
         if (!this.debug) this.visualizer.toggleFullscreen();
+
+        // sequencer
+        this.sequencer = new Sequencer(this.context, this.time_sync, this.visualizer, this.tk);
 
         console.log("start");
     }
