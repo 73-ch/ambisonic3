@@ -1,4 +1,5 @@
 import DateWithOffset from "date-with-offset";
+import platform from "platform";
 
 /*
     各タイマーの単位・精度
@@ -13,7 +14,7 @@ const N_SAMPLE = 10;
 export default class {
     constructor(context, useHRT, messenger, debug) {
         // WebSocketをオーバーライドして、タイムスタンプの精度を向上させる
-        this.overrideWebSocketNative();
+        // this.overrideWebSocketNative();
 
         this.context = context;
         this.context.createBufferSource().start(0);
@@ -36,10 +37,7 @@ export default class {
         }
 
         // 1秒おきにアップデート処理を走らせる
-        setInterval(() => {
-            this.requestTime();
-            // console.log(`date offset : ${this.current_time - this.calcInitTime()}`);
-        }, 1000);
+        this.startSync();
     }
 
     debugInit() {
@@ -115,12 +113,12 @@ export default class {
             this.init_time -= performance.now();
             this.getTime = () => {
                 return this.init_time + performance.now();
-            }
+            };
         } else {
             this.getTime = () => {
                 return this.init_time + this.context.currentTime * 1000;
                 // return this.calcInitTime();
-            }
+            };
         }
     }
 
@@ -135,15 +133,36 @@ export default class {
     }
 
     getAudioTime(_time) {
-        console.log(this.context.currentTime);
-        return this.context.currentTime + (_time - this.current_time) * 0.001;
+        // console.log(this.context.currentTime);
+        let default_offset = 0;
+        if (!platform.name === 'Safari' || platform.os.family === 'iOS') {
+            // default_offset = 220;
+        }
+
+        return this.context.currentTime + (_time - this.current_time + default_offset) * 0.001;
         // return (_time - this.init_time - this.tolerance) * 0.001;
     }
 
     requestTime() {
-        console.log('send_timesync : ', this.system_time);
         this.messenger.requestTime({id: this.request_count, t1: this.system_time});
-        console.log('send_timesyncfinish : ', this.system_time);
+    }
+
+    startSync() {
+        if (this.status) this.stopSync();
+
+        this.status = true;
+
+        this.interval = setInterval(() => {
+            this.requestTime();
+            // console.log(`date offset : ${this.current_time - this.calcInitTime()}`);
+        }, 1000);
+    }
+
+    stopSync() {
+        if (!this.status) return false;
+
+        clearInterval(this.interval);
+        this.status = false;
     }
 
     averageTolerate() {
@@ -169,7 +188,7 @@ export default class {
             let b_temp = this.tolerance;
             let n_temp = n === 0 ? t_temp : sum / n;
 
-            this.stability = Math.min(Math.abs(b_temp - n_temp) * 0.01, .8);
+            this.stability = Math.min(Math.abs(b_temp - n_temp) * 0.05, .8);
 
             this.tolerance = b_temp * (1. - this.stability) + n_temp * this.stability;
 
@@ -191,11 +210,16 @@ export default class {
     messageReceived(data) {
         switch (data.action) {
             case 'time_sync':
+                const now = this.system_time;
+                const interval = now - data.t1;
 
-                // console.log(data);
-                let now = this.system_time;
-                console.log(now);
-                let culc = (now - data.t1) * .5 + data.t2 - now;
+                if (interval >= 150) {
+                    console.log("over");
+                    return;
+                }
+
+
+                let culc = interval * .5 + data.t2 - now;
                 this.tolerances.push(culc);
                 // if (this.tolerances.length > N_SAMPLE) return;
 
@@ -209,7 +233,7 @@ export default class {
                     let row = this.time_table.insertRow(this.time_table.rows.length);
                     row.insertCell(-1).innerHTML = data.t1;
                     row.insertCell(-1).innerHTML = now;
-                    row.insertCell(-1).innerHTML = now - data.t1;
+                    row.insertCell(-1).innerHTML = interval;
                     row.insertCell(-1).innerHTML = data.t2;
                     row.insertCell(-1).innerHTML = culc;
                 }
@@ -220,6 +244,8 @@ export default class {
                 //     if (this.debug) this.time_table.deleteRow(1);
                 // }
 
+                break;
+            default:
                 break;
         }
     }
