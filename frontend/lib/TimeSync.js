@@ -38,6 +38,8 @@ export default class {
 
         // 1秒おきにアップデート処理を走らせる
         this.startSync();
+
+        this.default_offset = 480;
     }
 
     debugInit() {
@@ -136,10 +138,15 @@ export default class {
         // console.log(this.context.currentTime);
         let default_offset = 0;
         if (!platform.name === 'Safari' || platform.os.family === 'iOS') {
-            // default_offset = 220;
+            // this.default_offset = 220;
+            console.log(this.default_offset);
+            return this.context.currentTime + (_time - this.current_time + this.default_offset) * 0.001;
+        } else {
+            return this.context.currentTime + (_time - this.current_time) * 0.001;
         }
 
-        return this.context.currentTime + (_time - this.current_time + default_offset) * 0.001;
+
+
         // return (_time - this.init_time - this.tolerance) * 0.001;
     }
 

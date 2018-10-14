@@ -58,7 +58,6 @@ export default class {
     main() {
         if (this.time_sync.current_time > this.next_note_time + this.ahead) {
             if (this.sequences.length > 0) {
-                console.log(this.sequence_count);
                 this.schedule(this.sequence_count, this.note_num_16th, this.next_note_time);
             }
 
