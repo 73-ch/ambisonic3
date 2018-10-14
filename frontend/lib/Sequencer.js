@@ -15,6 +15,9 @@ export default class {
         this.seconds_per_beat = 500;
 
         this.interval = null;
+        this.interval_span = 25;
+
+        this.status = false;
 
         this.tk = _tk;
     }
@@ -36,15 +39,20 @@ export default class {
     }
 
     resume(time) {
+        if (this.status === true) this.stop();
+        this.status = true;
         this.next_note_time = time;
 
-        this.interal = setInterval(() => {
+        this.interval = setInterval(() => {
             this.main();
-        }, 50);
+        }, this.interval_span);
     }
 
     stop() {
-        clearInterval(this.interval);
+        if (this.status === true) {
+            clearInterval(this.interval);
+            this.status = false;
+        }
     }
 
     main() {
