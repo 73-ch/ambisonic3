@@ -90,9 +90,13 @@ export default class {
     sendScript() {
         const editor_text = this.param_editor.getValue();
 
-        const send_text = editor_text.replace(/\$time/g, this.time_sync.current_time);
+        let send_text = editor_text.replace(/\$time/g, this.time_sync.current_time);
 
-        console.log(send_text);
+        let compel = editor_text.match(/\n\![^\n]*/g);
+        if (compel) {
+            compel = compel.map(a => a.replace(/\!/g, ""));
+            send_text = compel.join();
+        }
 
         this.messenger.sendScript({"text": send_text});
     }
