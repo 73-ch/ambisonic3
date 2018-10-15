@@ -66,8 +66,6 @@ export default class {
 
         this.tk = new AudioToolKit(this.context, this.generator, this.time_sync);
 
-        this.noise_player = new NoisePlayer(this.context);
-
         // live coding用のintervalの格納
         this.intervals = {};
 
@@ -77,6 +75,8 @@ export default class {
 
         // sequencer
         this.sequencer = new Sequencer(this.context, this.time_sync, this.visualizer, this.tk);
+
+        this.noise_player = new NoisePlayer(this.context, this.time_sync, this.visualizer);
 
         console.log("start");
     }
@@ -125,15 +125,6 @@ export default class {
             }
             console.log(this.nodes);
         }, 1000);
-    }
-
-    moveNoise() {
-        const simplex = new SimplexNoise("test");
-
-        setInterval(() => {
-            this.noise_player.cutoff_freq = Math.abs(simplex.noise2D(this.time_sync.current_time * 0.0001 + this.position_manager.position[0]*0.05, this.position_manager.position[1]*0.05) * 1000.);
-        }, 10.);
-
     }
 
     audioEventLoop() {

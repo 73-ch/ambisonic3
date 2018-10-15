@@ -1,11 +1,18 @@
+import SimplexNoise from "simplex-noise";
+
 export default class {
-    constructor(_context) {
+    constructor(_context, _time_sync, _visualizer) {
         this.context = _context;
+        this.time_sync = _time_sync;
+        this.visualizer = _visualizer;
 
         this.q = 1.0;
         this.cutoff_freq = 500.;
 
         this.buffer_size = 8192;
+        this.pos = [0,0,0];
+
+        this.main = null;
     }
 
     generateLowpassFilter() {
@@ -89,6 +96,29 @@ export default class {
         // numerators[2] = (4 * Math.pow(Math.PI, 2) * Math.pow(fc, 2)) / d;
         //
         // this.lowpass_filter = this.context.createIIRFilter(numerators, denominators);
+    }
+
+    setPosition(_pos) {
+        if (_pos.length !== 3) console.error("given position is wrong");
+        this.pos = _pos;
+    }
+
+    move() {
+        const simplex = new SimplexNoise("test");
+        this.visualizer.sub = [0.0,0.0,0.0,0.];
+
+        if (this.main) clearInterval(this.main);
+
+        this.main = setInterval(() => {
+            const noise = Math.abs(simplex.noise2D(this.time_sync.current_time * 0.0001 + this.pos[0]*0.05, this.pos[1]*0.05));
+            this.cutoff_freq = noise * 1000.;
+            this.visualizer.color = [noise,noise,noise,1.0];
+        }, 10.);
+    }
+
+    stop() {
+        if (this.main) clearInterval(this.main);
+        this.main = null;
     }
 
     updateDenominator() {
