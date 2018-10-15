@@ -16,48 +16,48 @@ export default class {
     }
 
     generateLowpassFilter() {
-        const sample_rate = this.context.sampleRate;
+        // const sample_rate = this.context.sampleRate;
 
-        this.lowpass_filter = this.context.createScriptProcessor(this.buffer_size, 1, 1);
-
-        const PI_2_div_sample_rate = Math.PI*2.0/sample_rate;
-
-
-        this.lowpass_filter.onaudioprocess = (e) => {
-            let omega = PI_2_div_sample_rate * this.cutoff_freq;
-            let alpha = Math.sin(omega) / (2.0 * this.q);
-
-            let a0 = 1.0 + alpha;
-
-            let a1 = -2.0 * Math.cos(omega) / a0;
-            let a2 = (1.0 - alpha) / a0;
-            let b0 = (1.0 - Math.cos(omega)) * .5 / a0;
-            let b1 = (1.0 - Math.cos(omega)) / a0;
-
-            let in1 = 0, in2 = 0;
-            let out1 = 0, out2 = 0;
-
-            const input = e.inputBuffer.getChannelData(0);
-            const output = e.outputBuffer.getChannelData(0);
-
-            for (let i = 0; i < this.buffer_size; i++) {
-                output[i] = b0 * input[i] + b1 * in1 + b0 * in2 - a1 * out1 - a2 * out2;
-
-                in2 = in1;
-                in1 = input[i];
-
-                out2 = out1;
-                out1 = output[i];
-            }
-
-        };
+        // this.lowpass_filter = this.context.createScriptProcessor(this.buffer_size, 1, 1);
+        //
+        // const PI_2_div_sample_rate = Math.PI*2.0/sample_rate;
+        //
+        //
+        // this.lowpass_filter.onaudioprocess = (e) => {
+        //     let omega = PI_2_div_sample_rate * this.cutoff_freq;
+        //     let alpha = Math.sin(omega) / (2.0 * this.q);
+        //
+        //     let a0 = 1.0 + alpha;
+        //
+        //     let a1 = -2.0 * Math.cos(omega) / a0;
+        //     let a2 = (1.0 - alpha) / a0;
+        //     let b0 = (1.0 - Math.cos(omega)) * .5 / a0;
+        //     let b1 = (1.0 - Math.cos(omega)) / a0;
+        //
+        //     let in1 = 0, in2 = 0;
+        //     let out1 = 0, out2 = 0;
+        //
+        //     const input = e.inputBuffer.getChannelData(0);
+        //     const output = e.outputBuffer.getChannelData(0);
+        //
+        //     for (let i = 0; i < this.buffer_size; i++) {
+        //         output[i] = b0 * input[i] + b1 * in1 + b0 * in2 - a1 * out1 - a2 * out2;
+        //
+        //         in2 = in1;
+        //         in1 = input[i];
+        //
+        //         out2 = out1;
+        //         out1 = output[i];
+        //     }
+        //
+        // };
 
         // biquad filter ver
 
-        // this.lowpass_filter = this.context.createBiquadFilter();
-        // this.lowpass_filter.type = "lowpass";
-        // this.lowpass_filter.Q = this.q;
-        // this.lowpass_filter.frequency = this.cutoff_freq;
+        this.lowpass_filter = this.context.createBiquadFilter();
+        this.lowpass_filter.type = "lowpass";
+        this.lowpass_filter.Q.value = this.q;
+        this.lowpass_filter.frequency.value = this.cutoff_freq;
 
         // simple lowpass
 
@@ -111,7 +111,8 @@ export default class {
 
         this.main = setInterval(() => {
             const noise = Math.abs(simplex.noise2D(this.time_sync.current_time * 0.0001 + this.pos[0]*0.05, this.pos[1]*0.05));
-            this.cutoff_freq = noise * 1000.;
+            // this.cutoff_freq = noise * 1000.;
+            this.lowpass_filter.frequency.value = noise * 1000.;
             this.visualizer.color = [noise,noise,noise,1.0];
         }, 10.);
     }
