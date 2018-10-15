@@ -92,10 +92,10 @@ export default class {
 
         let send_text = editor_text.replace(/\$time/g, this.time_sync.current_time);
 
-        let compel = editor_text.match(/\n\![^\n]*/g);
+        let compel = send_text.match(/\n\![^\n]*/g);
         if (compel) {
             compel = compel.map(a => a.replace(/\!/g, ""));
-            send_text = compel.join();
+            send_text = compel.join("");
         }
 
         this.messenger.sendScript({"text": send_text});
