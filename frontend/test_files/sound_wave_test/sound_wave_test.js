@@ -42,7 +42,7 @@ this.tk.playLoadedSource(node_params, this.time_sync.getAudioTime($time + 2000))
 
 //     sum = sum/200;
 
-//     this.visualizer.color = [sum, sum, sum, 255];
+//     this.visualizer.addColor([sum, sum, sum, 255], [.05,.05,.05]);
 
 //     //console.log(sum);
 // }, 10);

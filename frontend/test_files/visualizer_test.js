@@ -24,11 +24,11 @@ this.intervals.analyser = setInterval(() => {
 
     let sum = 0;
 
-    sum = data.reduce((a,x) => a+=x,0);
+    sum = data.reduce((a, x) => a += x, 0);
 
-    sum = sum/20;
+    sum = sum / 20;
 
-    this.visualizer.color = [sum/255, sum/255, sum/255, 255];
+    this.visualizer.addColor([sum / 255, sum / 255, sum / 255, 1.0], [.05, .05, .05]);
 
     console.log(sum);
 }, 10);
