@@ -101,13 +101,11 @@ export default class {
                 continue;
             }
 
-            console.log(c);
-
             for (let ci = 0; ci < 3; ci++) {
                 ret_color[ci] += c.color[ci] * c.color[3];
                 c.color[ci] = Math.min(1.0, Math.max(0.0, c.color[ci] - c.sub[ci]));
             }
-            console.log(Math.max(c.color[0],c.color[1],c.color[2]));
+
             if (Math.max(c.color[0],c.color[1],c.color[2]) === 0.0) colors.splice(i,1);
         }
         return ret_color;

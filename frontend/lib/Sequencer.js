@@ -2,10 +2,12 @@ import AudioToolKit from "./AudioToolKit";
 
 export default class {
     constructor(_context, _time_sync, _visualizer, _tk) {
-        this.sequences = [];
         this.context = _context;
         this.time_sync = _time_sync;
         this.visualizer = _visualizer;
+
+        this.sequences = [];
+        this.light_sequences = [];
 
         this.next_note_time = 0;
         this.ahead = 200;
@@ -22,8 +24,37 @@ export default class {
         this.tk = _tk;
     }
 
-    addSequence(sequence) {
+    addSequence(...args) {
+        console.log(args);
+        if (args.length === 1) {
+            let light_pattern = this.createDefaultLightPattern(args[0], [1,1,1,1], [.05,.05,.05]);
+            this.addSequenceSL(args[0], light_pattern);
+        }  else if (args.length === 2) {
+            this.addSequenceSL(...args);
+        } else if (args.length === 3) {
+            let light_pattern = this.createDefaultLightPattern(...args);
+            this.addSequenceSL(args[0], light_pattern);
+        }
+    }
+
+    addSequenceSL(sequence, light){
+        console.log(sequence, light);
         this.sequences.push(sequence);
+        this.light_sequences.push(light);
+    }
+
+    createDefaultLightPattern(seq, col, sub) {
+        console.log(seq,col,sub);
+        let ret_pattern = [];
+        for (let i = 0; i < seq.length; i++) {
+            let child = [];
+            for (let j = 0; j < seq[i].length; j++){
+                child.push([col, sub]);
+            }
+            if (seq[i]) ret_pattern.push(child);
+        }
+
+        return ret_pattern;
     }
 
     removeSequence(index) {
@@ -32,6 +63,7 @@ export default class {
 
     clearSequence() {
         this.sequences = [];
+        this.light_sequences = [];
     }
 
     setBPM(bpm) {
@@ -80,6 +112,15 @@ export default class {
                 this.playSample(sample, time);
             }
         }
+
+        const lights = this.light_sequences[count][note_num];
+        if (!lights) return;
+        if (lights.length >= 1) {
+            for (let c of lights) {
+                this.flashDisplay(c, time);
+            }
+        }
+
     }
 
     playSample(buffer_name, time) {
@@ -95,12 +136,12 @@ export default class {
 
         // console.log( this.time_sync.getAudioTime(time));
         this.tk.playLoadedSource(bar_params, this.time_sync.getAudioTime(time));
+    }
 
+    flashDisplay(couple, time) {
         // visualizer
         setTimeout(() => {
-            this.visualizer.color = [1.0, 1.0, 1.0, 1.0];
-            this.visualizer.sub = [-0.05, -0.05, -0.05];
-        }, this.next_time);
-
+            this.visualizer.addColor(couple[0].concat(), couple[1].concat());
+        }, time - this.time_sync.current_time);
     }
 }
