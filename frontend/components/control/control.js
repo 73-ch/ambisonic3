@@ -1,5 +1,7 @@
 import controlMessenger from "../../client/controlMessenger";
 import TimeSync from "../../lib/TimeSync";
+
+import WebMidi from 'webmidi';
 import ace from "brace";
 import "brace/mode/json";
 import "brace/mode/javascript";
@@ -38,10 +40,40 @@ export default class {
 
         this.time_sync = new TimeSync(this.context, true, this.messenger, true);
 
+        this.midiSetup();
+
         setTimeout(() => {
             this.messenger.testConnection();
             this.messenger.getUserParams();
         }, 300);
+    }
+
+    midiSetup() {
+        WebMidi.enable((err) => {
+            if (err) {
+                console.error(err);
+            } else {
+                console.log("webmidi enabled");
+
+                this.device = WebMidi.getInputByName("APC MINI");
+
+                console.log(this.device);
+
+                this.device.addListener('noteon', "all", (e) => {this.noteonEvent(e)});
+            }
+        });
+    }
+
+    noteonEvent(e) {
+        console.log(`noteon ${e.note.number}`);
+
+        if (isNaN(e.note.number)) console.error('midi message is wrong');
+
+        switch (e.note.number) {
+            case 0:
+                this.reloadAllDevices();
+                break;
+        }
     }
 
     createUI() {
