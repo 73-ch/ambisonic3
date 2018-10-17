@@ -1,4 +1,7 @@
-import AudioToolKit from "./AudioToolKit";
+// import AudioToolKit from "./AudioToolKit";
+import clone from 'clone';
+
+const emp_seq = [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]];
 
 export default class {
     constructor(_context, _time_sync, _visualizer, _tk) {
@@ -26,32 +29,39 @@ export default class {
 
     addSequence(...args) {
         console.log(args);
-        if (args.length === 1) {
-            let light_pattern = this.createDefaultLightPattern(args[0], [1,1,1,1], [.05,.05,.05]);
-            this.addSequenceSL(args[0], light_pattern);
-        }  else if (args.length === 2) {
-            this.addSequenceSL(...args);
-        } else if (args.length === 3) {
-            let light_pattern = this.createDefaultLightPattern(...args);
-            this.addSequenceSL(args[0], light_pattern);
+        let light_pattern;
+
+        if (args.length === 2) {// index, sequence
+            light_pattern = this.createDefaultLightPattern(args[0], [1,1,1,1], [.05,.05,.05]);
+        }  else if (args.length === 3) {// index, sequence, light_sequence
+            light_pattern = args[2];
+        } else if (args.length === 4) {// index, sequence, light, sub
+            light_pattern = this.createDefaultLightPattern(args[1], args[2], args[3]);
         }
+
+        this.addPattern(this.sequences, args[0], args[1]);
+        this.addPattern(this.light_sequences, args[0],  light_pattern);
     }
 
-    addSequenceSL(sequence, light){
-        console.log(sequence, light);
-        this.sequences.push(sequence);
-        this.light_sequences.push(light);
+
+    addPattern(type, seq_index, pattern) {
+        while (type.length <= seq_index) type.push(clone(emp_seq));
+
+        for (let i =0; i < pattern.length; i++) {
+            if (pattern[i]) type[seq_index][i].push(pattern[i]);
+        }
+
     }
 
     createDefaultLightPattern(seq, col, sub) {
         console.log(seq,col,sub);
         let ret_pattern = [];
         for (let i = 0; i < seq.length; i++) {
-            let child = [];
-            for (let j = 0; j < seq[i].length; j++){
-                child.push([col, sub]);
-            }
-            if (seq[i]) ret_pattern.push(child);
+            let p = [];
+
+            if (seq[i]) p = [col, sub];
+
+            ret_pattern.push(p);
         }
 
         return ret_pattern;
@@ -100,6 +110,7 @@ export default class {
             if (this.note_num_16th >= 16) {
                 this.note_num_16th %= 16;
                 this.sequence_count = (this.sequence_count + 1) % this.sequences.length | 0;
+                console.log(this.sequence_count);
             }
         }
     }
@@ -108,6 +119,7 @@ export default class {
         const target = this.sequences[count][note_num];
         if (!target) return;
         if (target.length >= 1) {
+            console.log(target);
             for (let sample of target) {
                 this.playSample(sample, time);
             }
@@ -117,7 +129,7 @@ export default class {
         if (!lights) return;
         if (lights.length >= 1) {
             for (let c of lights) {
-                this.flashDisplay(c, time);
+                if (c.length === 2) this.flashDisplay(c, time);
             }
         }
 
