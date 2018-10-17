@@ -59,19 +59,35 @@ export default class {
 
                 console.log(this.device);
 
-                this.device.addListener('noteon', "all", (e) => {this.noteonEvent(e)});
+                this.device.addListener('noteon', "all", (e) => {this.noteonEvent(e.note.number)});
             }
         });
     }
 
-    noteonEvent(e) {
-        console.log(`noteon ${e.note.number}`);
-
-        if (isNaN(e.note.number)) console.error('midi message is wrong');
-
-        switch (e.note.number) {
-            case 0:
+    noteonEvent(note_num) {
+        switch (note_num) {
+            case 82:
                 this.reloadAllDevices();
+                break;
+            case 83:
+                this.messenger.sendScript({"text": "this.time_sync.stopSync()"});
+                break;
+            case 84:
+                this.messenger.sendScript({"text": "this.time_sync.startSync()"});
+                break;
+            case 85:
+                this.messenger.sendScript({"text": `this.sequencer.resume(${this.time_sync.current_time+ 3000});`});
+                break;
+            case 86:
+                this.messenger.sendScript({"text": "this.sequencer.clearSequence"});
+                break;
+            case 89:
+                this.sendScript();
+                break;
+            case 98:
+                this.getJsonText();
+                break;
+            default:
                 break;
         }
     }
