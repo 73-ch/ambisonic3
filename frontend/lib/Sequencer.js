@@ -32,7 +32,7 @@ export default class {
         let light_pattern;
 
         if (args.length === 2) {// index, sequence
-            light_pattern = this.createDefaultLightPattern(args[0], [1,1,1,1], [.05,.05,.05]);
+            light_pattern = this.createDefaultLightPattern(args[1], [1,1,1,1], [.05,.05,.05]);
         }  else if (args.length === 3) {// index, sequence, light_sequence
             light_pattern = args[2];
         } else if (args.length === 4) {// index, sequence, light, sub
