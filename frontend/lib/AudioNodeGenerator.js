@@ -109,27 +109,16 @@ export default class {
     setParams(target, params) {
         for (let p in params) {
             if (!params.hasOwnProperty(p)) continue;
-            switch (p) {
-                case "buffer":
-                    break;
+            if (target[p] instanceof AudioParam) {
+                target[p].value = params[p];
+            } else if (p === "buffer") {
 
-                case "position":
-                    target.setPosition(params[p][0], params[p][1], params[p][2]);
-                    break;
-
-                case "orientation":
-                    target.setOrientation(params[p][0], params[p][1], params[p][2]);
-                    break;
-
-                case "frequency":
-                case "gain":
-                case "Q":
-                    target[p].value = params[p];
-                    break;
-
-                default:
-                    target[p] = params[p];
-                    break;
+            } else if (p === "position") {
+                target.setPosition(params[p][0], params[p][1], params[p][2]);
+            } else if (p === "orientation") {
+                target.setOrientation(params[p][0], params[p][1], params[p][2]);
+            } else {
+                target[p] = params[p];
             }
         }
     }
