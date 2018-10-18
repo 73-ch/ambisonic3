@@ -1,0 +1,27 @@
+{
+  "load_files": [
+    "../audio/start.mp3"
+  ],
+
+  "audio_nodes": [
+    {
+      "name": "source",
+      "node_type": "buffer_source",
+      "out": "gain",
+      "params": {
+        "buffer": "start",
+        "loop": false,
+        "detune": 1000.0,
+        "playbackRate": 0.5
+      }
+    },
+    {
+      "name": "gain",
+      "node_type": "gain",
+      "out": "destination",
+      "params": {
+        "gain": 1.0
+      }
+    }
+  ]
+}
