@@ -152,6 +152,7 @@ export default class {
 
     requestTime() {
         this.messenger.requestTime({id: this.request_count, t1: this.system_time});
+        this.request_count++;
     }
 
     startSync() {
