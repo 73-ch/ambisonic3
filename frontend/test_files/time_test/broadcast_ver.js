@@ -16,3 +16,6 @@ this.intervals.broadcast = setInterval(() => {
     if (count >= 4) clearInterval(this.intervals.broadcast);
 }, 700);
 
+setTimeout(() => {
+    if (this.intervals.broadcast) clearInterval(this.intervals.broadcast);
+}, 4000);
