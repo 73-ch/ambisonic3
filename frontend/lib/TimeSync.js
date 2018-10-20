@@ -110,9 +110,14 @@ export default class {
         return NOW.getTime() - TODAY.getTime();
     }
 
+    calcDateTime() {
+        const NOW = new DateWithOffset(0);
+        const TODAY = new DateWithOffset(NOW.getFullYear(), NOW.getMonth(), NOW.getDate(), 0);
+        return NOW.getTime() - TODAY.getTime();
+    }
+
     setGetTime() {
         if (this.useHRT) {
-            this.init_time -= performance.now();
             this.getTime = () => {
                 return this.init_time + performance.now();
             };

@@ -139,6 +139,7 @@ export default class {
         const editor_text = this.param_editor.getValue();
 
         let send_text = editor_text.replace(/\$time/g, this.time_sync.current_time);
+        send_text = send_text.replace(/\$date/g, this.time_sync.calcDateTime());
 
         let compel = send_text.match(/\n\![^\n]*/g);
         if (compel) {
