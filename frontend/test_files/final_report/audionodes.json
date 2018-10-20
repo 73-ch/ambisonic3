@@ -1,0 +1,39 @@
+{
+  "load_files": [
+    "../audio/000_bar.wav",
+    "../audio/002_foo.wav",
+    "../audio/000.wav",
+    "../audio/001.wav",
+    "../audio/002.wav",
+    "../audio/003.wav",
+    "../audio/004.wav",
+    "../audio/005.wav",
+    "../audio/006.wav",
+    "../audio/007.wav",
+    "../audio/hh1.wav",
+    "../audio/hh2.wav",
+    "../audio/perc0.wav",
+    "../audio/perc1.wav",
+    "../audio/perc2.wav",
+    "../audio/perc3.wav",
+    "../audio/perc4.wav",
+    "../audio/perc5.wav",
+    "../audio/sn.wav",
+    "../audio/bd.wav",
+    "../audio/hand1.wav",
+    "../audio/hand2.wav",
+    "../audio/hand3.wav",
+    "../audio/hand4.wav"
+  ],
+
+  "audio_nodes": [
+    {
+      "name": "gain",
+      "node_type": "gain",
+      "out": "destination",
+      "params": {
+        "gain": 1.0
+      }
+    }
+  ]
+}
