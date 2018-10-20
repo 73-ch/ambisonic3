@@ -81,6 +81,9 @@ export default class {
             case 86:
                 this.messenger.sendScript({"text": "this.sequencer.clearSequence()"});
                 break;
+            case 87:
+                this.messenger.sendScript({"text": "this.sequencer.stop()"});
+                break;
             case 89:
                 this.sendScript();
                 break;
