@@ -67,6 +67,15 @@ export default class {
         }
 
     }
+
+    clearLoadedBuffer() {
+        console.log("clear_buffer", this.loaded_buffers);
+        for (let buffer in this.loaded_buffers) {
+            delete this.loaded_buffers[buffer];
+        }
+
+        this.loaded_buffers = {};
+    }
 }
 
 const fetchArrayBuffer = async path => {
