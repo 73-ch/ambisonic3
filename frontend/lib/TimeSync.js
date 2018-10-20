@@ -106,8 +106,20 @@ export default class {
 
     calcInitTime() {
         const NOW = new DateWithOffset(0);
+        const HRT_TIME = performance.now();
+        const WA_TIME = this.context.currentTime;
+
+        console.log(HRT_TIME, WA_TIME);
         const TODAY = new DateWithOffset(NOW.getFullYear(), NOW.getMonth(), NOW.getDate(), 0);
-        return NOW.getTime() - TODAY.getTime();
+
+        let init = NOW.getTime() - TODAY.getTime();
+
+        if (this.useHRT) {
+            init -= HRT_TIME
+        } else {
+            init -= WA_TIME;
+        }
+        return init;
     }
 
     calcDateTime() {
