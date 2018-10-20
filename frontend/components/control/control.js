@@ -79,7 +79,7 @@ export default class {
                 this.messenger.sendScript({"text": `this.sequencer.resume(${this.time_sync.current_time+ 3000});`});
                 break;
             case 86:
-                this.messenger.sendScript({"text": "this.sequencer.clearSequence"});
+                this.messenger.sendScript({"text": "this.sequencer.clearSequence()"});
                 break;
             case 89:
                 this.sendScript();
