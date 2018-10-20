@@ -116,7 +116,7 @@ export default class {
             const noise = Math.abs(simplex.noise2D(this.time_sync.current_time * this.time_p + this.pos[0]*this.pos_p, this.pos[1]*this.pos_p));
             // this.cutoff_freq = noise * 1000.;
             this.lowpass_filter.frequency.value = noise * 1000.;
-            console.log(noise);
+            this.lowpass_filter.Q.value = this.Q;
 
             this.visualizer.colors = [{color: [noise,noise,noise,1.0], sub:[.05,.05,.05]}];
         }, 10.);
