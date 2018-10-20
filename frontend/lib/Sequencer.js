@@ -17,7 +17,7 @@ export default class {
         this.sequence_count = 0;
         this.note_num_16th = 0;
 
-        this.seconds_per_beat = 500;
+        this.setBPM(64);
 
         this.interval = null;
         this.interval_span = 25;
@@ -84,6 +84,10 @@ export default class {
         if (this.status === true) this.stop();
         this.status = true;
         this.next_note_time = time;
+        // this.note_num_16th = 0;
+        // this.sequence_count = 0;
+        
+        // if (this.interval) clearInteral(this.interval);
 
         this.interval = setInterval(() => {
             this.main();
@@ -104,7 +108,7 @@ export default class {
             }
 
             // next_note_time,
-            this.next_note_time += this.seconds_per_beat * 0.25;
+            this.next_note_time += this.seconds_per_beat * 0.0625;
             this.note_num_16th++;
 
             if (this.note_num_16th >= 16) {

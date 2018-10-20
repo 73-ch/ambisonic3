@@ -39,4 +39,8 @@ export default class {
 
         this.playLoadedSource(audio_node_params, time);
     }
+
+    createOdd() {
+        return Math.floor(Math.random()*15)*2+1;
+    }
 }
