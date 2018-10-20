@@ -142,6 +142,17 @@ export default class {
 
     }
 
+    clearAllNodes() {
+        console.log("clear all nodes", this.nodes);
+        for (let node in this.nodes) {
+            this.nodes[node].disconnect();
+        }
+
+        for (let node in this.nodes) {
+            delete this.nodes[node];
+        }
+    }
+
     get getNodes() {
         return this.nodes;
     }
