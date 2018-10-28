@@ -1,13 +1,12 @@
 import * as THREE from 'three';
-import platform from 'platform';
+import FullScreenCanvas from "./FullScreenCanvas"
 
-export default class {
+export default class extends FullScreenCanvas {
     constructor() {
-        this.canvas_obj = document.createElement("canvas");
-
-        document.body.appendChild(this.canvas_obj);
-
+        super();
         this.createThreeComponents();
+
+        this.resizeCanvas();
 
         this.colors = [];
 
@@ -15,25 +14,6 @@ export default class {
 
         this.draw();
 
-        document.addEventListener('fullscreenchange', (e) => {
-            this.resizeCanvas();
-        });
-
-        document.addEventListener('webkitfullscreenchange', (e) => {
-            this.resizeCanvas();
-        });
-
-        document.addEventListener('mozfullscreenchange', (e) => {
-            this.resizeCanvas();
-        });
-
-        this.canvas_obj.addEventListener('touchmove', canceltouch, false);
-
-        function canceltouch(e) {
-            e.preventDefault();
-        }
-
-        this.resizeCanvas();
     }
 
     createThreeComponents() {
@@ -56,33 +36,6 @@ export default class {
         this.scene.add(this.plane);
     }
 
-    resizeCanvas() {
-        if (platform.name === 'Safari' || platform.os.family === 'iOS') {
-            this.canvas_obj.width = window.parent.screen.width;
-            this.canvas_obj.height = window.parent.screen.height;
-        } else {
-            this.canvas_obj.width = window.innerWidth;
-            this.canvas_obj.height = window.innerHeight;
-        }
-
-        this.renderer.setSize(this.canvas_obj.width, this.canvas_obj.height);
-    }
-
-    toggleFullscreen() {
-        if (this.canvas_obj["requestFullscreen"]) {
-            console.log("fullscreen");
-            this.canvas_obj.requestFullscreen();
-        } else if (this.canvas_obj["webkitRequestFullScreen"]) {
-            console.log("fullscreen webkit");
-            this.canvas_obj.webkitRequestFullScreen();
-        } else if (this.canvas_obj["mozRequestFullScreen"]) {
-            console.log("fullscreen moz");
-            this.canvas_obj.mozRequestFullScreen();
-        }
-
-        this.resizeCanvas();
-    }
-
     addColor(colors, sub) {
         this.colors.push({color: colors, sub: sub});
     }
@@ -91,8 +44,13 @@ export default class {
         this.colors = [];
     }
 
+    resizeCanvas() {
+        super.resizeCanvas();
+        this.renderer.setSize(this.canvas_obj.width, this.canvas_obj.height);
+    }
+
     updateColors(colors) {
-        let ret_color = [0.,0.,0.,1.];
+        let ret_color = [0., 0., 0., 1.];
 
         for (let i = 0; i < colors.length; i++) {
             let c = colors[i];
@@ -106,7 +64,7 @@ export default class {
                 c.color[ci] = Math.min(1.0, Math.max(0.0, c.color[ci] - c.sub[ci]));
             }
 
-            if (Math.max(c.color[0],c.color[1],c.color[2]) === 0.0) colors.splice(i,1);
+            if (Math.max(c.color[0], c.color[1], c.color[2]) === 0.0) colors.splice(i, 1);
         }
         return ret_color;
     }
@@ -114,7 +72,7 @@ export default class {
     draw() {
         const color = this.updateColors(this.colors);
 
-        this.m_plane.color.setRGB(color[0],color[1],color[2]);
+        this.m_plane.color.setRGB(color[0], color[1], color[2]);
 
         this.renderer.render(this.scene, this.cam);
 
