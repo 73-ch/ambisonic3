@@ -1,24 +1,14 @@
 import * as THREE from 'three';
 import FullScreenCanvas from "./FullScreenCanvas"
+import BaseScene from "./BaseScene"
 
-export default class extends FullScreenCanvas {
+export default class extends BaseScene {
     constructor() {
         super();
-        this.createThreeComponents();
-
-        this.resizeCanvas();
 
         this.colors = [];
 
         this.background_color = [0, 0, 0];
-
-        this.draw();
-
-    }
-
-    createThreeComponents() {
-        this.renderer = new THREE.WebGLRenderer({"canvas": this.canvas_obj});
-        this.renderer.setClearColor(0x000000, 1.0);
 
         this.scene = new THREE.Scene();
 
@@ -36,17 +26,13 @@ export default class extends FullScreenCanvas {
         this.scene.add(this.plane);
     }
 
+
     addColor(colors, sub) {
         this.colors.push({color: colors, sub: sub});
     }
 
     clearColor() {
         this.colors = [];
-    }
-
-    resizeCanvas() {
-        super.resizeCanvas();
-        this.renderer.setSize(this.canvas_obj.width, this.canvas_obj.height);
     }
 
     updateColors(colors) {
@@ -69,16 +55,10 @@ export default class extends FullScreenCanvas {
         return ret_color;
     }
 
-    draw() {
+    update() {
         const color = this.updateColors(this.colors);
 
         this.m_plane.color.setRGB(color[0], color[1], color[2]);
-
-        this.renderer.render(this.scene, this.cam);
-
-        requestAnimationFrame(() => {
-            this.draw();
-        });
     }
 
 }

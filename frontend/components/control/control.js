@@ -65,6 +65,7 @@ export default class {
     }
 
     noteonEvent(note_num) {
+        console.log(note_num);
         switch (note_num) {
             case 56:
                 this.editor.setValue('{\n' +

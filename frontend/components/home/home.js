@@ -11,6 +11,7 @@ import SimpleVisualizer from "../../lib/SimpleVisualizer";
 import PositionManager from "../../lib/PositionManager";
 import AudioToolKit from "../../lib/AudioToolKit";
 import Sequencer from "../../lib/Sequencer";
+import GraphicManager from "../../lib/GraphicManager"
 import "./home.scss"
 
 const createUniqueHash = () => {
@@ -70,13 +71,19 @@ export default class {
         this.intervals = {};
 
         // visualizer
-        this.visualizer = new SimpleVisualizer();
-        if (!this.debug) this.visualizer.toggleFullscreen();
+        // this.visualizer = new SimpleVisualizer();
+        // if (!this.debug) this.visualizer.toggleFullscreen();
+        this.graphic_manager = new GraphicManager();
+        this.graphic_manager.resize();
+        if (!this.debug)this.graphic_manager.toggleFullscreen();
+
+        this.graphic_manager.scene = new SimpleVisualizer();
+
 
         // sequencer
-        this.sequencer = new Sequencer(this.context, this.time_sync, this.visualizer, this.tk);
+        this.sequencer = new Sequencer(this.context, this.time_sync, this.graphic_manager.scene, this.tk);
 
-        this.noise_player = new NoisePlayer(this.context, this.time_sync, this.visualizer);
+        this.noise_player = new NoisePlayer(this.context, this.time_sync, this.graphic_manager.scene);
 
         console.log("start");
     }
