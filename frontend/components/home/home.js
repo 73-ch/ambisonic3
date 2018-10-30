@@ -12,6 +12,10 @@ import PositionManager from "../../lib/PositionManager";
 import AudioToolKit from "../../lib/AudioToolKit";
 import Sequencer from "../../lib/Sequencer";
 import GraphicManager from "../../lib/GraphicManager"
+
+import LifeGame from "../../test_files/life_game/script";
+
+
 import "./home.scss"
 
 const createUniqueHash = () => {
@@ -77,7 +81,8 @@ export default class {
         this.graphic_manager.resize();
         if (!this.debug)this.graphic_manager.toggleFullscreen();
 
-        this.graphic_manager.scene = new SimpleVisualizer();
+        // this.graphic_manager.scene = new SimpleVisualizer();
+        this.graphic_manager.scene = new LifeGame();
 
 
         // sequencer
