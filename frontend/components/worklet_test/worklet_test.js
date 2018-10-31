@@ -3,7 +3,7 @@ import AudioNodeGenerator from "../../lib/AudioNodeGenerator";
 import TimeSync from "../../lib/TimeSync";
 import AudioContextWrapper from "../../lib/StuckAudioBuffers";
 
-export default class {
+const WorkletTest = class {
     constructor() {
         this.context = new AudioContext();
 
@@ -38,4 +38,5 @@ export default class {
         //     // this.wrapper.deleteLoadedBuffer("003.wav");
         // });
     }
-}
+};
+export default WorkletTest

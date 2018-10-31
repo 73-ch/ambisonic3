@@ -11,7 +11,7 @@ import platform from "platform";
 
 const N_SAMPLE = 10;
 
-export default class {
+const TimeSync = class {
     constructor(context, useHRT, messenger, debug) {
         // WebSocketをオーバーライドして、タイムスタンプの精度を向上させる
         // this.overrideWebSocketNative();
@@ -274,4 +274,6 @@ export default class {
                 break;
         }
     }
-}
+};
+
+export default TimeSync;

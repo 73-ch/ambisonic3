@@ -2,7 +2,7 @@ import Home from "../components/home/home.js"
 import Controller from "../components/control/control"
 import MicCheck from "../components/mic_check/mic_check"
 import WorkletTest from "../components/worklet_test/worklet_test"
-import htmlMetaGenerator from "../lib/htmlMetaGenerator"
+import htmlMetaGenerator from "../lib/HtmlMetaGenerator"
 import "./index.css"
 
 const metaGenerator = new htmlMetaGenerator();

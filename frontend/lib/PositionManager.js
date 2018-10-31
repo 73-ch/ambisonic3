@@ -8,7 +8,7 @@ const convertPositionFromQueryString = (q_string) => {
     return isNaN(q_string) ? 0.0 : parseFloat(q_string);
 };
 
-export default class {
+const PositionManager = class {
     constructor() {
         this.position = [0, 0, 0];
 
@@ -64,6 +64,7 @@ export default class {
         console.log("listener_position", this.listener_x.value, this.listener_y.value, this.listener_z.value);
         this.position = [parseFloat(this.listener_x.value), parseFloat(this.listener_y.value), parseFloat(this.listener_z.value)];
     }
-}
+};
+export default PositionManager
 
 

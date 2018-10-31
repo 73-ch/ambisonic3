@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import FullScreenCanvas from "./FullScreenCanvas"
 import BaseScene from "./BaseScene"
 
-export default class extends BaseScene {
+const SimpleVisuzlizer = class extends BaseScene {
     constructor() {
         super();
 
@@ -61,4 +61,5 @@ export default class extends BaseScene {
         this.m_plane.color.setRGB(color[0], color[1], color[2]);
     }
 
-}
+};
+export default SimpleVisuzlizer

@@ -3,7 +3,7 @@ const createUniqueHash = () => {
     return (Math.floor((Math.random() + 5.) ** 20.)).toString(16);
 };
 
-export default class {
+const AudioToolKit = class {
     constructor(_context, _generator,_time_sync) {
         this.context = _context;
         this.generator = _generator;
@@ -43,4 +43,5 @@ export default class {
     createOdd() {
         return Math.floor(Math.random()*15)*2+1;
     }
-}
+};
+export default AudioToolKit

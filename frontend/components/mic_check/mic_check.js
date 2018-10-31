@@ -1,7 +1,7 @@
 import MicInput from "../../lib/MicInputTest";
 import AudioNodeGenerator from "../../lib/AudioNodeGenerator";
 
-export default class {
+const MicCheck = class {
     constructor() {
         this.context = new AudioContext();
 
@@ -9,4 +9,5 @@ export default class {
 
         this.generator = new AudioNodeGenerator(this.context);
     }
-}
+};
+export default MicCheck

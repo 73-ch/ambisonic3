@@ -1,6 +1,6 @@
 import platform from 'platform';
 
-export default class {
+const FullScreenCanvas = class {
     constructor() {
         this.canvas_obj = document.createElement("canvas");
 
@@ -49,4 +49,5 @@ export default class {
 
         this.resizeCanvas();
     }
-}
+};
+export default FullScreenCanvas

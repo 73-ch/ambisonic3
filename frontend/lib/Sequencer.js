@@ -1,9 +1,9 @@
 // import AudioToolKit from "./AudioToolKit";
 import clone from 'clone';
 
-const emp_seq = [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]];
+const emp_seq = [[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []];
 
-export default class {
+const Sequencer = class {
     constructor(_context, _time_sync, _visualizer, _tk) {
         this.context = _context;
         this.time_sync = _time_sync;
@@ -32,29 +32,29 @@ export default class {
         let light_pattern;
 
         if (args.length === 2) {// index, sequence
-            light_pattern = this.createDefaultLightPattern(args[1], [1,1,1,1], [.05,.05,.05]);
-        }  else if (args.length === 3) {// index, sequence, light_sequence
+            light_pattern = this.createDefaultLightPattern(args[1], [1, 1, 1, 1], [.05, .05, .05]);
+        } else if (args.length === 3) {// index, sequence, light_sequence
             light_pattern = args[2];
         } else if (args.length === 4) {// index, sequence, light, sub
             light_pattern = this.createDefaultLightPattern(args[1], args[2], args[3]);
         }
 
         this.addPattern(this.sequences, args[0], args[1]);
-        this.addPattern(this.light_sequences, args[0],  light_pattern);
+        this.addPattern(this.light_sequences, args[0], light_pattern);
     }
 
 
     addPattern(type, seq_index, pattern) {
         while (type.length <= seq_index) type.push(clone(emp_seq));
 
-        for (let i =0; i < pattern.length; i++) {
+        for (let i = 0; i < pattern.length; i++) {
             if (pattern[i]) type[seq_index][i].push(pattern[i]);
         }
 
     }
 
     createDefaultLightPattern(seq, col, sub) {
-        console.log(seq,col,sub);
+        console.log(seq, col, sub);
         let ret_pattern = [];
         for (let i = 0; i < seq.length; i++) {
             let p = [];
@@ -86,7 +86,7 @@ export default class {
         this.next_note_time = time;
         // this.note_num_16th = 0;
         // this.sequence_count = 0;
-        
+
         // if (this.interval) clearInteral(this.interval);
 
         this.interval = setInterval(() => {
@@ -141,7 +141,7 @@ export default class {
 
     playSample(buffer_name, time) {
         const bar_params = {
-            "name": "source_"+buffer_name+"_"+time,
+            "name": "source_" + buffer_name + "_" + time,
             "node_type": "buffer_source",
             "out": "gain",
             "params": {
@@ -160,4 +160,6 @@ export default class {
             this.visualizer.addColor(couple[0].concat(), couple[1].concat());
         }, time - this.time_sync.current_time);
     }
-}
+};
+
+export default Sequencer;

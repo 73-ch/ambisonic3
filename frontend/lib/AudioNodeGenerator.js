@@ -2,7 +2,7 @@ import MicInput from "./MicInputTest";
 import StuckAudioBuffers from "./StuckAudioBuffers";
 import platform from 'platform';
 
-export default class {
+const AudioNodeGenerator = class {
     constructor(context) {
         this.context = context;
         this.stuck_buffer = new StuckAudioBuffers(context);
@@ -160,4 +160,5 @@ export default class {
     set listener_position(a) {
         this.context.listener.setPosition(a[0], a[1], a[2]);
     }
-}
+};
+export default AudioNodeGenerator

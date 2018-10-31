@@ -22,7 +22,7 @@ const createUniqueHash = () => {
     return (Math.floor((Math.random() + 5.) ** 20.)).toString(16);
 };
 
-export default class {
+const home = class {
     constructor() {
         this.button = document.querySelector("#start");
 
@@ -180,4 +180,5 @@ export default class {
     disconnect(node1, node2) {
         this.nodes[node1].disconnect(this.nodes[node2]);
     }
-}
+};
+export default home

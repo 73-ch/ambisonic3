@@ -1,4 +1,4 @@
-export default class {
+const MicInputTest = class {
     constructor (context = new AudioContext()) {
         this.context = context;
         navigator.mediaDevices.getUserMedia({audio : true, video: false}).then((stream) => {
@@ -22,4 +22,5 @@ export default class {
             }, 100);
         });
     }
-}
+};
+export default MicInputTest

@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 
-export default class {
+const BaseScene = class {
     constructor() {
         this.scene;
         this.cam;
@@ -13,4 +13,5 @@ export default class {
     update() {
 
     }
-}
+};
+export default BaseScene

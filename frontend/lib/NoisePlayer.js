@@ -1,6 +1,6 @@
 import SimplexNoise from "simplex-noise";
 
-export default class {
+const NoisePlayer = class {
     constructor(_context, _time_sync, _visualizer) {
         this.context = _context;
         this.time_sync = _time_sync;
@@ -147,4 +147,5 @@ export default class {
 
         };
     }
-}
+};
+export default NoisePlayer

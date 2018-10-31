@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import FullScreenCanvas from "./FullScreenCanvas"
 import BaseScene from "./BaseScene"
 
-export default class extends FullScreenCanvas {
+const GraphicManager = class extends FullScreenCanvas {
     constructor() {
         super();
 
@@ -48,4 +48,5 @@ export default class extends FullScreenCanvas {
             this.draw();
         });
     }
-}
+};
+export default GraphicManager

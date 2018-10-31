@@ -1,6 +1,6 @@
 import platform from 'platform'
 
-export default class {
+const HtmlMetaGenerator = class {
     constructor() {
         if (platform.os.family === 'iOS' && platform.name === 'Safari') {
             this.iosSafari();
@@ -36,4 +36,5 @@ export default class {
         viewport.content = 'width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no'
         document.head.appendChild(viewport);
     }
-}
+};
+export default HtmlMetaGenerator

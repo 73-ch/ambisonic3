@@ -1,6 +1,6 @@
 import platform from "platform";
 
-export default class {
+const StuckAudioBuffer = class {
     constructor(_context) {
         this.context = _context;
         this.loaded_buffers = {};
@@ -76,7 +76,8 @@ export default class {
 
         this.loaded_buffers = {};
     }
-}
+};
+export default StuckAudioBuffer
 
 const fetchArrayBuffer = async path => {
     let response = await fetch(path);

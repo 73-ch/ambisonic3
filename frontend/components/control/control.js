@@ -11,7 +11,7 @@ import "brace/theme/monokai";
 import "./control.css";
 
 
-export default class {
+const Control = class {
     constructor() {
         this.messenger = new controlMessenger(this.messageReceived, this);
 
@@ -29,7 +29,7 @@ export default class {
         this.load_offset = document.querySelector('#load-offset');
 
         window.addEventListener('beforeunload', (e) => {
-           e.returnValue = 'reload check';
+            e.returnValue = 'reload check';
         });
     }
 
@@ -496,4 +496,5 @@ export default class {
                 break;
         }
     }
-}
+};
+export default Control
