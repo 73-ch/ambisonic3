@@ -9,7 +9,7 @@
 
 // !location.reload();
 
-this.visualizer.addColor([1.0,0.0,0.0, 0.5], [0.000000025,0.,0.]);
-this.visualizer.addColor([0.,1.0,0., 0.5], [0.,0.025,0.]);
+this.graphic_manager.scene.addColor([1.0,0.0,0.0, 0.5], [0.000000025,0.,0.]);
+this.graphic_manager.scene.addColor([0.,1.0,0., 0.5], [0.,0.025,0.]);
 
 // !this.visualizer.clearColor();
