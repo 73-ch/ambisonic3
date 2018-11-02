@@ -11,7 +11,7 @@ void main() {
     float sum = 0.0;
 
     for (float i = 0.; i < 8.; ++i) {
-        sum += texture2D(texture, (vec2(mod(mod(i,3.)+2.,3.), mod(floor(i/3.) + 2., 3.))-vec2(1.))/u_resolution + v_texcoord).r;
+        sum += texture2D(texture, mod((vec2(mod(mod(i,3.)+2.,3.), mod(floor(i/3.) + 2., 3.))-vec2(1.))/u_resolution + v_texcoord + 1., 1.)).r;
     }
 
     // このピクセル自身
