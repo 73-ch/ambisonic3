@@ -82,7 +82,7 @@ const home = class {
         if (!this.debug)this.graphic_manager.toggleFullscreen();
 
         // this.graphic_manager.scene = new SimpleVisualizer();
-        this.graphic_manager.scene = new LifeGame();
+        this.graphic_manager.scene = new LifeGame(this.position_manager.position, this.graphic_manager.renderer);
 
 
         // sequencer
