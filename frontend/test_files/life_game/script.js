@@ -8,10 +8,10 @@ import render_frag from './shader/render_frag.glsl'
 const LifeGame = class extends BaseScene {
     constructor(_position = [0,0,0], _renderer) {
         super();
-        this.size = [100, 100];
+        this.size = {x: 100, y: 100};
 
         this.position = _position;
-        this.size_per_device = [100, 100];
+        this.size_per_device = {x:10, y:10};
 
         this.age = 0;
 
@@ -29,34 +29,30 @@ const LifeGame = class extends BaseScene {
 
     initWholeMap() {
         // lifegame全体の更新を行うターゲット
-        this.front_buffer = new THREE.WebGLRenderTarget(this.size[0], this.size[1], {
+        this.front_buffer = new THREE.WebGLRenderTarget(this.size.x, this.size.y, {
             magFilter: THREE.NearestFilter,
             minFilter: THREE.NearestFilter,
             wrapS: THREE.RepeatWrapping,
             wrapT: THREE.RepeatWrapping,
         });
 
-        // this.front_buffer.texture.needsUpdate = true;
-
-        this.back_buffer = new THREE.WebGLRenderTarget(this.size[0], this.size[1], {
+        this.back_buffer = new THREE.WebGLRenderTarget(this.size.x, this.size.y, {
             magFilter: THREE.NearestFilter,
             minFilter: THREE.NearestFilter,
             wrapS: THREE.RepeatWrapping,
             wrapT: THREE.RepeatWrapping,
         });
-
-        // this.back_buffer.texture.needsUpdate = true;
     }
 
     setDefaultWholeMap() {
         // 一番最初のlifegameのマップへの書き込み
         let init_scene = new THREE.Scene();
 
-        this.whole_cam = new THREE.OrthographicCamera(this.size[0] / -2.,this.size[0] / 2., this.size[1] / 2., this.size[1] / -2., 0, 100);
+        this.whole_cam = new THREE.OrthographicCamera(this.size.x / -2.,this.size.x / 2., this.size.y / 2., this.size.y / -2., 0, 100);
         init_scene.add(this.whole_cam);
 
         // lifegame全体のマテリアルと
-        this.whole_map_geometry = new THREE.PlaneGeometry(this.size[0], this.size[1], 1, 1);
+        this.whole_map_geometry = new THREE.PlaneGeometry(this.size.x, this.size.y, 1, 1);
 
         const shader_material_params = {
             uniforms: {
@@ -115,8 +111,6 @@ const LifeGame = class extends BaseScene {
             transparent: true
         };
 
-        // shader_material_params.uniforms.texture.value.needsUpdate = true;
-
         this.update_map_material = new THREE.ShaderMaterial(shader_material_params);
         this.whole_plane = new THREE.Mesh(this.whole_map_geometry, this.update_map_material);
 
@@ -131,7 +125,7 @@ const LifeGame = class extends BaseScene {
         // lifegameからポジションに応じて画面描画を行うシーン
         this.scene = new THREE.Scene();
 
-        const width = this.size_per_device[0], height = this.size_per_device[1];
+        const width = this.size_per_device.x, height = this.size_per_device.y;
 
         this.cam = new THREE.OrthographicCamera(width / -2., width / 2., height / -2., height / 2., 0, 100);
         this.scene.add(this.cam);
