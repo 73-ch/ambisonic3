@@ -2,6 +2,7 @@ precision mediump float;
 
 uniform sampler2D texture;
 uniform vec2 u_resolution;
+uniform float time;
 varying vec2 v_texcoord;
 
 #pragma glslify: import("./randoms.glsl")
@@ -19,6 +20,9 @@ void main() {
 
     // life-gameルール
     float a = step(2.5-t, sum) - step(3.5, sum);
+
+    // 1%の確率で自然発生
+    a += step(0.99, random(u_resolution + time));
 
     gl_FragColor = vec4(vec3(a), 1.0);
 }
