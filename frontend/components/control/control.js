@@ -67,6 +67,12 @@ const Control = class {
     noteonEvent(note_num) {
         console.log(note_num);
         switch (note_num) {
+            case 48:
+                this.messenger.sendScript({"text": `this.graphic_manager.scene.init_seed = ${Math.random()}`});
+                break;// set init_seed of LifeGame
+            case 49:
+                this.messenger.sendScript({"text": `this.graphic_manager.scene.resume(${this.time_sync.current_time + 3000})`});
+                break;// resume LifeGame
             case 56:
                 this.editor.setValue('{\n' +
                     '  "load_files": [\n' +
