@@ -13,5 +13,9 @@ const BaseScene = class {
     update() {
 
     }
+
+    rendered() {
+
+    }
 };
 export default BaseScene

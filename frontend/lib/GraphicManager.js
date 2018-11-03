@@ -42,6 +42,7 @@ const GraphicManager = class extends FullScreenCanvas {
         if (this._scene) {
             this._scene.update();
             this.renderer.render(this._scene.scene, this._scene.cam);
+            this._scene.rendered();
         }
 
         requestAnimationFrame(() => {

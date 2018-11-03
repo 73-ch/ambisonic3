@@ -11,7 +11,7 @@ const LifeGame = class extends BaseScene {
         this.size = {x: 100, y: 100};
 
         this.position = _position;
-        this.size_per_device = {x:10, y:10};
+        this.size_per_device = {x:50, y:50};
 
         this.age = 0;
 
@@ -19,12 +19,28 @@ const LifeGame = class extends BaseScene {
 
         this.renderer = _renderer;
 
+        this.pixels = new Uint8Array(this.size_per_device.x * this.size_per_device.y * 4);
+
         this.initWholeMap();
         this.setDefaultWholeMap();
 
         this.initUpdateScene();
 
-        this.initRenderScene();
+
+        // debug
+        // this.initRenderScene();
+        // setTimeout(()=> {
+        //     setInterval(() => {
+        //         this.incrementAge();
+        //     }, 100)
+        // }, 3000);
+        //
+        //
+        // setTimeout(()=> {
+        //     setInterval(() => {
+        //         this.swapBuffer();
+        //     }, 100)
+        // }, 3100);
     }
 
     initWholeMap() {
@@ -131,26 +147,17 @@ const LifeGame = class extends BaseScene {
         this.scene.add(this.cam);
 
         this.display_geometry = new THREE.PlaneGeometry(width, height, 1, 1);
-        // this.display_geometry.uvsNeedUpdate = true;
+
         //
-        // let uvs = new Uint32Array(8);
-        //
-        // for (let i = 0; i < 4; i++) {
-        //     uvs[i*2] = this.size_per_device[0] * this.position[0];
-        //     uvs[i*2+1] = this.size_per_device[1] * this.position[1];
-        // }
-
-        // console.log(this.display_geometry.attributes);
-
-        // this.display_geometry.faceVertexUvs[0][0] = uvs;
-
-        // console.log(this.display_geometry.attributes.uvs);
-        // this.display_geometry.addAttribute( 'uv', new THREE.BufferAttribute( uvs, 2 ));
-
-        // this.display_material = new THREE.MeshBasicMaterial({
-        //     map: this.back_buffer.texture,
-        //     wireframe: false
-        // });
+        for (let tri of this.display_geometry.faceVertexUvs[0]) {
+            console.log(tri);
+            for (let v of tri) {
+                console.log(v);
+                v.x = (v.x + this.position[0]) * this.size_per_device.x / this.size.x;
+                v.y = (v.y + this.position[1]) * this.size_per_device.y / this.size.y;
+                console.log(v);
+            }
+        }
 
         const shader_material_params = {
             uniforms: {
@@ -172,11 +179,7 @@ const LifeGame = class extends BaseScene {
         this.scene.add(this.display_plane);
     }
 
-    update() {
-        this.count++;
-
-        // if (this.count % 10 !== 0) return;
-
+    incrementAge() {
         this.age++;
         this.whole_plane.material.uniforms.time.value = performance.now();
 
@@ -186,13 +189,24 @@ const LifeGame = class extends BaseScene {
 
         this.display_plane.material.uniforms.texture.value = this.front_buffer.texture;
 
-        this.swapbuffer();
+        // 表示されているピクセルの数を保持
+        // let pixels = new Uint8Array(this.size_per_device.x * this.size_per_device.y * 4);
+        const gl = this.renderer.getContext();
+        gl.readPixels(this.position[0], this.position[1], this.size_per_device.x, this.size_per_device.y, gl.RGBA, gl.UNSIGNED_BYTE, this.pixels);
+        console.log(this.pixels);
+        this.countRendered();
+
+        // this.swapBuffer();
     }
 
-    swapbuffer() {
+    swapBuffer() {
         const temp_buffer = this.back_buffer;
         this.back_buffer = this.front_buffer;
         this.front_buffer = temp_buffer;
+    }
+
+    countRendered(pixels) {
+        pixels.reduce((b,a) => b + a);
     }
 
     reset() {
