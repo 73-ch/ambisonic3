@@ -45,9 +45,10 @@ const Sequencer = class {
 
 
     addPattern(type, seq_index, pattern) {
-        while (type.length <= seq_index) type.push(clone(emp_seq));
+        while (type.length <= seq_index) type.push(new Array(16));
 
         for (let i = 0; i < pattern.length; i++) {
+            console.log(type[seq_index], i);
             if (pattern[i]) type[seq_index][i].push(pattern[i]);
         }
 

@@ -23,7 +23,7 @@ position = position.map(a => a - 1);
 const asc_xy = position[0] + position[1] * 4;
 const asc_yx = position[1] + position[0] * 4;
 const pos_x = position[0];
-const pos_y = position[1];
+const pos_y = position[1];e
 
 const desc_xy = 15 - asc_xy;
 const desc_yx = 15 - asc_yx;
